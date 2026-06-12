@@ -1,0 +1,75 @@
+.logoWrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 140px;
+  height: 140px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.logoSvg {
+  width: 100%;
+  height: 100%;
+}
+
+.circleText {
+  font-family: var(--font-mono);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  fill: var(--text-primary);
+  text-transform: uppercase;
+  transform-origin: 100px 100px;
+  animation: rotateText 25s linear infinite;
+  transition: fill var(--transition-medium);
+}
+
+.centerDot {
+  fill: var(--text-primary);
+  transition: fill var(--transition-medium), r var(--transition-medium);
+}
+
+.crosshair {
+  stroke: var(--border-color);
+  stroke-width: 1;
+  stroke-dasharray: 4 4;
+  opacity: 0.7;
+  transition: stroke var(--transition-medium), opacity var(--transition-medium);
+}
+
+.outerRing {
+  fill: none;
+  stroke: var(--border-color);
+  stroke-width: 1;
+  transition: stroke var(--transition-medium);
+}
+
+/* Hover States */
+.logoWrapper:hover .circleText {
+  animation-duration: 12s;
+  fill: var(--text-primary);
+}
+
+.logoWrapper:hover .centerDot {
+  r: 5px;
+}
+
+.logoWrapper:hover .crosshair {
+  opacity: 1;
+  stroke: var(--text-secondary);
+}
+
+.logoWrapper:hover .outerRing {
+  stroke: var(--text-primary);
+}
+
+@keyframes rotateText {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

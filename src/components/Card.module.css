@@ -1,0 +1,95 @@
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 2.5rem;
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  min-height: 280px;
+  transition: border-color var(--transition-medium), transform var(--transition-medium), background-color var(--transition-medium);
+}
+
+.card:hover {
+  border-color: var(--text-primary);
+  background-color: var(--bg-primary);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+}
+
+.cardNumber {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  transition: color var(--transition-fast);
+}
+
+.card:hover .cardNumber {
+  color: var(--text-primary);
+}
+
+.cardIcon {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  opacity: 0.5;
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
+}
+
+.card:hover .cardIcon {
+  opacity: 1;
+  transform: translate(2px, -2px);
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-top: auto;
+}
+
+.cardTitle {
+  font-family: var(--font-sans);
+  font-size: 1.35rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  letter-spacing: -0.01em;
+}
+
+.cardDescription {
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+}
+
+.cardTechList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  list-style: none;
+  border-top: 1px dashed var(--border-color);
+  padding-top: 1rem;
+}
+
+.techTag {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--text-secondary);
+  background-color: var(--bg-primary);
+  padding: 0.2rem 0.5rem;
+  border: 1px solid var(--border-color);
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: 1.75rem;
+    min-height: auto;
+  }
+}
