@@ -76,6 +76,11 @@ export default function Home() {
         <section id="hero" className={styles.hero} aria-label="Introduction">
           <div className="grid-bg" />
           <div className={`container ${styles.heroContent}`}>
+            <div className={styles.heroNote}>
+              <span className={styles.pulsingDotSmall} />
+              <span>CURRENTLY OCCUPIED • NOT OPEN TO NEW PROJECTS</span>
+            </div>
+            
             <div className={styles.heroLogoContainer}>
               <AirMSLogo size={130} />
               <Logo size={130} />

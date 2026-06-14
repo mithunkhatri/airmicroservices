@@ -6,7 +6,10 @@
   --border-color: #e5e5e5;
   --border-color-dark: #111111;
   --accent-color: #000000;
-  --status-pulse: #00ff66;
+  --status-pulse: #ea580c;
+  --status-pulse-shadow: rgba(234, 88, 12, 0.4);
+  --status-pulse-glow: rgba(234, 88, 12, 0.7);
+  --status-pulse-fade: rgba(234, 88, 12, 0);
   --font-mono: 'JetBrains Mono', monospace;
   --font-sans: 'Space Grotesk', sans-serif;
   
@@ -25,7 +28,10 @@
   --border-color: #27272a;
   --border-color-dark: #3f3f46;
   --accent-color: #ffffff;
-  --status-pulse: #00ff66;
+  --status-pulse: #f97316;
+  --status-pulse-shadow: rgba(249, 115, 22, 0.4);
+  --status-pulse-glow: rgba(249, 115, 22, 0.7);
+  --status-pulse-fade: rgba(249, 115, 22, 0);
   --header-bg: rgba(10, 10, 10, 0.8);
 }
 
@@ -37,6 +43,10 @@
   --border-color: #e5e5e5;
   --border-color-dark: #111111;
   --accent-color: #000000;
+  --status-pulse: #ea580c;
+  --status-pulse-shadow: rgba(234, 88, 12, 0.4);
+  --status-pulse-glow: rgba(234, 88, 12, 0.7);
+  --status-pulse-fade: rgba(234, 88, 12, 0);
   --header-bg: rgba(255, 255, 255, 0.8);
 }
 
@@ -49,7 +59,10 @@
     --border-color: #27272a;
     --border-color-dark: #3f3f46;
     --accent-color: #ffffff;
-    --status-pulse: #00ff66;
+    --status-pulse: #f97316;
+    --status-pulse-shadow: rgba(249, 115, 22, 0.4);
+    --status-pulse-glow: rgba(249, 115, 22, 0.7);
+    --status-pulse-fade: rgba(249, 115, 22, 0);
     --header-bg: rgba(10, 10, 10, 0.8);
   }
 }

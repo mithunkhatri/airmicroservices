@@ -72,12 +72,13 @@
   padding: 0.5rem 1rem;
   border: 1px dashed var(--border-color);
   background-color: var(--bg-secondary);
+  margin-bottom: 2.5rem;
 }
 
 .pulsingDotSmall {
   width: 6px;
   height: 6px;
-  background-color: var(--text-primary);
+  background-color: var(--status-pulse);
   border-radius: 50%;
   animation: pulseOpacity 1.5s infinite ease-in-out;
 }

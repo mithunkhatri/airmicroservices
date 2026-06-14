@@ -89,6 +89,11 @@ export default function Navbar() {
               </li>
             ))}
           </ul>
+
+          <div className={styles.statusBadge}>
+            <span className={styles.pulseDot} />
+            <span>OCCUPIED</span>
+          </div>
         </nav>
 
         {/* Header Controls (Theme switch + Hamburger) */}
