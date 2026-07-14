@@ -1,0 +1,2795 @@
+<title>Marina One Business Towers — Digital Twin</title>
+<style>
+  :root {
+    --ground: #f4f2ee;
+    --panel: #fbfaf8;
+    --panel-2: #efece6;
+    --ink: #1c1f24;
+    --ink-2: #4c5158;
+    --ink-3: #7a808a;
+    --line: #dcd8d0;
+    --line-2: #e8e4dc;
+    --accent: #d98207;
+    --accent-ink: #7a4a06;
+    --steel: #3f6d8c;
+    --steel-soft: #e3ecf1;
+    --good: #3f8f5b;
+    --good-bg: #e6f1e8;
+    --warn: #c98a12;
+    --warn-bg: #f7efd9;
+    --bad: #c14b3a;
+    --bad-bg: #f6e4e0;
+    --info: #3f6d8c;
+    --info-bg: #e3ecf1;
+    --shadow: 0 1px 2px rgba(28, 31, 36, .06), 0 4px 16px rgba(28, 31, 36, .05);
+    --mono: ui-monospace, "SF Mono", "Cascadia Code", "Roboto Mono", Menlo, Consolas, monospace;
+    --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --serif: Georgia, "Times New Roman", serif;
+    --rail: 236px;
+  }
+
+  @media (prefers-color-scheme:dark) {
+    :root {
+      --ground: #15181c;
+      --panel: #1c2025;
+      --panel-2: #23282e;
+      --ink: #e7e4de;
+      --ink-2: #a9aeb6;
+      --ink-3: #787e88;
+      --line: #2b3037;
+      --line-2: #333941;
+      --accent: #f2a007;
+      --accent-ink: #f2a007;
+      --steel: #6ea6c8;
+      --steel-soft: #1e2b34;
+      --good: #5fb87c;
+      --good-bg: #16261c;
+      --warn: #e0ad3a;
+      --warn-bg: #2a2413;
+      --bad: #e0705c;
+      --bad-bg: #2c1a17;
+      --info: #6ea6c8;
+      --info-bg: #15242e;
+      --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 6px 20px rgba(0, 0, 0, .28);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground: #15181c;
+    --panel: #1c2025;
+    --panel-2: #23282e;
+    --ink: #e7e4de;
+    --ink-2: #a9aeb6;
+    --ink-3: #787e88;
+    --line: #2b3037;
+    --line-2: #333941;
+    --accent: #f2a007;
+    --accent-ink: #f2a007;
+    --steel: #6ea6c8;
+    --steel-soft: #1e2b34;
+    --good: #5fb87c;
+    --good-bg: #16261c;
+    --warn: #e0ad3a;
+    --warn-bg: #2a2413;
+    --bad: #e0705c;
+    --bad-bg: #2c1a17;
+    --info: #6ea6c8;
+    --info-bg: #15242e;
+    --shadow: 0 1px 2px rgba(0, 0, 0, .3), 0 6px 20px rgba(0, 0, 0, .28);
+  }
+
+  :root[data-theme="light"] {
+    --ground: #f4f2ee;
+    --panel: #fbfaf8;
+    --panel-2: #efece6;
+    --ink: #1c1f24;
+    --ink-2: #4c5158;
+    --ink-3: #7a808a;
+    --line: #dcd8d0;
+    --line-2: #e8e4dc;
+    --accent: #d98207;
+    --accent-ink: #7a4a06;
+    --steel: #3f6d8c;
+    --steel-soft: #e3ecf1;
+    --good: #3f8f5b;
+    --good-bg: #e6f1e8;
+    --warn: #c98a12;
+    --warn-bg: #f7efd9;
+    --bad: #c14b3a;
+    --bad-bg: #f6e4e0;
+    --info: #3f6d8c;
+    --info-bg: #e3ecf1;
+    --shadow: 0 1px 2px rgba(28, 31, 36, .06), 0 4px 16px rgba(28, 31, 36, .05);
+  }
+
+  * {
+    box-sizing: border-box
+  }
+
+  html {
+    scroll-behavior: smooth
+  }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    margin: 0;
+    font-weight: 650;
+    letter-spacing: -.01em;
+    text-wrap: balance
+  }
+
+  a {
+    color: inherit
+  }
+
+  .num {
+    font-family: var(--mono);
+    font-variant-numeric: tabular-nums
+  }
+
+  .eyebrow {
+    font-size: 10.5px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    font-weight: 600
+  }
+
+  /* ---------- shell ---------- */
+  .app {
+    display: grid;
+    grid-template-columns: var(--rail) 1fr;
+    min-height: 100vh
+  }
+
+  .rail {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    background: var(--panel);
+    border-right: 1px solid var(--line);
+    padding: 0
+  }
+
+  .brand {
+    padding: 16px 18px 14px;
+    border-bottom: 1px solid var(--line)
+  }
+
+  .brand .logo {
+    display: flex;
+    align-items: center;
+    gap: 9px
+  }
+
+  .brand .mark {
+    width: 22px;
+    height: 22px;
+    flex: 0 0 auto;
+    border-radius: 5px;
+    background: linear-gradient(135deg, var(--accent), #b56a05);
+    position: relative;
+    box-shadow: var(--shadow)
+  }
+
+  .brand .mark::after {
+    content: "";
+    position: absolute;
+    inset: 5px 5px auto 5px;
+    height: 3px;
+    background: rgba(255, 255, 255, .85);
+    box-shadow: 0 5px 0 rgba(255, 255, 255, .55)
+  }
+
+  .brand h1 {
+    font-size: 14px;
+    line-height: 1.15
+  }
+
+  .brand .sub {
+    font-size: 11px;
+    color: var(--ink-3);
+    margin-top: 2px
+  }
+
+  .brand .built-for {
+    font-size: 9.5px;
+    color: var(--accent);
+    font-weight: 700;
+    margin-top: 5px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase
+  }
+
+  nav {
+    padding: 8px 8px 24px
+  }
+
+  nav .grp {
+    font-size: 10px;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    padding: 12px 10px 5px;
+    font-weight: 600
+  }
+
+  nav a {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 6px 10px;
+    border-radius: 7px;
+    text-decoration: none;
+    color: var(--ink-2);
+    font-size: 12.5px;
+    font-weight: 500;
+    position: relative
+  }
+
+  nav a .idx {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--ink-3);
+    width: 16px;
+    text-align: right
+  }
+
+  nav a:hover {
+    background: var(--panel-2);
+    color: var(--ink)
+  }
+
+  nav a.on {
+    background: var(--steel-soft);
+    color: var(--ink);
+    font-weight: 600
+  }
+
+  nav a.on::before {
+    content: "";
+    position: absolute;
+    left: -8px;
+    top: 6px;
+    bottom: 6px;
+    width: 3px;
+    border-radius: 0 3px 3px 0;
+    background: var(--accent)
+  }
+
+  .main {
+    min-width: 0;
+    display: flex;
+    flex-direction: column
+  }
+
+  /* ---------- command bar ---------- */
+  .cmd {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: color-mix(in srgb, var(--panel) 88%, transparent);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--line)
+  }
+
+  .cmd-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 20px
+  }
+
+  .cmd-row.two {
+    padding-top: 0;
+    flex-wrap: wrap
+  }
+
+  .daybox {
+    display: flex;
+    align-items: center;
+    gap: 8px
+  }
+
+  .iconbtn {
+    width: 32px;
+    height: 32px;
+    border: 1px solid var(--line);
+    background: var(--panel);
+    border-radius: 8px;
+    color: var(--ink);
+    font-size: 15px;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    font-family: var(--mono)
+  }
+
+  .iconbtn:hover {
+    background: var(--panel-2);
+    border-color: var(--ink-3)
+  }
+
+  .iconbtn:active {
+    transform: translateY(1px)
+  }
+
+  .daylabel {
+    min-width: 210px
+  }
+
+  .daylabel .d {
+    font-size: 15px;
+    font-weight: 650;
+    letter-spacing: -.01em
+  }
+
+  .daylabel .m {
+    font-size: 11px;
+    color: var(--ink-3)
+  }
+
+  .daylabel .m b {
+    color: var(--accent);
+    font-weight: 600
+  }
+
+  input[type=range] {
+    -webkit-appearance: none;
+    appearance: none;
+    flex: 1;
+    height: 5px;
+    border-radius: 4px;
+    background: var(--line);
+    outline: none;
+    min-width: 120px
+  }
+
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--panel);
+    box-shadow: var(--shadow);
+    cursor: pointer
+  }
+
+  input[type=range]::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--accent);
+    border: 2px solid var(--panel);
+    cursor: pointer
+  }
+
+  .btn {
+    border: 1px solid var(--line);
+    background: var(--panel);
+    border-radius: 8px;
+    padding: 6px 11px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--ink);
+    cursor: pointer;
+    font-family: var(--sans);
+    white-space: nowrap
+  }
+
+  .btn:hover {
+    background: var(--panel-2);
+    border-color: var(--ink-3)
+  }
+
+  .btn.accent {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #2a1a02
+  }
+
+  .btn.accent:hover {
+    filter: brightness(1.05)
+  }
+
+  .spacer {
+    flex: 1
+  }
+
+  /* KPI strip */
+  .kpis {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0;
+    border-top: 1px solid var(--line)
+  }
+
+  .kpi {
+    padding: 9px 14px;
+    border-right: 1px solid var(--line);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0
+  }
+
+  .kpi:last-child {
+    border-right: 0
+  }
+
+  .kpi .k {
+    font-size: 9.5px;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis
+  }
+
+  .kpi .v {
+    font-family: var(--mono);
+    font-variant-numeric: tabular-nums;
+    font-size: 17px;
+    font-weight: 600;
+    line-height: 1.1
+  }
+
+  .kpi .v small {
+    font-size: 11px;
+    color: var(--ink-3);
+    font-weight: 500
+  }
+
+  .kpi .chip {
+    align-self: flex-start
+  }
+
+  /* ---------- content ---------- */
+  .content {
+    padding: 22px 24px 80px;
+    max-width: 1180px;
+    width: 100%;
+    margin: 0 auto
+  }
+
+  section {
+    scroll-margin-top: 150px;
+    margin-bottom: 26px
+  }
+
+  .sec-head {
+    display: flex;
+    align-items: baseline;
+    gap: 11px;
+    margin-bottom: 12px;
+    padding-bottom: 9px;
+    border-bottom: 1px solid var(--line)
+  }
+
+  .sec-head .n {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 600
+  }
+
+  .sec-head h2 {
+    font-size: 17px
+  }
+
+  .sec-head .tag {
+    margin-left: auto;
+    font-size: 11px;
+    color: var(--ink-3)
+  }
+
+  .card {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    box-shadow: var(--shadow);
+    padding: 16px 18px;
+    margin-bottom: 14px
+  }
+
+  .card.flush {
+    padding: 0;
+    overflow: hidden
+  }
+
+  .grid {
+    display: grid;
+    gap: 14px
+  }
+
+  .g2 {
+    grid-template-columns: 1fr 1fr
+  }
+
+  .g3 {
+    grid-template-columns: repeat(3, 1fr)
+  }
+
+  .g4 {
+    grid-template-columns: repeat(4, 1fr)
+  }
+
+  @media(max-width:820px) {
+
+    .g2,
+    .g3,
+    .g4 {
+      grid-template-columns: 1fr 1fr
+    }
+  }
+
+  .card h3 {
+    font-size: 13px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px
+  }
+
+  .card h3 .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent)
+  }
+
+  /* chips */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 20px;
+    letter-spacing: .02em;
+    line-height: 1.5;
+    white-space: nowrap
+  }
+
+  .chip.good {
+    background: var(--good-bg);
+    color: var(--good)
+  }
+
+  .chip.warn {
+    background: var(--warn-bg);
+    color: var(--warn)
+  }
+
+  .chip.bad {
+    background: var(--bad-bg);
+    color: var(--bad)
+  }
+
+  .chip.info {
+    background: var(--info-bg);
+    color: var(--info)
+  }
+
+  .chip.mut {
+    background: var(--panel-2);
+    color: var(--ink-3)
+  }
+
+  .chip::before {
+    content: "";
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: .9
+  }
+
+  .chip.nodot::before {
+    display: none
+  }
+
+  /* meters */
+  .meter {
+    height: 7px;
+    border-radius: 5px;
+    background: var(--panel-2);
+    overflow: hidden;
+    position: relative
+  }
+
+  .meter>i {
+    display: block;
+    height: 100%;
+    border-radius: 5px;
+    background: var(--accent)
+  }
+
+  .meter.plan {
+    background: transparent;
+    border: 1px dashed var(--line)
+  }
+
+  .dual {
+    position: relative;
+    height: 9px;
+    border-radius: 5px;
+    background: var(--panel-2);
+    overflow: hidden
+  }
+
+  .dual .pl {
+    position: absolute;
+    inset: 0;
+    width: 0;
+    background: repeating-linear-gradient(90deg, var(--line) 0 4px, transparent 4px 8px)
+  }
+
+  .dual .ac {
+    position: absolute;
+    inset: 0;
+    width: 0;
+    background: var(--steel);
+    border-radius: 5px
+  }
+
+  /* stat blocks */
+  .stat {
+    display: flex;
+    flex-direction: column;
+    gap: 3px
+  }
+
+  .stat .lbl {
+    font-size: 10.5px;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    font-weight: 600
+  }
+
+  .stat .big {
+    font-family: var(--mono);
+    font-variant-numeric: tabular-nums;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1
+  }
+
+  .stat .sub {
+    font-size: 11px;
+    color: var(--ink-3)
+  }
+
+  .ring {
+    display: grid;
+    place-items: center;
+    position: relative
+  }
+
+  .ring svg {
+    transform: rotate(-90deg)
+  }
+
+  .ring .rv {
+    position: absolute;
+    text-align: center
+  }
+
+  .ring .rv b {
+    font-family: var(--mono);
+    font-size: 19px;
+    font-weight: 600;
+    display: block;
+    line-height: 1
+  }
+
+  .ring .rv span {
+    font-size: 9.5px;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    font-weight: 600
+  }
+
+  /* tables */
+  .tbl-wrap {
+    overflow-x: auto;
+    border-radius: 10px
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px
+  }
+
+  thead th {
+    text-align: left;
+    font-size: 10px;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    font-weight: 600;
+    padding: 8px 11px;
+    border-bottom: 1px solid var(--line);
+    background: var(--panel-2);
+    position: sticky;
+    top: 0;
+    white-space: nowrap
+  }
+
+  tbody td {
+    padding: 7px 11px;
+    border-bottom: 1px solid var(--line-2);
+    vertical-align: middle;
+    white-space: nowrap
+  }
+
+  tbody tr:last-child td {
+    border-bottom: 0
+  }
+
+  tbody tr:hover {
+    background: var(--panel-2)
+  }
+
+  td.n,
+  th.n {
+    font-family: var(--mono);
+    font-variant-numeric: tabular-nums;
+    text-align: right
+  }
+
+  .scrollbox {
+    max-height: 340px;
+    overflow-y: auto
+  }
+
+  .scrollbox.tall {
+    max-height: 460px
+  }
+
+  /* feed items */
+  .feed {
+    display: flex;
+    flex-direction: column
+  }
+
+  .fi {
+    display: flex;
+    gap: 11px;
+    padding: 9px 2px;
+    border-bottom: 1px solid var(--line-2)
+  }
+
+  .fi:last-child {
+    border-bottom: 0
+  }
+
+  .fi .t {
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--ink-3);
+    width: 52px;
+    flex: 0 0 auto;
+    padding-top: 1px
+  }
+
+  .fi .body {
+    min-width: 0;
+    flex: 1
+  }
+
+  .fi .body .h {
+    font-size: 12.5px;
+    font-weight: 600
+  }
+
+  .fi .body .d {
+    font-size: 11.5px;
+    color: var(--ink-2);
+    margin-top: 1px
+  }
+
+  .sev {
+    width: 3px;
+    border-radius: 3px;
+    flex: 0 0 auto;
+    background: var(--ink-3)
+  }
+
+  .sev.good {
+    background: var(--good)
+  }
+
+  .sev.warn {
+    background: var(--warn)
+  }
+
+  .sev.bad {
+    background: var(--bad)
+  }
+
+  .sev.info {
+    background: var(--steel)
+  }
+
+  /* chat */
+  .chat {
+    background: var(--panel-2);
+    border-radius: 10px;
+    padding: 11px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px
+  }
+
+  .msg {
+    max-width: 82%;
+    padding: 7px 10px;
+    border-radius: 11px;
+    font-size: 12px;
+    line-height: 1.4;
+    box-shadow: var(--shadow)
+  }
+
+  .msg .who {
+    font-size: 10px;
+    font-weight: 700;
+    margin-bottom: 2px;
+    opacity: .85
+  }
+
+  .msg .tm {
+    font-size: 9px;
+    color: var(--ink-3);
+    margin-top: 3px;
+    text-align: right;
+    font-family: var(--mono)
+  }
+
+  .msg.them {
+    background: var(--panel);
+    align-self: flex-start;
+    border-bottom-left-radius: 3px
+  }
+
+  .msg.me {
+    background: #dcf0d8;
+    color: #12321a;
+    align-self: flex-end;
+    border-bottom-right-radius: 3px
+  }
+
+  :root[data-theme="dark"] .msg.me,
+  @media(prefers-color-scheme:dark) {
+    .msg.me {
+      background: #1f3a26;
+      color: #cfe9d3
+    }
+  }
+
+  .email {
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    overflow: hidden;
+    margin-bottom: 9px
+  }
+
+  .email .eh {
+    background: var(--panel-2);
+    padding: 8px 11px;
+    font-size: 11.5px
+  }
+
+  .email .eh .subj {
+    font-weight: 650;
+    font-size: 12.5px
+  }
+
+  .email .eb {
+    padding: 9px 11px;
+    font-size: 12px;
+    color: var(--ink-2);
+    line-height: 1.45
+  }
+
+  .prose {
+    font-family: var(--serif);
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--ink)
+  }
+
+  .prose p {
+    margin: 0 0 9px
+  }
+
+  .prose p:last-child {
+    margin-bottom: 0
+  }
+
+  .report {
+    font-size: 12.5px;
+    line-height: 1.55
+  }
+
+  .report .rh {
+    font-weight: 700;
+    color: var(--accent-ink);
+    margin: 11px 0 4px;
+    font-size: 11px;
+    letter-spacing: .06em;
+    text-transform: uppercase
+  }
+
+  :root[data-theme="dark"] .report .rh {
+    color: var(--accent)
+  }
+
+  @media(prefers-color-scheme:dark) {
+    .report .rh {
+      color: var(--accent)
+    }
+  }
+
+  .report ul {
+    margin: 0;
+    padding-left: 18px
+  }
+
+  .report li {
+    margin: 2px 0
+  }
+
+  .kv {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 3px 12px;
+    font-size: 12px
+  }
+
+  .kv .k {
+    color: var(--ink-3)
+  }
+
+  .kv .v {
+    font-family: var(--mono);
+    text-align: right
+  }
+
+  .insight {
+    display: flex;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--line-2)
+  }
+
+  .insight:last-child {
+    border-bottom: 0
+  }
+
+  .insight .ico {
+    width: 26px;
+    height: 26px;
+    flex: 0 0 auto;
+    border-radius: 7px;
+    display: grid;
+    place-items: center;
+    font-size: 13px;
+    background: var(--panel-2)
+  }
+
+  .insight .h {
+    font-weight: 650;
+    font-size: 12.5px
+  }
+
+  .insight .d {
+    font-size: 11.5px;
+    color: var(--ink-2);
+    margin-top: 1px
+  }
+
+  .action {
+    border: 1px solid var(--line);
+    border-left-width: 3px;
+    border-radius: 9px;
+    padding: 11px 13px;
+    margin-bottom: 9px
+  }
+
+  .action.crit {
+    border-left-color: var(--bad)
+  }
+
+  .action.high {
+    border-left-color: var(--warn)
+  }
+
+  .action.med {
+    border-left-color: var(--steel)
+  }
+
+  .action.low {
+    border-left-color: var(--ink-3)
+  }
+
+  .action .top {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 5px
+  }
+
+  .action .top h4 {
+    font-size: 12.5px
+  }
+
+  .action .why {
+    font-size: 11.5px;
+    color: var(--ink-2);
+    line-height: 1.45
+  }
+
+  .action .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    margin-top: 7px;
+    font-size: 11px;
+    color: var(--ink-3)
+  }
+
+  .action .meta b {
+    color: var(--ink-2);
+    font-weight: 600
+  }
+
+  pre.state {
+    font-family: var(--mono);
+    font-size: 11px;
+    line-height: 1.5;
+    background: var(--panel-2);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 14px;
+    overflow-x: auto;
+    white-space: pre;
+    color: var(--ink)
+  }
+
+  .state .jk {
+    color: var(--steel)
+  }
+
+  .state .jn {
+    color: var(--accent-ink)
+  }
+
+  .state .js {
+    color: var(--good)
+  }
+
+  :root[data-theme="dark"] .state .jn {
+    color: var(--accent)
+  }
+
+  @media(prefers-color-scheme:dark) {
+    .state .jn {
+      color: var(--accent)
+    }
+  }
+
+  .phasebar {
+    display: flex;
+    gap: 3px;
+    padding: 2px 0
+  }
+
+  .phasebar .p {
+    flex: 1;
+    height: 26px;
+    border-radius: 4px;
+    background: var(--panel-2);
+    position: relative;
+    overflow: hidden;
+    cursor: default
+  }
+
+  .phasebar .p>i {
+    position: absolute;
+    inset: 0;
+    background: var(--steel);
+    opacity: .85
+  }
+
+  .phasebar .p.act>i {
+    background: var(--accent)
+  }
+
+  .phasebar .p .pl {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    font-size: 8.5px;
+    font-weight: 700;
+    color: var(--ink);
+    mix-blend-mode: luminosity;
+    white-space: nowrap;
+    overflow: hidden
+  }
+
+  .legend {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    font-size: 11px;
+    color: var(--ink-3);
+    margin-top: 8px
+  }
+
+  .legend i {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 3px;
+    margin-right: 5px;
+    vertical-align: -1px
+  }
+
+  .minigrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 8px
+  }
+
+  .photo {
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+    font-size: 10.5px;
+    background: var(--panel)
+  }
+
+  .photo .ph {
+    height: 64px;
+    position: relative;
+    background: linear-gradient(135deg, var(--panel-2), var(--steel-soft));
+    display: grid;
+    place-items: center
+  }
+
+  .photo .ph .cam {
+    font-size: 9px;
+    font-family: var(--mono);
+    color: var(--ink-3);
+    position: absolute;
+    top: 4px;
+    left: 5px
+  }
+
+  .photo .ph .ppe {
+    position: absolute;
+    bottom: 4px;
+    right: 5px
+  }
+
+  .photo .ph .frame {
+    font-size: 22px;
+    opacity: .5
+  }
+
+  .photo .pb {
+    padding: 6px 7px
+  }
+
+  .photo .pb .loc {
+    font-weight: 700;
+    font-size: 10.5px
+  }
+
+  .photo .pb .act {
+    color: var(--ink-2);
+    margin: 1px 0
+  }
+
+  .photo .pb .det {
+    color: var(--ink-3);
+    font-size: 9.5px;
+    font-family: var(--mono)
+  }
+
+  .banner {
+    display: flex;
+    align-items: flex-start;
+    gap: 11px;
+    padding: 11px 14px;
+    border-radius: 10px;
+    margin-bottom: 14px;
+    background: var(--warn-bg);
+    border: 1px solid color-mix(in srgb, var(--warn) 30%, transparent)
+  }
+
+  .banner.bad {
+    background: var(--bad-bg);
+    border-color: color-mix(in srgb, var(--bad) 30%, transparent)
+  }
+
+  .banner.good {
+    background: var(--good-bg);
+    border-color: color-mix(in srgb, var(--good) 30%, transparent)
+  }
+
+  .banner .bi {
+    font-size: 18px;
+    line-height: 1
+  }
+
+  .banner .bt {
+    font-size: 12.5px
+  }
+
+  .banner .bt b {
+    font-weight: 700
+  }
+
+  .foot {
+    color: var(--ink-3);
+    font-size: 11px;
+    text-align: center;
+    padding: 20px 0 6px;
+    border-top: 1px solid var(--line);
+    margin-top: 8px
+  }
+
+  @media(max-width:720px) {
+    .app {
+      grid-template-columns: 1fr
+    }
+
+    .rail {
+      display: none
+    }
+
+    .kpis {
+      grid-template-columns: repeat(3, 1fr)
+    }
+
+    .kpi:nth-child(n+4) {
+      border-top: 1px solid var(--line)
+    }
+  }
+
+  @media (prefers-reduced-motion:reduce) {
+    * {
+      scroll-behavior: auto !important
+    }
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 4px
+  }
+
+  /* ---------- simulation speed ---------- */
+  .speed-grp {
+    display: inline-flex;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--panel);
+    overflow: hidden;
+    margin-left: 6px;
+    vertical-align: middle;
+  }
+
+  .speed-btn {
+    border: none;
+    background: transparent;
+    padding: 6px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-2);
+    cursor: pointer;
+    font-family: var(--sans);
+    transition: background 0.15s, color 0.15s;
+  }
+
+  .speed-btn:hover {
+    background: var(--panel-2);
+    color: var(--ink);
+  }
+
+  .speed-btn.on {
+    background: var(--steel-soft);
+    color: var(--ink);
+  }
+
+  @media(prefers-color-scheme:dark) {
+    .speed-btn.on {
+      background: var(--line);
+      color: #fff;
+    }
+  }
+
+  /* ---------- password lock ---------- */
+  .app.hidden {
+    display: none !important;
+  }
+
+  .lock-screen-overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: radial-gradient(circle at 50% 50%, #1a1e23 0%, #0d0f12 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--sans);
+    color: #e7e4de;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+  }
+
+  .lock-screen-overlay.unlocked {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .lock-card {
+    background: rgba(28, 32, 37, 0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 40px 32px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 1px rgba(255, 255, 255, 0.1) inset;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .lock-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  }
+
+  .lock-icon-container {
+    width: 64px;
+    height: 64px;
+    background: rgba(217, 130, 7, 0.1);
+    border: 1px solid rgba(217, 130, 7, 0.2);
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    position: relative;
+    animation: lock-pulse 2s infinite ease-in-out;
+  }
+
+  @keyframes lock-pulse {
+
+    0%,
+    100% {
+      transform: scale(1);
+      box-shadow: 0 0 0 0 rgba(217, 130, 7, 0.2);
+    }
+
+    50% {
+      transform: scale(1.05);
+      box-shadow: 0 0 15px 5px rgba(217, 130, 7, 0.3);
+    }
+  }
+
+  .lock-icon {
+    width: 24px;
+    height: 24px;
+    fill: var(--accent);
+  }
+
+  .lock-title {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: #fff;
+    letter-spacing: -0.02em;
+  }
+
+  .lock-recipient {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 30px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    opacity: 0.95;
+  }
+
+  .lock-input-group {
+    position: relative;
+    margin-bottom: 20px;
+  }
+
+  .lock-input {
+    width: 100%;
+    background: rgba(13, 15, 18, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 14px;
+    color: #fff;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    text-align: center;
+    font-family: var(--sans);
+    letter-spacing: 0.1em;
+  }
+
+  .lock-input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(217, 130, 7, 0.15);
+  }
+
+  .lock-btn {
+    width: 100%;
+    background: var(--accent);
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #2a1a02;
+    cursor: pointer;
+    transition: transform 0.1s, filter 0.2s;
+  }
+
+  .lock-btn:hover {
+    filter: brightness(1.1);
+  }
+
+  .lock-btn:active {
+    transform: translateY(1px);
+  }
+
+  .lock-error {
+    font-size: 12px;
+    color: #e0705c;
+    margin-top: 8px;
+    min-height: 18px;
+    opacity: 0;
+    transition: opacity 0.2s;
+    text-align: center;
+    letter-spacing: 0;
+  }
+
+  .lock-error.visible {
+    opacity: 1;
+  }
+
+  .lock-hint {
+    font-size: 11px;
+    color: #787e88;
+    margin-top: 24px;
+  }
+
+  .lock-hint code {
+    font-family: var(--mono);
+    background: rgba(255, 255, 255, 0.05);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--accent);
+  }
+
+  .lock-shake {
+    animation: lock-shake-anim 0.4s ease-in-out;
+  }
+
+  @keyframes lock-shake-anim {
+
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+
+    20%,
+    60% {
+      transform: translateX(-8px);
+    }
+
+    40%,
+    80% {
+      transform: translateX(8px);
+    }
+  }
+</style>
+
+<div class="lock-screen-overlay" id="lockScreen">
+  <div class="lock-card" id="lockCard">
+    <div class="lock-icon-container">
+      <svg class="lock-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z" />
+      </svg>
+    </div>
+    <h2 class="lock-title">Marina One Towers</h2>
+    <div class="lock-recipient">Built for Mr. Chirag Khatri</div>
+    <div class="lock-input-group">
+      <input type="password" id="passwordInput" class="lock-input" placeholder="Enter password" autocomplete="off" />
+      <div class="lock-error" id="lockError">Incorrect password. Please try again.</div>
+    </div>
+    <button id="unlockBtn" class="lock-btn">Unlock Simulation</button>
+    <div class="lock-hint">Authorized access only.</div>
+  </div>
+</div>
+
+<div class="app hidden">
+  <aside class="rail">
+    <div class="brand">
+      <div class="logo">
+        <div class="mark"></div>
+        <div>
+          <h1>Marina One</h1>
+          <div class="sub">Digital Twin · Dubai Marina</div>
+          <div class="built-for">For Mr. Chirag Khatri</div>
+        </div>
+      </div>
+    </div>
+    <nav id="nav"></nav>
+  </aside>
+
+  <div class="main">
+    <div class="cmd">
+      <div class="cmd-row">
+        <div class="daybox">
+          <button class="iconbtn" id="prev" title="Previous working day">‹</button>
+          <div class="daylabel">
+            <div class="d" id="dLabel">Day —</div>
+            <div class="m" id="dMeta">—</div>
+          </div>
+          <button class="iconbtn" id="next" title="Next working day">›</button>
+        </div>
+        <input type="range" id="slider" min="1" max="782" value="1">
+        <button class="btn" id="today">Jump to today</button>
+        <button class="btn accent" id="play">▶ Play</button>
+        <span class="speed-grp">
+          <button class="speed-btn on" data-speed="1">1x</button>
+          <button class="speed-btn" data-speed="2">2x</button>
+          <button class="speed-btn" data-speed="4">4x</button>
+        </span>
+        <div class="spacer"></div>
+        <button class="btn" id="theme" title="Toggle theme">◐</button>
+      </div>
+      <div class="kpis" id="kpis"></div>
+    </div>
+    <div class="content" id="content"></div>
+  </div>
+</div>
+
+<script>
+  "use strict";
+  /* ============================================================================
+     MARINA ONE BUSINESS TOWERS — CONSTRUCTION DIGITAL TWIN ENGINE
+     Deterministic day-by-day fold. Day D is computed from days 1..D.
+     Nothing is random: all variation derives from hashes of the day index,
+     so the same day always yields the same state, and every day influences
+     the next through accumulated progress, inventory, delay and events.
+     ============================================================================ */
+
+  /* ---------- deterministic primitives ---------- */
+  function h32(str) { let h = 2166136261 >>> 0; for (let i = 0; i < str.length; i++) { h ^= str.charCodeAt(i); h = Math.imul(h, 16777619) } return h >>> 0 }
+  function rnd(d, stream) { // 0..1 from day + named stream
+    return (h32(d + "|" + stream) % 100000) / 100000;
+  }
+  function rint(d, stream, lo, hi) { return lo + Math.floor(rnd(d, stream) * (hi - lo + 1)) }
+  function pick(d, stream, arr) { return arr[Math.floor(rnd(d, stream) * arr.length)] }
+  function smooth(t) { t = Math.max(0, Math.min(1, t)); return t * t * (3 - 2 * t) }
+  function clamp(v, a, b) { return Math.max(a, Math.min(b, v)) }
+  function r1(v) { return Math.round(v * 10) / 10 }
+
+  /* ---------- calendar (Mon–Sat working) ---------- */
+  const START = new Date(2024, 6, 15); // 15 Jul 2024, Monday
+  const WD = [];  // working dates, index 0 = day 1
+  (function () { let dt = new Date(START); while (WD.length < 782) { if (dt.getDay() !== 0) WD.push(new Date(dt)); dt.setDate(dt.getDate() + 1) } })();
+  const TOTAL = WD.length; // 782
+  const MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const DOW = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  function dstr(dt) { return DOW[dt.getDay()] + " " + dt.getDate() + " " + MON[dt.getMonth()] + " " + dt.getFullYear() }
+  function dshort(dt) { return dt.getDate() + " " + MON[dt.getMonth()] }
+
+  /* ---------- master schedule (working-day windows, weight % of project) ---------- */
+  const PHASES = [
+    { n: "Mobilization", s: 1, e: 20, w: 1 },
+    { n: "Excavation", s: 15, e: 70, w: 4 },
+    { n: "Shoring", s: 20, e: 78, w: 3 },
+    { n: "Foundation", s: 60, e: 140, w: 6 },
+    { n: "Basement", s: 120, e: 245, w: 9 },
+    { n: "Core Walls", s: 180, e: 435, w: 10 },
+    { n: "Columns", s: 205, e: 470, w: 7 },
+    { n: "Beams", s: 215, e: 485, w: 6 },
+    { n: "Slabs", s: 225, e: 505, w: 8 },
+    { n: "Curtain Wall", s: 360, e: 625, w: 9 },
+    { n: "MEP", s: 345, e: 685, w: 11 },
+    { n: "Fire Fighting", s: 425, e: 695, w: 4 },
+    { n: "Elevators", s: 455, e: 705, w: 4 },
+    { n: "Interiors", s: 485, e: 725, w: 6 },
+    { n: "Ceilings", s: 520, e: 735, w: 3 },
+    { n: "Flooring", s: 545, e: 745, w: 3 },
+    { n: "Testing", s: 665, e: 762, w: 2 },
+    { n: "Commissioning", s: 705, e: 776, w: 2 },
+    { n: "Handover", s: 762, e: 782, w: 2 },
+  ];
+  function phaseFrac(p, d) { if (d <= p.s) return 0; if (d >= p.e) return 1; return smooth((d - p.s) / (p.e - p.s)) }
+  function plannedPct(d) { let s = 0; for (const p of PHASES) s += p.w * phaseFrac(p, d); return s }
+  function plannedRate(d) { return plannedPct(d) - plannedPct(d - 1) }
+  function activePhases(d) {
+    return PHASES.filter(p => d >= p.s - 3 && d <= p.e + 2 && phaseFrac(p, d) < 0.999).map(p => {
+      const rate = phaseFrac(p, d) - phaseFrac(p, d - 1); return { p, frac: phaseFrac(p, d), rate };
+    }).sort((a, b) => b.rate - a.rate)
+  }
+
+  /* ---------- weather (Dubai seasonal, deterministic) ---------- */
+  const MTEMP = [24, 26, 29, 34, 39, 41, 42, 42, 40, 36, 31, 27]; // monthly daytime high °C
+  const MHUM = [62, 60, 58, 52, 48, 55, 58, 62, 64, 60, 58, 60];
+  function weather(d) {
+    const dt = WD[d - 1], m = dt.getMonth();
+    const wob = (rnd(d, "tw") - 0.5) * 5;
+    let temp = MTEMP[m] + wob;
+    let hum = clamp(MHUM[m] + (rnd(d, "hum") - 0.5) * 18, 25, 88);
+    let wind = r1(6 + rnd(d, "wind") * 26);
+    let dust = clamp(Math.round(10 + rnd(d, "dust") * 45 + (m >= 4 && m <= 8 ? 18 : 0)), 5, 100);
+    let rainP = (m === 11 || m <= 2) ? Math.round(rnd(d, "rain") * 55) : (m === 3 || m === 10 ? Math.round(rnd(d, "rain") * 15) : 0);
+    const ev = eventsForDay(d);
+    const sand = ev.find(e => e.k === "sand"), rainE = ev.find(e => e.k === "rain");
+    if (sand) { dust = clamp(dust + 45, 60, 100); wind = r1(wind + 22) }
+    if (rainE) { rainP = Math.max(rainP, 80) }
+    temp = r1(temp);
+    // heat index (approx, high humidity coastal)
+    const hi = r1(temp + 0.35 * (hum - 40) * 0.15 * Math.max(0, temp - 27) / 10 + (temp > 34 ? temp - 34 : 0));
+    const heatIndex = r1(temp + (hum > 55 && temp > 33 ? (hum - 55) * 0.12 : 0) + (temp > 38 ? 3 : 0));
+    // impact 0..100 (higher = worse)
+    let impact = 0;
+    if (temp > 42) impact += 28; else if (temp > 39) impact += 18; else if (temp > 36) impact += 10;
+    if (hum > 68) impact += 10;
+    if (dust > 60) impact += 22; else if (dust > 40) impact += 9;
+    if (wind > 28) impact += 14;
+    if (rainP > 60) impact += 26; else if (rainP > 35) impact += 10;
+    impact = clamp(impact, 0, 100);
+    const prod = clamp(1 - impact / 165, 0.55, 1);
+    // UAE midday break rule 15 Jun–15 Sep
+    const midday = (m === 6 || m === 7) || (m === 5 && dt.getDate() >= 15) || (m === 8 && dt.getDate() <= 15);
+    let cond = "Clear";
+    if (rainE) cond = "Heavy rain"; else if (rainP > 45) cond = "Overcast, chance of rain";
+    else if (sand) cond = "Sandstorm (Shamal)"; else if (dust > 55) cond = "Hazy / dusty";
+    else if (temp >= 41) cond = "Extreme heat, sunny"; else if (temp >= 37) cond = "Hot, sunny"; else cond = "Fair, sunny";
+    return { temp, hum: Math.round(hum), wind, dust, rainP, heatIndex, impact: Math.round(impact), prod, cond, midday };
+  }
+
+  /* ---------- events (deterministic, some multi-day) ---------- */
+  function eventsForDay(d) {
+    const out = [], dt = WD[d - 1], m = dt.getMonth();
+    const T = (stream, mod, val) => h32(d + "|" + stream) % mod === val;
+    // weather events
+    if (m >= 4 && m <= 8 && T("sand", 17, 0)) out.push({ k: "sand", sev: "warn", cat: "Weather", title: "Sandstorm (Shamal) — reduced visibility, crane ops suspended AM", pf: 0.7 });
+    if ((m === 11 || m <= 2) && T("rain", 19, 0)) out.push({ k: "rain", sev: "warn", cat: "Weather", title: "Heavy rain — concrete & facade works halted, dewatering active", pf: 0.6 });
+    if ((m >= 5 && m <= 8) && T("heat", 23, 0)) out.push({ k: "heat", sev: "warn", cat: "Weather", title: "Extreme heat advisory — heat-stress protocol, extended midday break", pf: 0.82 });
+    // equipment
+    if (T("tc2", 41, 0) || T("tc2", 41, 1)) out.push({ k: "tc2", sev: "warn", cat: "Equipment", title: "Tower Crane TC-2 scheduled maintenance — 3rd-party inspection", pf: 0.9 });
+    if (T("pump", 57, 0)) out.push({ k: "pump", sev: "bad", cat: "Equipment", title: "Concrete pump BP-01 hydraulic failure — pour rescheduled", pf: 0.8 });
+    if (T("brk", 63, 0)) out.push({ k: "brk", sev: "warn", cat: "Equipment", title: "Passenger hoist PH-3 breakdown — stranded manpower on upper floors", pf: 0.92 });
+    // supply chain
+    if (T("steel", 22, 0)) out.push({ k: "steel", sev: "bad", cat: "Procurement", title: "Emirates Steel rebar delivery delayed — dispatch slipped 2 days", pf: 0.9 });
+    if (T("port", 84, 0)) out.push({ k: "port", sev: "bad", cat: "Procurement", title: "Jebel Ali port congestion — curtain wall container held at customs", pf: 0.95 });
+    if (T("cust", 96, 0)) out.push({ k: "cust", sev: "warn", cat: "Procurement", title: "Customs documentation query on imported MEP switchgear", pf: 0.97 });
+    // quality / consultant
+    if (T("njr", 18, 0) && d > 170) out.push({ k: "reject", sev: "bad", cat: "Quality", title: "Consultant (WSP) rejected shop drawing revision — rework of detail", pf: 0.94 });
+    if (T("apr", 14, 0)) out.push({ k: "appr", sev: "warn", cat: "Approvals", title: "Consultant approval overdue — dependent activity on hold", pf: 0.95 });
+    // authority
+    if (T("mun", 70, 0) && d > 120) out.push({ k: "mun", sev: "info", cat: "Authority", title: "Dubai Municipality site inspection — routine compliance audit", pf: 0.97 });
+    if (T("dcd", 88, 0) && d > 420) out.push({ k: "dcd", sev: "info", cat: "Authority", title: "Dubai Civil Defence inspection — fire-fighting first-fix witnessed", pf: 0.98 });
+    // client
+    if (T("chg", 110, 0) && d > 200) out.push({ k: "chg", sev: "warn", cat: "Client", title: "Client change request — Level-1 retail layout revision (VO pending)", pf: 0.97 });
+    if (T("util", 130, 0) && d < 160) out.push({ k: "util", sev: "warn", cat: "Site", title: "Unchartered DEWA utility line discovered during excavation", pf: 0.85 });
+    if (T("theft", 150, 0)) out.push({ k: "theft", sev: "warn", cat: "Site", title: "Copper cable pilferage reported overnight — security review", pf: 0.99 });
+    if (T("pay", 120, 0) && d > 90) out.push({ k: "pay", sev: "warn", cat: "Commercial", title: "Client IPC payment certification delayed — cash-flow watch", pf: 1 });
+    if (T("inj", 95, 0) && d > 40) out.push({ k: "inj", sev: "bad", cat: "Safety", title: "Minor lost-time injury — hand laceration, first aid + investigation", pf: 0.96 });
+    return out;
+  }
+
+  /* ---------- productivity + fold ---------- */
+  function workforce(d) { // headcount curve
+    const f = d / TOTAL;
+    let base = 170 + 1380 * Math.sin(Math.PI * Math.min(1, f / 0.93));
+    base *= (0.94 + 0.06 * Math.sin(d * 0.7)); // gentle wobble
+    return Math.max(90, Math.round(base));
+  }
+  function attendance(d) {
+    const w = weather(d);
+    let a = 0.975 - (w.temp > 41 ? 0.02 : 0) - (rnd(d, "absent") > 0.85 ? 0.03 : 0);
+    return clamp(a, 0.9, 0.99);
+  }
+  function dayProductivity(d) {
+    const w = weather(d); let pf = w.prod;
+    for (const e of eventsForDay(d)) pf *= e.pf;
+    const att = attendance(d);
+    pf *= 0.9 + 0.1 * (att / 0.975);
+    // RECOVERY FEEDBACK: falling behind triggers acceleration (overtime, extra
+    // crews, weekend pours) on subsequent days. This is the self-correcting loop
+    // that makes "increased manpower speeds future progress" literally true and
+    // keeps SPI in a realistic band instead of drifting unboundedly behind.
+    const gap = plannedPct(d - 1) - actualPct(d - 1); // >0 = behind baseline
+    if (gap > 0) pf += Math.min(0.34, gap * 0.075);
+    return clamp(pf, 0.45, 1.18);
+  }
+  // running actual %
+  const _actualCache = {};
+  function actualPct(d) {
+    if (d <= 0) return 0;
+    if (_actualCache[d] != null) return _actualCache[d];
+    let a = actualPct(d - 1) + plannedRate(d) * dayProductivity(d);
+    a = Math.min(a, 100); _actualCache[d] = a; return a;
+  }
+  function delayDays(d) { // planned-day that matches current actual
+    const a = actualPct(d); let lo = 1, hi = d;
+    while (lo < hi) { const mid = (lo + hi + 1 >> 1); if (plannedPct(mid) <= a) lo = mid; else hi = mid - 1 }
+    return Math.max(0, d - lo);
+  }
+  function spi(d) { const p = plannedPct(d); return p <= 0 ? 1 : clamp(actualPct(d) / p, 0.5, 1.05) }
+
+  /* ---------- cumulative fold for inventory / open items / incidents ---------- */
+  function foldTo(d) {
+    let ncrOpen = 0, ncrTotal = 0, rfiOpen = 0, rfiTotal = 0, apprPending = 0, incidents = 0, nearMiss = 0, ncrClosedRun = 0;
+    let rebar = 140, cwPanels = 0, tiles = 0, block = 0; // inventory
+    let rebarDel = 0, rebarCon = 0;
+    for (let i = 1; i <= d; i++) {
+      const ev = eventsForDay(i), act = activePhases(i);
+      // RFIs
+      if (rnd(i, "rfi") > 0.62) { rfiTotal++; rfiOpen++ }
+      if (rfiOpen > 0 && rnd(i, "rfic") > 0.5) rfiOpen = Math.max(0, rfiOpen - 1);
+      // approvals
+      if (ev.some(e => e.k === "appr")) apprPending++;
+      if (apprPending > 0 && rnd(i, "aprc") > 0.45) apprPending = Math.max(0, apprPending - 1);
+      // NCR
+      if (ev.some(e => e.k === "reject") || rnd(i, "ncr") > 0.9) { ncrTotal++; ncrOpen++ }
+      if (ncrOpen > 0 && rnd(i, "ncrc") > 0.55) ncrOpen = Math.max(0, ncrOpen - 1);
+      // safety
+      if (ev.some(e => e.k === "inj")) incidents++;
+      if (rnd(i, "near") > 0.8) nearMiss++;
+      // inventory: rebar
+      const structRate = act.filter(a => ["Core Walls", "Columns", "Beams", "Slabs", "Foundation", "Basement"].includes(a.p.n)).reduce((s, a) => s + a.rate, 0);
+      const con = structRate * 22; rebarCon += con; rebar -= con;
+      if (i % 4 === 0 && !ev.some(e => e.k === "steel")) { rebar += 90; rebarDel += 90 }
+      rebar = Math.max(0, rebar);
+      // curtain wall
+      const cwRate = act.filter(a => a.p.n === "Curtain Wall").reduce((s, a) => s + a.rate, 0);
+      if (i % 6 === 0 && cwRate > 0 && !ev.some(e => e.k === "port")) cwPanels += 40;
+      cwPanels = Math.max(0, cwPanels - cwRate * 30);
+      // tiles
+      const finRate = act.filter(a => ["Flooring", "Interiors"].includes(a.p.n)).reduce((s, a) => s + a.rate, 0);
+      if (i % 7 === 0 && finRate > 0) tiles += 600;
+      tiles = Math.max(0, tiles - finRate * 220);
+    }
+    return {
+      ncrOpen, ncrTotal, rfiOpen, rfiTotal, apprPending, incidents, nearMiss,
+      inv: { rebar: Math.round(rebar), cwPanels: Math.round(cwPanels), tiles: Math.round(tiles) },
+      rebarDel: Math.round(rebarDel), rebarCon: Math.round(rebarCon)
+    };
+  }
+
+  /* ---------- health scores ---------- */
+  function health(d) {
+    const _spi = spi(d), dd = delayDays(d), f = foldTo(d), w = weather(d);
+    const sched = Math.round(clamp(100 + (_spi - 1) * 300, 30, 99));
+    const cost = Math.round(clamp(92 - dd * 0.35 - f.ncrOpen * 0.6, 55, 98));
+    const quality = Math.round(clamp(94 - f.ncrOpen * 2.4, 62, 99));
+    const safety = Math.round(clamp(97 - f.incidents * 0.9 - (w.temp > 42 ? 4 : 0) - (rnd(d, "ppe") > 0.7 ? 2 : 0), 70, 99));
+    const prod = Math.round(dayProductivity(d) * 100);
+    const risk = Math.round(clamp(dd * 1.6 + f.ncrOpen * 3 + f.apprPending * 2 + (w.impact > 40 ? 12 : 0), 8, 92));
+    return { sched, cost, quality, safety, prod, risk, spi: _spi, dd };
+  }
+
+  /* ---------- manpower ---------- */
+  const TRADES = [
+    ["Project Engineers", "eng"], ["Site Supervisors", "sup"], ["Surveyors", "srv"], ["Steel Fixers", "stl"],
+    ["Carpenters / Shuttering", "car"], ["Concrete Crew", "con"], ["Electricians", "ele"], ["Plumbers", "plm"],
+    ["HVAC Technicians", "hvc"], ["Facade Team", "fac"], ["Painters / Finishers", "pnt"],
+    ["Equipment Operators", "opr"], ["Helpers / General", "hlp"], ["Security", "sec"]];
+  function manpower(d) {
+    const tot = workforce(d), act = activePhases(d), att = attendance(d);
+    const rateOf = n => act.filter(a => a.p.n === n).reduce((s, a) => s + a.rate, 0);
+    const struct = rateOf("Core Walls") + rateOf("Columns") + rateOf("Beams") + rateOf("Slabs") + rateOf("Foundation") + rateOf("Basement") + rateOf("Excavation") + rateOf("Shoring");
+    const mep = rateOf("MEP") + rateOf("Fire Fighting") + rateOf("Elevators");
+    const fin = rateOf("Interiors") + rateOf("Ceilings") + rateOf("Flooring") + rateOf("Testing");
+    const fac = rateOf("Curtain Wall");
+    const shares = {
+      eng: .03, sup: .045, srv: .012, opr: .03, sec: .02,
+      stl: .16 * struct + .01, car: .13 * struct + .01, con: .09 * struct + .008,
+      ele: .14 * mep + .01, plm: .10 * mep + .006, hvc: .11 * mep + .006,
+      fac: .30 * fac + .004, pnt: .22 * fin + .006,
+    };
+    let acc = 0; const raw = {}; for (const [, k] of TRADES) if (k !== "hlp") { raw[k] = shares[k] || 0.005; acc += raw[k] }
+    raw.hlp = Math.max(0.14, 1 - acc); // helpers fill remainder
+    const sumAll = Object.values(raw).reduce((a, b) => a + b, 0);
+    const rows = TRADES.map(([name, k]) => {
+      const planned = Math.max(k === "eng" ? 12 : k === "sec" ? 18 : 2, Math.round(tot * raw[k] / sumAll));
+      const present = Math.round(planned * att * (0.96 + 0.06 * rnd(d, "tr" + k)));
+      return { name, planned, present, absent: Math.max(0, planned - present) };
+    });
+    const plannedTot = rows.reduce((a, r) => a + r.planned, 0);
+    const presentTot = rows.reduce((a, r) => a + r.present, 0);
+    const ot = Math.round(presentTot * (delayDays(d) > 10 ? 0.22 : 0.09));
+    return { rows, plannedTot, presentTot, absentTot: plannedTot - presentTot, att: Math.round(att * 1000) / 10, ot };
+  }
+
+  /* ---------- equipment ---------- */
+  function equipment(d) {
+    const ev = eventsForDay(d), act = activePhases(d);
+    const structural = act.some(a => ["Core Walls", "Columns", "Beams", "Slabs"].includes(a.p.n));
+    const late = d > 560;
+    const defs = [
+      ["Tower Crane TC-1", "crane", structural || d < 560], ["Tower Crane TC-2", "crane", structural || d < 540],
+      ["Tower Crane TC-3", "crane", structural && d < 560], ["Tower Crane TC-4", "crane", structural && d < 540 && d > 230],
+      ["Mobile Crane MC-1", "mcrane", true], ["Concrete Pump BP-01", "pump", act.some(a => ["Slabs", "Core Walls", "Columns", "Basement", "Foundation"].includes(a.p.n))],
+      ["Excavator EX-1", "exc", d < 150], ["Excavator EX-2", "exc", d < 130],
+      ["Transit Mixers (fleet)", "mixer", act.some(a => ["Slabs", "Core Walls", "Columns", "Basement", "Foundation"].includes(a.p.n))],
+      ["Passenger Hoist PH-1", "hoist", d > 180], ["Passenger Hoist PH-2", "hoist", d > 200], ["Passenger Hoist PH-3", "hoist", d > 240],
+      ["Forklifts (fleet)", "fork", true], ["Boom Lifts", "boom", late || act.some(a => a.p.n === "Curtain Wall")],
+      ["Generators", "gen", true],
+    ];
+    const rows = []; let fuel = 0;
+    defs.forEach(([name, k, active], i) => {
+      let status = "Operational", cls = "good", work = 0, idle = 0, brk = 0;
+      if (!active) { status = "Demobilised"; cls = "mut"; }
+      else {
+        if (k === "crane" && name.includes("TC-2") && ev.some(e => e.k === "tc2")) { status = "Under maintenance"; cls = "warn"; }
+        else if (k === "pump" && ev.some(e => e.k === "pump")) { status = "Breakdown"; cls = "bad"; brk = 1; }
+        else if (k === "hoist" && name.includes("PH-3") && ev.some(e => e.k === "brk")) { status = "Breakdown"; cls = "bad"; brk = 1; }
+        else if (rnd(d, "eq" + i) > 0.9) { status = "Idle / standby"; cls = "warn"; }
+        if (cls === "good" || cls === "warn") {
+          work = cls === "warn" ? rint(d, "wk" + i, 2, 6) : rint(d, "wk" + i, 7, 11);
+          idle = 11 - work - rint(d, "id" + i, 0, 1); if (idle < 0) idle = 0;
+          const fperh = k === "crane" ? 9 : k === "pump" ? 26 : k === "exc" ? 18 : k === "gen" ? 32 : k === "mixer" ? 14 : k === "mcrane" ? 15 : 6;
+          fuel += work * fperh * (k === "mixer" || k === "fork" ? 4 : 1);
+        }
+      }
+      const util = active && status !== "Breakdown" && status !== "Under maintenance" ? Math.round(work / 11 * 100) : 0;
+      rows.push({ name, status, cls, work, idle, brk, util, fuel: Math.round(work * (k === "crane" ? 9 : k === "pump" ? 26 : k === "gen" ? 32 : 8)) });
+    });
+    return {
+      rows, fuel: Math.round(fuel), active: rows.filter(r => r.status !== "Demobilised").length,
+      down: rows.filter(r => r.cls === "bad").length
+    };
+  }
+
+  /* ---------- materials ---------- */
+  function materials(d) {
+    const f = foldTo(d), ev = eventsForDay(d), act = activePhases(d);
+    const rows = [
+      {
+        m: "Reinforcement steel", u: "t", inv: f.inv.rebar, con: rint(d, "mc1", 8, 55), del: d % 4 === 0 && !ev.some(e => e.k === "steel") ? 90 : 0,
+        vendor: "Emirates Steel", vp: ev.some(e => e.k === "steel") ? 62 : 88
+      },
+      {
+        m: "Ready-mix concrete", u: "m³", inv: 0, con: act.some(a => ["Slabs", "Core Walls", "Columns"].includes(a.p.n)) ? rint(d, "mc2", 180, 620) : rint(d, "mc2", 0, 120),
+        del: "JIT", vendor: "Unibeton RMC", vp: ev.some(e => e.k === "pump") ? 74 : 94
+      },
+      {
+        m: "Curtain-wall units", u: "pcs", inv: f.inv.cwPanels, con: act.some(a => a.p.n === "Curtain Wall") ? rint(d, "mc3", 18, 44) : 0,
+        del: d % 6 === 0 && act.some(a => a.p.n === "Curtain Wall") && !ev.some(e => e.k === "port") ? 40 : 0, vendor: "Alubond FZE", vp: ev.some(e => e.k === "port") ? 58 : 85
+      },
+      { m: "Blockwork", u: "m²", inv: rint(d, "mc4", 800, 2600), con: d > 300 ? rint(d, "mc4b", 120, 480) : 0, del: d % 5 === 0 ? 900 : 0, vendor: "RAK Precast", vp: 90 },
+      {
+        m: "MEP conduits & cable", u: "lot", inv: rint(d, "mc5", 40, 95), con: act.some(a => a.p.n === "MEP") ? rint(d, "mc5b", 6, 22) : 0,
+        del: d % 8 === 0 ? "partial" : 0, vendor: "Ducab / local", vp: ev.some(e => e.k === "cust") ? 70 : 87
+      },
+      { m: "Floor & wall tiles", u: "m²", inv: f.inv.tiles, con: d > 540 ? rint(d, "mc6", 120, 420) : 0, del: d % 7 === 0 && d > 540 ? 600 : 0, vendor: "RAK Ceramics", vp: 92 },
+      { m: "Gypsum & ceiling", u: "m²", inv: rint(d, "mc7", 300, 1800), con: d > 520 ? rint(d, "mc7b", 90, 360) : 0, del: d % 6 === 0 && d > 520 ? 700 : 0, vendor: "Gyproc ME", vp: 89 },
+    ];
+    const alerts = [];
+    if (f.inv.rebar < 180) alerts.push({ m: "Reinforcement steel", lvl: "bad", t: "Below 2-day cover — reorder expedited from Emirates Steel" });
+    if (ev.some(e => e.k === "port")) alerts.push({ m: "Curtain-wall units", lvl: "bad", t: "Shipment held at Jebel Ali customs — install sequence at risk" });
+    if (f.inv.cwPanels < 30 && act.some(a => a.p.n === "Curtain Wall")) alerts.push({ m: "Curtain-wall units", lvl: "warn", t: "Panel buffer low for east elevation" });
+    const expDel = [];
+    if (!ev.some(e => e.k === "steel")) expDel.push("Emirates Steel — 90 t rebar, " + dshort(WD[Math.min(TOTAL - 1, d + (4 - d % 4))]) + "");
+    if (act.some(a => a.p.n === "Curtain Wall")) expDel.push("Alubond — 2× 40u curtain-wall lots, this week");
+    expDel.push("Ducab — MEP cable drums, " + dshort(WD[Math.min(TOTAL - 1, d + 2)]));
+    const delayed = [];
+    if (ev.some(e => e.k === "steel")) delayed.push("Emirates Steel rebar — slipped 2 days (dispatch)");
+    if (ev.some(e => e.k === "port")) delayed.push("Alubond curtain wall — port congestion, ETA +3 days");
+    if (ev.some(e => e.k === "cust")) delayed.push("Imported MEP switchgear — customs query");
+    return { rows, alerts, expDel, delayed };
+  }
+
+  /* ---------- activities ---------- */
+  function activities(d) {
+    const act = activePhases(d).slice(0, 8), prodDay = dayProductivity(d);
+    const zonesFor = n => {
+      if (["Core Walls", "Columns", "Beams", "Slabs"].includes(n)) return [["Tower A", "Core / L" + rint(d, "za", 20, 44), "North wing"], ["Tower A", "L" + rint(d, "zb", 14, 40), "South wing"], ["Tower B", "L" + rint(d, "zc", 8, 36), "Core"]];
+      if (n === "Curtain Wall") return [["Tower A", "L" + rint(d, "zd", 10, 40), "East elevation"], ["Tower B", "L" + rint(d, "ze", 6, 34), "West elevation"]];
+      if (n === "MEP") return [["Tower A", "L" + rint(d, "zf", 5, 42), "Riser / plant"], ["Tower B", "L" + rint(d, "zg", 4, 34), "Ceiling void"], ["Podium", "L2", "Retail spine"]];
+      if (["Interiors", "Ceilings", "Flooring"].includes(n)) return [["Tower A", "L" + rint(d, "zh", 5, 30), "Office fit-out"], ["Podium", "L1", "Retail units"]];
+      if (["Basement", "Foundation", "Excavation", "Shoring"].includes(n)) return [["Basement", "B" + rint(d, "zi", 1, 4), "Raft / walls"], ["Podium", "GF", "Transfer slab"]];
+      return [["Tower A", "L" + rint(d, "zj", 1, 20), "Zone " + pick(d, "zz", "ABCD")]];
+    };
+    const rows = [];
+    act.forEach((a, ai) => {
+      zonesFor(a.p.n).forEach((z, zi) => {
+        const planned = rint(d, "pl" + ai + zi, 3, 9);
+        const done = Math.max(0, Math.round(planned * prodDay * (0.9 + 0.2 * rnd(d, "dn" + ai + zi))));
+        const prodv = Math.round(clamp(done / Math.max(1, planned), 0.3, 1.1) * 100);
+        rows.push({
+          bld: z[0], flr: z[1], zone: z[2], act: a.p.n, planned, done: Math.min(done, planned),
+          rem: Math.max(0, planned - done), overall: Math.round(a.frac * 100), prod: prodv,
+          crew: rint(d, "cr" + ai + zi, 8, 42)
+        });
+      });
+    });
+    return rows;
+  }
+
+  /* ---------- image analysis (100+ photos) ---------- */
+  function photos(d) {
+    const act = activePhases(d), out = [];
+    const buildings = ["Tower A", "Tower B", "Podium", "Basement"];
+    const dirs = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
+    const acts = act.length ? act.map(a => a.p.n) : ["General"];
+    const objsets = {
+      "Core Walls": ["shutter panels", "rebar cage", "climbing formwork", "concrete hopper"],
+      "Slabs": ["prop system", "rebar mesh", "poured slab", "screed level"],
+      "Columns": ["column formwork", "starter bars", "concrete bucket"],
+      "Curtain Wall": ["unitised panel", "mullion", "safety net", "glazing bracket"],
+      "MEP": ["cable tray", "conduit run", "duct spool", "fire damper", "valve set"],
+      "Interiors": ["gypsum partition", "block wall", "plaster line", "paint roller"],
+      "Flooring": ["tile stack", "screed bed", "spirit level"],
+      "Basement": ["raft rebar", "waterstop", "dewatering pump", "kicker"],
+      "Foundation": ["pile cap", "blinding", "rebar starter"],
+    };
+    const n = 112 + (d % 9);
+    for (let i = 0; i < n; i++) {
+      const bld = pick(d, "pb" + i, act.length ? (i % 5 === 0 ? "Podium" : i % 9 === 0 ? "Basement" : i % 2 ? "Tower A" : "Tower B") : buildings);
+      const ph = pick(d, "pa" + i, acts);
+      const flr = bld === "Basement" ? "B" + rint(d, "pf" + i, 1, 4) : bld === "Podium" ? pick(d, "pp" + i, ["GF", "L1", "L2"]) : "L" + rint(d, "pf" + i, 2, bld === "Tower A" ? 44 : 37);
+      const workers = rint(d, "pw" + i, 0, 14);
+      const ppe = rnd(d, "pe" + i) > 0.08;
+      const hr = 7 + Math.floor(i / n * 11), mn = rint(d, "pm" + i, 0, 59);
+      const objs = (objsets[ph] || ["material stack", "access scaffold", "tool box"]);
+      out.push({
+        ts: String(hr).padStart(2, "0") + ":" + String(mn).padStart(2, "0"),
+        bld, flr, dir: pick(d, "pd" + i, dirs), act: ph,
+        objs: [pick(d, "po1" + i, objs), pick(d, "po2" + i, objs)],
+        workers, eq: rnd(d, "peq" + i) > 0.5 ? pick(d, "peqk" + i, ["tower crane hook", "boom lift", "hoist", "transit mixer", "forklift"]) : "—",
+        ppe, quality: pick(d, "pq" + i, ["Compliant", "Compliant", "Compliant", "Minor housekeeping", "Rebar spacing check", "Formwork alignment ok", "Cover blocks missing (flag)"]),
+      });
+    }
+    return out;
+  }
+
+  /* ---------- CCTV (100 chronological events) ---------- */
+  function cctv(d) {
+    const act = activePhases(d), out = [];
+    const gates = ["Main Gate", "Gate 2 (Material)", "Tower A Zone", "Tower B Zone", "Basement Ramp", "Batching Bay", "Stockyard"];
+    const templ = [
+      ["Truck arrival — rebar delivery", "info"], ["Concrete pour commenced", "good"], ["Tower crane TC-1 lift cycle", "info"],
+      ["Worker entered restricted zone", "warn"], ["Material unloading — blockwork", "info"], ["Equipment idle > 20 min", "warn"],
+      ["Concrete curing — slab covered", "good"], ["QA/QC inspection walk", "good"], ["Visitor arrival — consultant", "info"],
+      ["PPE check at turnstile", "good"], ["Transit mixer discharge", "info"], ["Unsafe act — no harness at edge", "bad"],
+      ["Hoist ascending with crew", "info"], ["Delivery truck departed", "info"], ["Toolbox talk assembly", "good"],
+      ["Boom lift repositioned", "info"], ["Housekeeping crew active", "good"], ["Near-miss — swinging load clearance", "warn"],
+      ["Water tanker — dust suppression", "info"], ["Security patrol logged", "info"],
+    ];
+    const n = 100;
+    for (let i = 0; i < n; i++) {
+      const mins = 7 * 60 + Math.floor(i / n * 11 * 60) + rint(d, "cm" + i, 0, 4);
+      const hh = Math.floor(mins / 60), mm = mins % 60;
+      let [ev, sev] = templ[Math.floor(rnd(d, "ce" + i) * templ.length)];
+      // weave real events
+      if (i < eventsForDay(d).length && rnd(d, "cw" + i) > 0.7) { ev = eventsForDay(d)[i].title.split("—")[0].trim(); sev = eventsForDay(d)[i].sev }
+      out.push({
+        t: String(hh).padStart(2, "0") + ":" + String(mm).padStart(2, "0"),
+        loc: pick(d, "cl" + i, gates), ev, sev, conf: rint(d, "cf" + i, 82, 99)
+      });
+    }
+    return out.sort((a, b) => a.t < b.t ? -1 : 1);
+  }
+
+  /* ---------- comms ---------- */
+  function comms(d) {
+    const ev = eventsForDay(d), h = health(d), f = foldTo(d), dt = WD[d - 1];
+    const wa = [];
+    wa.push({ s: "them", who: "Site Eng. — Rajesh", tm: "07:12", t: "Good morning all. Pour for Tower A L" + rint(d, "w1", 22, 38) + " core wall starts 08:00, pump BP-01 primed. QA cube sampling arranged." });
+    wa.push({ s: "me", who: "You (PM)", tm: "07:20", t: "Noted. Confirm cube test frequency and slump before discharge. Photos to the group please." });
+    if (ev.some(e => e.k === "steel")) wa.push({ s: "them", who: "Procurement — Fatima", tm: "09:05", t: "Heads up: Emirates Steel dispatch slipped 2 days again. We have " + f.inv.rebar + " t cover. Prioritising columns over slab bar." });
+    if (ev.some(e => e.k === "appr")) wa.push({ s: "them", who: "QS — Daniel", tm: "10:40", t: "Chasing WSP on the shop drawing approval. It's now holding facade bracket install on the east elevation." });
+    wa.push({ s: "me", who: "You (PM)", tm: "11:02", t: h.spi < 0.96 ? "SPI at " + h.spi.toFixed(2) + ", we're " + h.dd + " days behind. Let's discuss recovery at the 4pm coordination." : "Progress looks steady. Keep the pour photos and inspection requests flowing." });
+    if (ev.some(e => e.k === "inj")) wa.push({ s: "them", who: "HSE — Omar", tm: "13:15", t: "Minor LTI logged — hand laceration on L" + rint(d, "w2", 10, 30) + ". First aid administered, worker stable. Investigation opened, toolbox talk revised." });
+    wa.push({ s: "them", who: "Foreman — Carpentry", tm: "15:48", t: "Shutter strike on L" + rint(d, "w3", 18, 34) + " done, cubes at 7-day showing " + rint(d, "w4", 28, 36) + " MPa. Ready for next lift." });
+
+    const emails = [];
+    emails.push({
+      from: "AECOM PMC <pmc@aecom.me>", to: "Al Noor Construction", subj: "Weekly Progress & SPI Review — WK" + Math.ceil(d / 6),
+      body: "Actual progress " + actualPct(d).toFixed(1) + "% vs planned " + plannedPct(d).toFixed(1) + "%. SPI " + h.spi.toFixed(2) + ". " + (h.dd > 8 ? "Forecast slippage of ~" + h.dd + " days requires a formal recovery plan by Thursday." : "Trend within tolerance; maintain current crewing.") + " Please submit updated look-ahead."
+    });
+    if (ev.some(e => e.k === "reject")) emails.push({
+      from: "WSP Structural <structures@wsp.com>", to: "Al Noor / Gensler", subj: "RE: Shop Drawing SD-" + rint(d, "e1", 300, 899) + " — Rev C Rejected",
+      body: "The reinforcement detail at the transfer beam does not reconcile with the approved GA. Revise cover and lap length and resubmit as Rev D. Dependent pour to be held."
+    });
+    emails.push({
+      from: "Marina One Developments <projects@marinaone.ae>", to: "AECOM / Al Noor", subj: "Cash-flow & IPC-" + Math.ceil(d / 26),
+      body: (ev.some(e => e.k === "pay") ? "Certification of the current IPC is delayed pending measurement reconciliation; " : "IPC certified and processed; ") + "kindly ensure the retail hand-over milestone tracking remains visible in the monthly report."
+    });
+
+    const mom = {
+      time: "16:00–16:45", attend: ["Al Noor (PM, QS, HSE)", "AECOM PMC", "WSP", "Jacobs MEP", "Gensler (dial-in)"],
+      items: [
+        "Progress: " + actualPct(d).toFixed(1) + "% actual, SPI " + h.spi.toFixed(2) + ", " + h.dd + " days variance to baseline.",
+        ev.some(e => e.k === "steel") ? "Rebar supply constraint — Al Noor to expedite and re-sequence to protect critical path." : "Structure sequencing on track; next milestone tracked.",
+        f.apprPending > 0 ? f.apprPending + " consultant approvals pending — Gensler/WSP to clear within 48 hrs to release facade & MEP." : "Approvals current.",
+        "Safety: " + (ev.some(e => e.k === "inj") ? "one minor LTI under investigation, corrective actions issued." : "no lost-time incidents; heat-stress protocol enforced."),
+        "Actions carried to next meeting with owners and deadlines (see Recommended Actions)."]
+    };
+
+    const voice = [
+      { who: "Client rep (voice note, 0:38)", t: "\"Team, the board is asking about the retail handover date — I need a straight answer on whether we hold the milestone this quarter.\"" },
+      { who: "Crane operator (voice note, 0:22)", t: "\"" + (ev.some(e => e.k === "tc2") ? "TC-2 is down for the inspection, so I'm covering both zones on TC-1 — lifts are queuing." : "All lifts normal, we cleared the rebar bundles to L" + rint(d, "v1", 24, 40) + ".") + "\"" },
+    ];
+    return { wa, emails, mom, voice };
+  }
+
+  /* ---------- procurement ---------- */
+  function procurement(d) {
+    const mt = materials(d), f = foldTo(d);
+    const pos = [
+      { no: "PO-" + (2400 + d % 600), item: "Reinforcement steel — B500B", vendor: "Emirates Steel", val: rint(d, "po1", 180, 420) + "k", st: mt.delayed.some(x => x.includes("Emirates")) ? "Delayed" : "Confirmed" },
+      { no: "PO-" + (2401 + d % 600), item: "Unitised curtain-wall panels", vendor: "Alubond FZE", val: rint(d, "po2", 600, 1400) + "k", st: mt.delayed.some(x => x.includes("Alubond")) ? "Customs hold" : "In production" },
+      { no: "PO-" + (2402 + d % 600), item: "MEP cable & containment", vendor: "Ducab", val: rint(d, "po3", 120, 340) + "k", st: "Dispatched" },
+      { no: "PO-" + (2403 + d % 600), item: "Ceramic tiles & sanitary", vendor: "RAK Ceramics", val: rint(d, "po4", 90, 260) + "k", st: d > 540 ? "Confirmed" : "Budgeted" },
+      { no: "PO-" + (2404 + d % 600), item: "Passenger + fire lifts", vendor: "KONE", val: rint(d, "po5", 2200, 3600) + "k", st: d > 455 ? "In manufacture" : "Awarded" },
+    ];
+    const inv = [
+      { no: "INV-" + (8800 + d % 400), vendor: "Unibeton RMC", amt: rint(d, "in1", 80, 320) + "k", st: "Approved" },
+      { no: "INV-" + (8801 + d % 400), vendor: "Emirates Steel", amt: rint(d, "in2", 150, 380) + "k", st: "Under review" },
+      { no: "INV-" + (8802 + d % 400), vendor: "Al Shafar Scaffold", amt: rint(d, "in3", 40, 120) + "k", st: "Certified" },
+    ];
+    const risks = [];
+    if (mt.delayed.some(x => x.includes("Emirates"))) risks.push("Single-source rebar dependency on Emirates Steel — recurring dispatch slippage.");
+    if (mt.delayed.some(x => x.includes("Alubond"))) risks.push("Curtain-wall import exposed to Jebel Ali port congestion & customs.");
+    risks.push("KONE lift lead time (24 wks) is on the critical path for testing & commissioning.");
+    if (f.inv.rebar < 180) risks.push("Rebar inventory below buffer — expedite premium likely.");
+    return { pos, inv, risks };
+  }
+
+  /* ---------- quality ---------- */
+  function quality(d) {
+    const f = foldTo(d), ev = eventsForDay(d);
+    const insp = [
+      { t: "Rebar / pre-pour inspection", loc: "Tower A Core L" + rint(d, "q1", 22, 40), res: rnd(d, "qr1") > 0.15 ? "Approved" : "Conditional", by: "WSP" },
+      { t: "Concrete pour approval", loc: "Tower B Slab L" + rint(d, "q2", 8, 34), res: ev.some(e => e.k === "pump") ? "Deferred" : "Approved", by: "AECOM" },
+      { t: "Cube test — 28 day", loc: "Batch " + rint(d, "q3", 100, 999), res: rint(d, "q3b", 42, 58) + " MPa (C40)", by: "Lab" },
+      { t: "Waterproofing inspection", loc: "Basement B" + rint(d, "q4", 1, 4), res: rnd(d, "qr4") > 0.2 ? "Passed" : "Rework — lap detail", by: "AECOM" },
+      { t: "Wall alignment / verticality", loc: "Tower A L" + rint(d, "q5", 14, 38), res: rnd(d, "qr5") > 0.25 ? "Within tolerance" : "Out 4mm — flagged", by: "Surveyor" },
+      { t: "Honeycombing check (strike)", loc: "Tower B Column L" + rint(d, "q6", 10, 30), res: rnd(d, "qr6") > 0.3 ? "Nil defects" : "Minor — repair mortar", by: "QA/QC" },
+    ];
+    const ncrs = [];
+    if (ev.some(e => e.k === "reject")) ncrs.push({ no: "NCR-" + (120 + d % 80), d: "Reinforcement detail deviates from approved GA at transfer beam", st: "Open", act: "Rework per WSP Rev D; hold dependent pour" });
+    if (f.ncrOpen > 0) ncrs.push({ no: "NCR-" + (118 + d % 80), d: "Honeycombing at column base, Tower B L" + rint(d, "n1", 8, 20), st: rnd(d, "ns") > 0.5 ? "In progress" : "Open", act: "Concrete repair method statement, consultant witness" });
+    if (rnd(d, "nc2") > 0.7) ncrs.push({ no: "NCR-" + (115 + d % 80), d: "Blockwork joint tolerance exceeded, Podium retail", st: "Closed", act: "Rebuilt & re-inspected — verified" });
+    const remarks = [
+      "Consultant notes overall workmanship acceptable; maintain cover-block discipline on vertical elements.",
+      (f.ncrOpen > 1 ? "Repeat honeycombing suggests review of vibration procedure and pour rate." : "No systemic quality trend observed this week."),
+    ];
+    return { insp, ncrs, remarks, open: f.ncrOpen, total: f.ncrTotal };
+  }
+
+  /* ---------- safety ---------- */
+  function safety(d) {
+    const w = weather(d), ev = eventsForDay(d), f = foldTo(d), h = health(d);
+    const ppeV = rint(d, "sp", 0, 4) + (w.temp > 42 ? 1 : 0);
+    const permits = [
+      { t: "General work permit", n: rint(d, "pm1", 8, 18), st: "Active" },
+      { t: "Hot work permit", n: rint(d, "pm2", 1, 6), st: "Active — fire watch posted" },
+      { t: "Excavation permit", n: d < 160 ? rint(d, "pm3", 1, 3) : 0, st: d < 160 ? "Active" : "N/A" },
+      { t: "Confined space", n: rint(d, "pm4", 0, 2), st: "Gas-tested" },
+      { t: "Working at height", n: rint(d, "pm5", 4, 12), st: "Active — harness audit" },
+      { t: "Lifting permit", n: rint(d, "pm6", 2, 7), st: "Active — banksman assigned" },
+    ];
+    const heat = w.temp > 40 ? "High — extended midday break enforced, cooling stations + electrolytes" : w.temp > 36 ? "Moderate — hydration rounds every 90 min" : "Low — normal monitoring";
+    const med = ev.some(e => e.k === "inj") ? [{ t: "Lost-time injury — hand laceration", st: "First aid, investigation open" }] :
+      (rnd(d, "med") > 0.7 ? [{ t: "Heat-exhaustion — rest & rehydration", st: "Returned to work" }] : []);
+    const tbt = "Toolbox talk (" + manpower(d).presentTot + " attended): " + pick(d, "tbt", ["Working at height & harness", "Heat stress & hydration", "Crane lifting exclusion zones", "Manual handling", "Housekeeping & slips/trips", "Electrical isolation"]);
+    const nearMiss = rnd(d, "nm") > 0.75 ? rint(d, "nm2", 1, 2) : 0;
+    return { ppeV, permits, heat, med, tbt, nearMiss, score: h.safety, incidents: f.incidents };
+  }
+
+  /* ---------- commercial ---------- */
+  function commercial(d) {
+    const mp = manpower(d), eq = equipment(d), h = health(d), a = actualPct(d);
+    const BUDGET = 1.35e9;
+    const overrun = 1 + 0.05 * (h.dd / 30) + h.risk / 2500;
+    const budgetUsed = a / 100 * BUDGET * overrun;
+    const labour = mp.presentTot * 265 + mp.ot * 95;
+    const equipC = eq.rows.filter(r => r.status !== "Demobilised").length * 4200 + eq.fuel * 3.1;
+    const act = activePhases(d);
+    const matC = act.some(x => ["Slabs", "Core Walls", "Columns"].includes(x.p.n)) ? rint(d, "mcst", 900000, 2600000) : rint(d, "mcst", 300000, 1100000);
+    const daily = labour + equipC + matC;
+    const forecast = BUDGET * overrun;
+    const vos = [
+      { no: "VO-" + (30 + d % 40), d: "Retail Level-1 layout revision (client)", val: "+" + rint(d, "vo1", 400, 1800) + "k", st: "Pending" },
+      { no: "VO-" + (28 + d % 40), d: "Additional dewatering — unchartered utility", val: "+" + rint(d, "vo2", 120, 600) + "k", st: d < 180 ? "Assessed" : "Agreed" },
+    ];
+    return {
+      daily, labour, equipC, matC, budgetUsed, forecast, BUDGET, overrun, vos,
+      pctUsed: budgetUsed / BUDGET * 100, cash: (h.risk > 50 ? "Tight — IPC certification delay" : "Positive")
+    };
+  }
+
+  /* ---------- schedule ---------- */
+  function schedule(d) {
+    const h = health(d), p = plannedPct(d), a = actualPct(d);
+    const critical = activePhases(d).slice(0, 1).map(x => x.p.n)[0] || "—";
+    const extraWD = Math.round(TOTAL / h.spi - TOTAL);
+    const finishIdx = Math.min(WD.length - 1, TOTAL - 1);
+    const baseFinish = WD[finishIdx];
+    const fc = new Date(baseFinish); fc.setDate(fc.getDate() + Math.round(extraWD * 7 / 6));
+    const delayedAct = [];
+    const ev = eventsForDay(d);
+    if (ev.some(e => e.k === "steel")) delayedAct.push("Tower A slab reinforcement — awaiting rebar");
+    if (ev.some(e => e.k === "appr")) delayedAct.push("East facade bracket install — approval hold");
+    if (ev.some(e => e.k === "reject")) delayedAct.push("Transfer-beam pour — NCR rework");
+    if (!delayedAct.length) delayedAct.push("None critical — float being consumed on finishes");
+    const recovered = [];
+    if (h.dd > 10) recovered.push("Weekend pour authorised on Tower B core");
+    if (h.dd > 14) recovered.push("Night shift mobilised for MEP first-fix");
+    const milestones = [
+      { m: "Basement watertight", d: 245, }, { m: "Tower A structure top-out", d: 470 },
+      { m: "Tower B structure top-out", d: 485 }, { m: "Facade weather-tight", d: 625 },
+      { m: "MEP first-fix complete", d: 685 }, { m: "Testing & commissioning", d: 762 }, { m: "Handover", d: 782 },
+    ].map(x => ({ ...x, done: d >= x.d, date: dshort(WD[Math.min(TOTAL - 1, x.d - 1)]) }));
+    return {
+      p, a, spi: h.spi, dd: h.dd, critical, delayedAct, recovered, milestones, fc, extraWD,
+      forecastStr: dstr(fc)
+    };
+  }
+
+  /* ---------- AI PM analysis ---------- */
+  function pmAnalysis(d) {
+    const h = health(d), hh = d > 5 ? health(d - 4) : h, ev = eventsForDay(d), f = foldTo(d), eq = equipment(d), sc = schedule(d);
+    const out = [];
+    const prodDelta = Math.round((dayProductivity(d) - dayProductivity(Math.max(1, d - 4))) / dayProductivity(Math.max(1, d - 4)) * 100);
+    if (prodDelta < -5) out.push({ i: "📉", h: "Productivity on " + sc.critical + " has declined " + Math.abs(prodDelta) + "% over the last four days.", d: "Correlated with weather impact and crew availability. Recommend crew reinforcement and re-sequencing to protect the critical path." });
+    else out.push({ i: "📈", h: "Productivity trend on " + sc.critical + " is stable to improving (" + (prodDelta >= 0 ? "+" : "") + prodDelta + "% vs 4 days ago).", d: "Curing and formwork cycles progressing to plan; maintain current crewing." });
+    out.push({ i: "🧱", h: "Concrete curing is progressing normally — 7-day strengths tracking design C40.", d: "No early-strike risk flagged; cube results within control limits." });
+    if (ev.some(e => e.k === "steel")) out.push({ i: "🔩", h: "Steel deliveries repeatedly delayed by Emirates Steel — a recurring supply constraint.", d: "Rebar cover at " + f.inv.rebar + " t. Single-source dependency is now a schedule risk; secondary supplier should be qualified." });
+    const busyCrane = eq.rows.find(r => r.name.includes("TC-1"));
+    if (busyCrane && busyCrane.util > 85) out.push({ i: "🏗️", h: "Tower Crane " + (eq.rows.some(r => r.cls === "warn" && r.name.includes("TC-2")) ? "TC-1 is operating above 90% utilisation while TC-2 is under maintenance." : "TC-1 utilisation is high (" + busyCrane.util + "%)."), d: "Lift queue forming for rebar and formwork. Consider a supplementary mobile crane during peak." });
+    if (dayProductivity(d) > 0.98 && d > 345) out.push({ i: "⚡", h: "MEP subcontractor is tracking ahead on first-fix in Tower B.", d: "Opportunity to pull forward ceiling grid in completed zones." });
+    if (f.apprPending > 0) out.push({ i: "⏳", h: "Repeated late approvals from the consultant are beginning to impact facade installation.", d: f.apprPending + " approvals outstanding; each day of delay consumes east-elevation float." });
+    if (h.risk > 45) out.push({ i: "⚠️", h: "Composite risk score elevated at " + h.risk + "/100.", d: "Driven by " + h.dd + "-day schedule variance, " + f.ncrOpen + " open NCRs and supply volatility. Recovery actions advised below." });
+    return out;
+  }
+
+  /* ---------- delay forecast ---------- */
+  function forecast(d) {
+    const h = health(d), sc = schedule(d), f = foldTo(d), ev = eventsForDay(d), w = weather(d);
+    const predicted = Math.max(0, sc.extraWD);
+    const conf = Math.round(clamp(70 + (1 - h.spi) * 260 - (h.dd < 3 ? 15 : 0), 58, 95));
+    const reasons = [];
+    if (ev.some(e => e.k === "steel") || f.inv.rebar < 200) reasons.push("Recurring steel delivery delays (Emirates Steel)");
+    if (w.temp > 40) reasons.push("High heat reducing outdoor productivity & midday break");
+    if (f.apprPending > 0) reasons.push(f.apprPending + " pending consultant approvals blocking dependent work");
+    if (h.dd > 8) reasons.push("Reinforcement / formwork crew below required output");
+    if (ev.some(e => e.k === "tc2")) reasons.push("Tower crane maintenance reducing lift capacity");
+    if (ev.some(e => e.k === "reject")) reasons.push("NCR rework on structural detail");
+    if (!reasons.length) reasons.push("Minor weather variability; float being consumed on finishes");
+    const recovery = [
+      "Increase reinforcement crew by " + rint(d, "rc1", 8, 16) + " steel fixers on double shift.",
+      "Authorise weekend concrete pours on Tower " + pick(d, "rc2", ["A", "B"]) + " core.",
+      "Add one 250-t mobile crane during peak lift window.",
+      "Fast-track outstanding drawing approvals with a 48-hr consultant SLA.",
+      (f.inv.rebar < 200 ? "Qualify a secondary rebar supplier to remove single-source risk." : "Pre-position curtain-wall panels to de-risk facade sequence."),
+    ];
+    const bands = [
+      { t: "Next 3 days", risk: h.dd > 10 ? "High" : h.dd > 4 ? "Medium" : "Low", note: ev.length ? "Active event impact on " + sc.critical : "Weather-driven variability only" },
+      { t: "Next week", risk: h.spi < 0.94 ? "High" : h.spi < 0.98 ? "Medium" : "Low", note: "Rebar supply & approvals dominate the critical path" },
+      { t: "Next month", risk: h.spi < 0.95 ? "High" : "Medium", note: "Facade-to-MEP handover interface is the key exposure" },
+    ];
+    return { predicted, conf, reasons, recovery, bands, fc: sc.forecastStr, spi: h.spi };
+  }
+
+  /* ---------- exec insights + actions ---------- */
+  function execInsights(d) {
+    const h = health(d), sc = schedule(d), f = foldTo(d), fo = forecast(d), c = commercial(d);
+    return [
+      { i: "①", h: "Project is " + actualPct(d).toFixed(1) + "% complete vs " + plannedPct(d).toFixed(1) + "% planned — SPI " + h.spi.toFixed(2) + ".", d: h.dd > 0 ? h.dd + " days behind baseline; forecast handover " + fo.fc + "." : "On or ahead of baseline." },
+      { i: "②", h: "Forecast delay: " + fo.predicted + " working days at " + fo.conf + "% confidence.", d: "Primary driver: " + fo.reasons[0] + "." },
+      { i: "③", h: "Cost tracking " + (c.overrun > 1.03 ? "~" + ((c.overrun - 1) * 100).toFixed(1) + "% over budget forecast." : "within budget (" + c.pctUsed.toFixed(1) + "% used).") },
+      { i: "④", h: f.ncrOpen + " open NCRs · " + f.rfiOpen + " open RFIs · " + f.apprPending + " approvals pending.", d: "Consultant responsiveness is the main quality/schedule lever." },
+      { i: "⑤", h: "Safety score " + h.safety + "/100 · " + f.incidents + " recordable incident" + (f.incidents === 1 ? "" : "s") + " to date.", d: h.safety < 90 ? "Heat-stress and working-at-height are the focus risks." : "Strong safety trend maintained." },
+    ];
+  }
+  function recActions(d) {
+    const h = health(d), f = foldTo(d), ev = eventsForDay(d), sc = schedule(d), fo = forecast(d);
+    const A = [];
+    if (f.inv.rebar < 220 || ev.some(e => e.k === "steel")) A.push({
+      p: "crit", t: "Expedite rebar & qualify secondary supplier",
+      why: "Rebar cover has fallen below the working buffer and Emirates Steel dispatch is slipping repeatedly.",
+      imp: "Protects the Tower A/B core-wall critical path from a " + fo.predicted + "-day slip.", ben: "Removes single-source supply risk", who: "Procurement Manager", dl: dshort(WD[Math.min(TOTAL - 1, d + 2)])
+    });
+    if (f.apprPending > 0) A.push({
+      p: "crit", t: "Escalate overdue consultant approvals (48-hr SLA)",
+      why: f.apprPending + " approvals are blocking facade brackets and MEP first-fix.",
+      imp: "Each day of delay consumes east-elevation and MEP float.", ben: "Unlocks ~" + (f.apprPending * 2) + " crew-days of blocked work", who: "PM → AECOM/WSP/Gensler", dl: dshort(WD[Math.min(TOTAL - 1, d + 2)])
+    });
+    if (h.dd > 8) A.push({
+      p: "high", t: "Implement schedule recovery plan",
+      why: "Actual is " + h.dd + " days behind baseline (SPI " + h.spi.toFixed(2) + ").",
+      imp: "Without recovery, forecast handover moves to " + fo.fc + ".", ben: "Targets recovery of " + Math.round(h.dd * 0.5) + "+ days", who: "Project Director", dl: dshort(WD[Math.min(TOTAL - 1, d + 5)])
+    });
+    if (ev.some(e => e.k === "tc2")) A.push({
+      p: "high", t: "Mobilise supplementary mobile crane",
+      why: "TC-2 under maintenance is throttling lift capacity to a single crane per tower.",
+      imp: "Prevents a lift-queue bottleneck on rebar and formwork.", ben: "Restores ~30% lift throughput", who: "Site Manager", dl: dshort(WD[d - 1])
+    });
+    A.push({
+      p: "med", t: "Enforce heat-stress protocol & re-baseline outdoor tasks",
+      why: "Summer heat is depressing outdoor productivity and raising safety risk.",
+      imp: "Reduces LTI exposure and stabilises the daily output rate.", ben: "Fewer heat incidents, steadier progress", who: "HSE Manager", dl: "Ongoing"
+    });
+    A.push({
+      p: f.ncrOpen > 1 ? "high" : "med", t: "Close open NCRs and review pour procedure",
+      why: f.ncrOpen + " NCRs open" + (f.ncrOpen > 1 ? "; repeat honeycombing suggests a process issue." : "."),
+      imp: "Avoids rework cascading into finishes.", ben: "Protects quality score & avoids re-pours", who: "QA/QC Manager", dl: dshort(WD[Math.min(TOTAL - 1, d + 3)])
+    });
+    A.push({
+      p: "low", t: "Pull forward ceiling grid in completed MEP zones",
+      why: "MEP first-fix is ahead in parts of Tower B.",
+      imp: "Buys float for downstream finishes.", ben: "Opportunistic schedule gain", who: "Finishing Subcontractor", dl: dshort(WD[Math.min(TOTAL - 1, d + 6)])
+    });
+    const order = { crit: 0, high: 1, med: 2, low: 3 };
+    return A.sort((a, b) => order[a.p] - order[b.p]);
+  }
+
+  /* ============================================================================
+     RENDER
+     ============================================================================ */
+  const SECTIONS = [
+    ["ovw", "Overview", "Command"], ["weather", "Weather", "Environment"], ["health", "Project Health", "Command"],
+    ["activities", "Activities", "Field"], ["manpower", "Manpower", "Field"], ["equipment", "Equipment", "Field"],
+    ["materials", "Materials", "Field"], ["report", "Engineer Report", "Field"],
+    ["photos", "AI Image Analysis", "Intelligence"], ["cctv", "AI CCTV Analysis", "Intelligence"], ["drone", "Drone Survey", "Intelligence"],
+    ["comms", "Communications", "Coordination"], ["procurement", "Procurement", "Commercial"],
+    ["quality", "Quality", "Assurance"], ["safety", "Safety", "Assurance"],
+    ["commercial", "Commercial", "Commercial"], ["schedule", "Schedule", "Command"],
+    ["pm", "AI PM Analysis", "Intelligence"], ["forecast", "Delay Forecast", "Intelligence"],
+    ["exec", "Executive Insights", "Command"], ["actions", "Recommended Actions", "Command"], ["state", "Project State", "Command"],
+  ];
+  function buildNav() {
+    const nav = document.getElementById("nav"); let html = "", grp = "";
+    SECTIONS.forEach((s, i) => {
+      if (s[2] !== grp) { grp = s[2]; html += '<div class="grp">' + grp + '</div>' }
+      html += '<a href="#s-' + s[0] + '" data-s="' + s[0] + '"><span class="idx">' + (i + 1) + '</span>' + s[1] + '</a>';
+    });
+    nav.innerHTML = html;
+  }
+  function chip(v, goodHi = true, t1 = 90, t2 = 75) {
+    const good = goodHi ? v >= t1 : v <= t1, warn = goodHi ? v >= t2 : v <= t2;
+    const cls = good ? "good" : warn ? "warn" : "bad"; return cls;
+  }
+  function ring(v, label, goodHi = true) {
+    const cls = goodHi ? (v >= 85 ? "var(--good)" : v >= 70 ? "var(--warn)" : "var(--bad)") : (v <= 25 ? "var(--good)" : v <= 50 ? "var(--warn)" : "var(--bad)");
+    const R = 26, C = 2 * Math.PI * R, off = C * (1 - v / 100);
+    return '<div class="ring" style="width:70px;height:70px">' +
+      '<svg width="70" height="70"><circle cx="35" cy="35" r="' + R + '" fill="none" stroke="var(--panel-2)" stroke-width="6"/>' +
+      '<circle cx="35" cy="35" r="' + R + '" fill="none" stroke="' + cls + '" stroke-width="6" stroke-linecap="round" stroke-dasharray="' + C + '" stroke-dashoffset="' + off + '"/></svg>' +
+      '<div class="rv"><b>' + v + '</b><span>' + label + '</span></div></div>';
+  }
+  function spark(vals, color) {
+    const w = 140, hg = 34, mn = Math.min(...vals), mx = Math.max(...vals), rg = mx - mn || 1;
+    const pts = vals.map((v, i) => [i / (vals.length - 1) * w, hg - 4 - ((v - mn) / rg) * (hg - 8)]);
+    const d = "M" + pts.map(p => p[0].toFixed(1) + "," + p[1].toFixed(1)).join(" L");
+    const area = d + " L" + w + "," + hg + " L0," + hg + " Z";
+    const last = pts[pts.length - 1];
+    return '<svg width="' + w + '" height="' + hg + '" style="display:block"><path d="' + area + '" fill="' + color + '" opacity="0.12"/>' +
+      '<path d="' + d + '" fill="none" stroke="' + color + '" stroke-width="1.6"/>' +
+      '<circle cx="' + last[0].toFixed(1) + '" cy="' + last[1].toFixed(1) + '" r="2.6" fill="' + color + '"/></svg>';
+  }
+  function esc(s) { return String(s).replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c])) }
+
+  let DAY = 1;
+  function render(d) {
+    DAY = d;
+    const dt = WD[d - 1], isFri = dt.getDay() === 5;
+    const w = weather(d), h = health(d), mp = manpower(d), eq = equipment(d), mt = materials(d), acts = activities(d);
+    const sc = schedule(d), c = commercial(d), q = quality(d), sf = safety(d), f = foldTo(d);
+    const a = actualPct(d), p = plannedPct(d);
+
+    // command bar
+    document.getElementById("dLabel").textContent = "Day " + d + " / " + TOTAL;
+    document.getElementById("dMeta").innerHTML = dstr(dt) + " · <b>Month " + Math.ceil(d / 26) + "</b>" + (isFri ? " · Drone day" : "");
+    document.getElementById("slider").value = d;
+    const schedCls = h.dd <= 3 ? "good" : h.dd <= 10 ? "warn" : "bad";
+    const schedTxt = h.dd <= 3 ? "on track" : h.dd <= 10 ? "watch" : "behind";
+    const stTxt = cls => cls === "good" ? "good" : cls === "warn" ? "watch" : "alert";
+    const kpis = [
+      ["Completion", a.toFixed(1) + "<small>%</small>", "", ""],
+      ["Planned", p.toFixed(1) + "<small>%</small>", "", ""],
+      ["SPI", h.spi.toFixed(2), schedCls, schedTxt],
+      ["Delay", h.dd + "<small>d</small>", schedCls, schedTxt],
+      ["Safety", h.safety, chip(h.safety), stTxt(chip(h.safety))],
+      ["Quality", h.quality, chip(h.quality), stTxt(chip(h.quality))],
+      ["Risk", h.risk, chip(h.risk, false, 25, 50), stTxt(chip(h.risk, false, 25, 50))],
+    ];
+    document.getElementById("kpis").innerHTML = kpis.map(k => '<div class="kpi"><div class="k">' + k[0] + '</div><div class="v">' +
+      k[1] + '</div>' + (k[2] ? '<span class="chip ' + k[2] + ' nodot" style="font-size:9px">' + k[3] + '</span>' : '') + '</div>').join("");
+
+    let H = "";
+
+    /* ---- banner (event / status) ---- */
+    const ev = eventsForDay(d);
+    if (ev.length) {
+      const worst = ev.find(e => e.sev === "bad") || ev.find(e => e.sev === "warn") || ev[0];
+      H += '<div class="banner ' + (worst.sev === "bad" ? "bad" : worst.sev === "good" ? "good" : "") + '"><div class="bi">' +
+        (worst.sev === "bad" ? "⛔" : worst.sev === "warn" ? "⚠️" : "ℹ️") + '</div><div class="bt"><b>' + ev.length +
+        ' active event' + (ev.length > 1 ? "s" : "") + ' today.</b> ' + esc(worst.title) +
+        (ev.length > 1 ? ' <span style="color:var(--ink-3)">(+' + (ev.length - 1) + ' more — see CCTV & PM analysis)</span>' : '') + '</div></div>';
+    }
+
+    /* ---- 1 Overview ---- */
+    const histP = [], histA = []; for (let i = Math.max(1, d - 29); i <= d; i++) { histP.push(plannedPct(i)); histA.push(actualPct(i)) }
+    H += sec("ovw", "Overview", "Marina One Business Towers · Al Noor Construction");
+    H += '<div class="grid g2"><div class="card"><h3><span class="dot"></span>Progress — planned vs actual</h3>' +
+      '<div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap">' +
+      '<div class="stat"><span class="lbl">Actual</span><span class="big" style="color:var(--steel)">' + a.toFixed(1) + '%</span>' +
+      '<span class="sub">Planned ' + p.toFixed(1) + '% · SPI ' + h.spi.toFixed(2) + '</span></div>' +
+      '<div style="flex:1;min-width:150px">' + spark(histA, "var(--steel)") + '<div style="font-size:10px;color:var(--ink-3);margin-top:2px">Actual — last 30 working days</div></div></div>' +
+      '<div class="dual" style="margin-top:12px"><div class="pl" style="width:' + p + '%"></div><div class="ac" style="width:' + a + '%"></div></div>' +
+      '<div class="legend"><span><i style="background:var(--steel)"></i>Actual</span><span><i style="background:var(--line);border:1px dashed var(--ink-3)"></i>Planned</span><span>' + h.dd + ' days variance</span></div></div>' +
+      '<div class="card"><h3><span class="dot"></span>Executive summary</h3><div class="prose">' +
+      '<p>On <b>' + dstr(dt) + '</b> (month ' + Math.ceil(d / 26) + ' of 30), the project stands at <b>' + a.toFixed(1) + '%</b> complete against a planned ' + p.toFixed(1) + '%, an SPI of ' + h.spi.toFixed(2) + ' and ' + h.dd + ' working days of variance to baseline.</p>' +
+      '<p>' + (sc.critical !== "—" ? "The critical path runs through <b>" + esc(sc.critical) + "</b>. " : "") +
+      (ev.some(e => e.sev === "bad") ? "A significant event is affecting today’s output. " : "Weather and supply conditions are broadly manageable. ") +
+      'Forecast handover: <b>' + sc.forecastStr + '</b>' + (sc.extraWD > 0 ? " (+" + sc.extraWD + " wd)" : "") + '.</p></div></div></div>';
+    // phase timeline
+    H += '<div class="card"><h3><span class="dot"></span>Phase timeline</h3><div class="phasebar">' +
+      PHASES.map(ph => {
+        const fr = phaseFrac(ph, d) * 100, active = d >= ph.s && d <= ph.e;
+        return '<div class="p' + (active ? " act" : "") + '" title="' + ph.n + ' — ' + Math.round(fr) + '%"><i style="width:' + fr + '%"></i><div class="pl">' + ph.n.slice(0, 4) + '</div></div>'
+      }).join("") +
+      '</div><div class="legend"><span><i style="background:var(--accent)"></i>Active phase</span><span><i style="background:var(--steel)"></i>Progress</span></div></div>';
+
+    /* ---- 2 Weather ---- */
+    H += sec("weather", "Weather", "Dubai Marina · " + dshort(dt));
+    H += '<div class="card"><div class="grid g4">' +
+      stat("Condition", w.cond, "", true) +
+      stat("Temperature", w.temp + "°C", "feels " + w.heatIndex + "°C") +
+      stat("Humidity", w.hum + "%", "coastal") +
+      stat("Wind", w.wind + " km/h", w.wind > 28 ? "gusty" : "light") +
+      '</div><div class="grid g4" style="margin-top:14px">' +
+      stat("Dust level", w.dust + "/100", w.dust > 55 ? "hazy" : "clear") +
+      stat("Rain probability", w.rainP + "%", w.rainP > 40 ? "watch pours" : "—") +
+      stat("Heat index", w.heatIndex + "°C", w.temp > 40 ? "break enforced" : "normal") +
+      stat("Weather impact", w.impact + "/100", Math.round(w.prod * 100) + "% productivity") +
+      '</div>' +
+      (w.midday ? '<div class="banner" style="margin-top:14px;margin-bottom:0"><div class="bi">🌡️</div><div class="bt"><b>UAE midday break in effect.</b> Outdoor work suspended 12:30–15:00 (15 Jun–15 Sep). Cooling stations and hydration rounds active.</div></div>' : '') +
+      '</div>';
+
+    /* ---- 3 Health ---- */
+    H += sec("health", "Project Health", "Composite scoring");
+    H += '<div class="card"><div style="display:flex;gap:14px;flex-wrap:wrap;justify-content:space-between">' +
+      ring(h.sched, "Schedule") + ring(h.cost, "Cost") + ring(h.quality, "Quality") + ring(h.safety, "Safety") + ring(h.prod, "Productiv.") + ring(100 - h.risk, "1 − Risk") +
+      '</div><div style="margin-top:14px;font-size:12.5px;color:var(--ink-2);line-height:1.55"><b>Executive read:</b> ' +
+      (h.spi < 0.94 ? "Schedule health is the pressure point at SPI " + h.spi.toFixed(2) + ", " + h.dd + " days behind. " : "Schedule health is holding. ") +
+      (h.quality < 85 ? "Quality requires attention with " + f.ncrOpen + " open NCRs. " : "Quality is stable. ") +
+      (h.safety < 90 ? "Safety score is dented by heat and incidents — reinforce controls. " : "Safety trend is strong. ") +
+      "Overall risk index " + h.risk + "/100.</div></div>";
+
+    /* ---- 4 Activities ---- */
+    H += sec("activities", "Activities Performed", "Per work area · units of work");
+    H += '<div class="card flush"><div class="tbl-wrap scrollbox"><table><thead><tr>' +
+      ['Building', 'Floor', 'Zone', 'Activity', 'Plan', 'Done', 'Rem', 'Daily', 'Overall', 'Crew'].map((x, i) => '<th' + (i > 3 ? ' class="n"' : '') + '>' + x + '</th>').join("") +
+      '</tr></thead><tbody>' + acts.map(r => '<tr><td>' + r.bld + '</td><td class="num">' + r.flr + '</td><td>' + r.zone + '</td><td>' + r.act +
+        '</td><td class="n">' + r.planned + '</td><td class="n">' + r.done + '</td><td class="n">' + r.rem +
+        '</td><td class="n"><span class="chip ' + (r.prod >= 90 ? "good" : r.prod >= 70 ? "warn" : "bad") + ' nodot">' + r.prod + '%</span></td>' +
+        '<td class="n">' + r.overall + '%</td><td class="n">' + r.crew + '</td></tr>').join("") + '</tbody></table></div></div>';
+
+    /* ---- 5 Manpower ---- */
+    H += sec("manpower", "Manpower", "Trade-wise attendance");
+    H += '<div class="grid g4" style="margin-bottom:14px">' +
+      kcard("On site today", mp.presentTot.toLocaleString(), "of " + mp.plannedTot.toLocaleString() + " planned") +
+      kcard("Attendance", mp.att + "%", mp.absentTot + " absent") +
+      kcard("Overtime", mp.ot.toLocaleString(), h.dd > 10 ? "recovery mode" : "normal") +
+      kcard("Absentees", mp.absentTot.toLocaleString(), w.temp > 41 ? "heat-related" : "routine") + '</div>';
+    H += '<div class="card flush"><div class="tbl-wrap scrollbox"><table><thead><tr><th>Trade</th><th class="n">Planned</th><th class="n">Present</th><th class="n">Absent</th><th class="n">Fill</th></tr></thead><tbody>' +
+      mp.rows.map(r => '<tr><td>' + r.name + '</td><td class="n">' + r.planned + '</td><td class="n">' + r.present + '</td><td class="n">' + r.absent +
+        '</td><td class="n"><span class="chip ' + (r.present / r.planned >= 0.95 ? "good" : r.present / r.planned >= 0.85 ? "warn" : "bad") + ' nodot">' + Math.round(r.present / r.planned * 100) + '%</span></td></tr>').join("") + '</tbody></table></div></div>';
+
+    /* ---- 6 Equipment ---- */
+    H += sec("equipment", "Equipment", "Fleet status · " + eq.active + " mobilised, " + eq.down + " down");
+    H += '<div class="card flush"><div class="tbl-wrap scrollbox"><table><thead><tr><th>Asset</th><th>Status</th><th class="n">Work hrs</th><th class="n">Idle hrs</th><th class="n">Util</th><th class="n">Fuel (L)</th></tr></thead><tbody>' +
+      eq.rows.map(r => '<tr><td>' + r.name + '</td><td><span class="chip ' + r.cls + ' nodot">' + r.status + '</span></td><td class="n">' + r.work + '</td><td class="n">' + r.idle +
+        '</td><td class="n">' + (r.util || "—") + (r.util ? "%" : "") + '</td><td class="n">' + (r.fuel || "—") + '</td></tr>').join("") + '</tbody></table></div>' +
+      '<div style="padding:10px 14px;font-size:11.5px;color:var(--ink-3);border-top:1px solid var(--line)">Total fuel consumed today: <b class="num" style="color:var(--ink)">' + eq.fuel.toLocaleString() + ' L</b> · Breakdowns: ' + eq.down + ' · Maintenance events logged in CMMS.</div></div>';
+
+    /* ---- 7 Materials ---- */
+    H += sec("materials", "Materials", "Inventory · deliveries · vendor performance");
+    H += '<div class="card flush"><div class="tbl-wrap scrollbox"><table><thead><tr><th>Material</th><th class="n">Delivered</th><th class="n">Consumed</th><th class="n">Inventory</th><th>Vendor</th><th class="n">Vendor perf.</th></tr></thead><tbody>' +
+      mt.rows.map(r => '<tr><td>' + r.m + '</td><td class="n">' + (r.del === 0 ? "—" : r.del) + (typeof r.del === "number" ? " " + r.u : "") + '</td><td class="n">' + r.con + ' ' + r.u +
+        '</td><td class="n">' + (r.inv || "JIT") + (r.inv ? " " + r.u : "") + '</td><td>' + r.vendor + '</td><td class="n"><span class="chip ' + (r.vp >= 85 ? "good" : r.vp >= 70 ? "warn" : "bad") + ' nodot">' + r.vp + '%</span></td></tr>').join("") + '</tbody></table></div></div>';
+    H += '<div class="grid g3">' +
+      '<div class="card"><h3><span class="dot"></span>Stock alerts</h3>' + (mt.alerts.length ? mt.alerts.map(x => '<div class="fi"><div class="sev ' + x.lvl + '"></div><div class="body"><div class="h">' + x.m + '</div><div class="d">' + x.t + '</div></div></div>').join("") : '<div style="font-size:12px;color:var(--ink-3)">All materials above buffer.</div>') + '</div>' +
+      '<div class="card"><h3><span class="dot"></span>Expected deliveries</h3>' + mt.expDel.map(x => '<div style="font-size:12px;padding:4px 0;border-bottom:1px solid var(--line-2)">' + esc(x) + '</div>').join("") + '</div>' +
+      '<div class="card"><h3><span class="dot"></span>Delayed deliveries</h3>' + (mt.delayed.length ? mt.delayed.map(x => '<div class="fi"><div class="sev bad"></div><div class="body"><div class="d">' + esc(x) + '</div></div></div>').join("") : '<div style="font-size:12px;color:var(--ink-3)">No delayed deliveries today.</div>') + '</div></div>';
+
+    /* ---- 8 Engineer report ---- */
+    const topAct = acts[0] || { bld: "Tower A", flr: "L20", act: "Core Walls" };
+    H += sec("report", "Daily Site Engineer Report", "Rajesh K. · Site Engineer · " + dshort(dt));
+    H += '<div class="card"><div class="report">' +
+      '<div class="rh">Completed work</div><ul>' +
+      acts.slice(0, 5).map(r => '<li>' + r.bld + ' ' + r.flr + ' — ' + r.act + ': ' + r.done + ' of ' + r.planned + ' units (' + r.prod + '% of target), crew ' + r.crew + '.</li>').join("") +
+      (mt.rows[0].del ? '<li>Received ' + mt.rows[0].del + ' t reinforcement steel; cube samples taken for today’s pours.</li>' : '') + '</ul>' +
+      '<div class="rh">Issues / constraints</div><ul>' +
+      (ev.length ? ev.map(e => '<li>' + esc(e.title) + '.</li>').join("") : '<li>No major issues. Weather ' + w.cond.toLowerCase() + ', productivity ~' + Math.round(w.prod * 100) + '%.</li>') +
+      (f.inv.rebar < 200 ? '<li>Rebar inventory low (' + f.inv.rebar + ' t) — re-sequencing to prioritise columns.</li>' : '') +
+      (f.apprPending > 0 ? '<li>' + f.apprPending + ' consultant approvals pending, holding dependent activities.</li>' : '') + '</ul>' +
+      '<div class="rh">Inspection requests</div><ul>' +
+      q.insp.slice(0, 3).map(x => '<li>' + x.t + ' — ' + x.loc + ' (' + x.by + ') — ' + x.res + '.</li>').join("") + '</ul>' +
+      '<div class="rh">Tomorrow’s plan</div><ul>' +
+      '<li>Continue ' + topAct.act + ' at ' + topAct.bld + ' ' + topAct.flr + '; target formwork strike and next lift.</li>' +
+      '<li>' + (activePhases(d).some(x => x.p.n === "MEP") ? "MEP first-fix continues in Tower B ceiling void; coordinate with structure." : "Advance blockwork and plaster in completed zones.") + '</li>' +
+      '<li>Pour ' + rint(d, "tm", 120, 480) + ' m³ concrete subject to rebar inspection sign-off; arrange transit mixers and pump.</li>' +
+      (ev.some(e => e.k === "steel") ? '<li>Follow up Emirates Steel dispatch; escalate to procurement if not confirmed by 10:00.</li>' : '') + '</ul></div></div>';
+
+    /* ---- 9 AI Image analysis ---- */
+    const ph = photos(d);
+    const ppeFails = ph.filter(x => !x.ppe).length;
+    H += sec("photos", "AI Image Analysis", ph.length + " site photographs auto-tagged");
+    H += '<div class="grid g4" style="margin-bottom:12px">' +
+      kcard("Photos analysed", ph.length, "across " + (new Set(ph.map(x => x.bld))).size + " buildings") +
+      kcard("Workers detected", ph.reduce((a, x) => a + x.workers, 0), "cumulative in frames") +
+      kcard("PPE compliance", Math.round((1 - ppeFails / ph.length) * 100) + "%", ppeFails + " flags") +
+      kcard("Quality flags", ph.filter(x => x.quality.includes("flag") || x.quality.includes("missing") || x.quality.includes("check")).length, "routed to QA/QC") + '</div>';
+    H += '<div class="card"><div class="scrollbox tall"><div class="minigrid">' +
+      ph.slice(0, 60).map(x => '<div class="photo"><div class="ph"><span class="cam">' + x.ts + ' · ' + x.dir + '</span>' +
+        '<span class="frame">' + (x.act === "Curtain Wall" ? "🪟" : x.act === "MEP" ? "🔧" : x.act.includes("Slab") || x.act.includes("Core") || x.act.includes("Column") ? "🏗️" : x.act === "Interiors" || x.act === "Flooring" ? "🎨" : "📷") + '</span>' +
+        '<span class="ppe chip ' + (x.ppe ? "good" : "bad") + ' nodot" style="font-size:8.5px">' + (x.ppe ? "PPE ok" : "PPE ✕") + '</span></div>' +
+        '<div class="pb"><div class="loc">' + x.bld + ' · ' + x.flr + '</div><div class="act">' + x.act + ' — ' + x.workers + ' workers</div>' +
+        '<div class="det">' + esc(x.objs.join(", ")) + '</div><div class="det" style="color:var(--ink-2)">' + esc(x.quality) + '</div></div></div>').join("") +
+      '</div><div style="text-align:center;font-size:11px;color:var(--ink-3);padding:10px">Showing 60 of ' + ph.length + ' analysed frames · full set exported to the vision index</div></div></div>';
+
+    /* ---- 10 CCTV ---- */
+    const cc = cctv(d);
+    H += sec("cctv", "AI CCTV Analysis", cc.length + " chronological events");
+    H += '<div class="card flush"><div class="scrollbox tall"><div class="feed" style="padding:0 14px">' +
+      cc.map(e => '<div class="fi"><div class="t">' + e.t + '</div><div class="sev ' + (e.sev === "good" ? "good" : e.sev === "warn" ? "warn" : e.sev === "bad" ? "bad" : "info") + '"></div>' +
+        '<div class="body"><div class="h">' + esc(e.ev) + '</div><div class="d">' + e.loc + ' · confidence ' + e.conf + '%</div></div></div>').join("") +
+      '</div></div></div>';
+
+    /* ---- 11 Drone ---- */
+    H += sec("drone", "Drone Survey", isFri ? "Weekly flight · " + dshort(dt) : "Next flight: Friday");
+    if (isFri) {
+      H += '<div class="grid g2"><div class="card"><h3><span class="dot"></span>Orthomosaic & progress comparison</h3>' +
+        '<div class="report"><ul>' +
+        '<li>Orthomosaic captured at 2 cm/px; Tower A structure to L' + rint(d, "dr1", 20, 44) + ', Tower B to L' + rint(d, "dr2", 16, 38) + '.</li>' +
+        '<li>Week-on-week vertical progress: Tower A +' + rint(d, "dr3", 1, 3) + ' floors, Tower B +' + rint(d, "dr4", 1, 3) + ' floors.</li>' +
+        '<li>Facade coverage on east elevation measured at ' + rint(d, "dr5", 10, 70) + '% — ' + (rnd(d, "drf") > 0.5 ? "ahead of" : "behind") + ' the 3D model plan.</li>' +
+        '<li>Volumetric earthwork/backfill reconciled with survey; deviation < ' + rint(d, "dr6", 1, 4) + '%.</li></ul></div></div>' +
+        '<div class="card"><h3><span class="dot"></span>Stockyard & material yard</h3><div class="report"><ul>' +
+        '<li>Rebar stockyard: ~' + f.inv.rebar + ' t identified; ' + (f.inv.rebar < 200 ? "below reorder line — flag raised" : "adequate cover") + '.</li>' +
+        '<li>Curtain-wall crates: ' + Math.round(f.inv.cwPanels / 10) + ' units staged near Gate 2; access lane partially obstructed.</li>' +
+        '<li>Concrete batching bay throughput nominal; 2 transit mixers queuing at survey time.</li>' +
+        '<li>Laydown utilisation ' + rint(d, "dr7", 55, 88) + '% — recommend consolidating blockwork pallets.</li></ul></div></div></div>';
+      H += '<div class="grid g2"><div class="card"><h3><span class="dot"></span>Equipment map</h3><div class="report"><ul>' +
+        '<li>' + eq.rows.filter(r => r.name.includes("Crane") && r.status !== "Demobilised").length + ' tower cranes geolocated; TC positions match lift plan.</li>' +
+        '<li>Mobile crane staged at podium edge; boom lifts clustered on facade zone.</li></ul></div></div>' +
+        '<div class="card"><h3><span class="dot"></span>Traffic & logistics</h3><div class="report"><ul>' +
+        '<li>' + rint(d, "dt1", 8, 26) + ' delivery vehicles logged at gates over the flight window.</li>' +
+        '<li>Internal haul road congestion at basement ramp during peak pour — recommend timed slotting.</li></ul></div></div></div>';
+    } else {
+      H += '<div class="card"><div style="font-size:12.5px;color:var(--ink-2)">Drone flights run every <b>Friday</b>. Today is ' + DOW[dt.getDay()] + '. Last survey observations remain the current baseline; the next orthomosaic and stockyard reconciliation are scheduled for ' + dshort(nextFriday(d)) + '.</div></div>';
+    }
+
+    /* ---- 12 Comms ---- */
+    const cm = comms(d);
+    H += sec("comms", "Communications", "WhatsApp · Email · MoM · Voice notes");
+    H += '<div class="grid g2"><div class="card"><h3><span class="dot"></span>Site WhatsApp group</h3><div class="chat">' +
+      cm.wa.map(m => '<div class="msg ' + (m.s === "me" ? "me" : "them") + '"><div class="who">' + esc(m.who) + '</div>' + esc(m.t) + '<div class="tm">' + m.tm + '</div></div>').join("") + '</div></div>' +
+      '<div class="card"><h3><span class="dot"></span>Emails</h3>' + cm.emails.map(e => '<div class="email"><div class="eh"><div class="subj">' + esc(e.subj) + '</div><div style="color:var(--ink-3)">' + esc(e.from) + ' → ' + esc(e.to) + '</div></div><div class="eb">' + esc(e.body) + '</div></div>').join("") + '</div></div>';
+    H += '<div class="grid g2"><div class="card"><h3><span class="dot"></span>Coordination meeting — minutes</h3>' +
+      '<div style="font-size:11px;color:var(--ink-3);margin-bottom:6px">' + cm.mom.time + ' · ' + cm.mom.attend.join(", ") + '</div>' +
+      '<ol style="margin:0;padding-left:18px;font-size:12px;line-height:1.5">' + cm.mom.items.map(x => '<li style="margin:3px 0">' + esc(x) + '</li>').join("") + '</ol></div>' +
+      '<div class="card"><h3><span class="dot"></span>Voice notes</h3>' + cm.voice.map(v => '<div class="fi"><div class="body"><div class="h">🎙️ ' + esc(v.who) + '</div><div class="d">' + esc(v.t) + '</div></div></div>').join("") + '</div></div>';
+
+    /* ---- 13 Procurement ---- */
+    const pr = procurement(d);
+    H += sec("procurement", "Procurement", "POs · invoices · vendor commitments");
+    H += '<div class="grid g2"><div class="card flush"><h3 style="padding:14px 16px 0">Purchase orders</h3><div class="tbl-wrap"><table><thead><tr><th>PO</th><th>Item</th><th>Vendor</th><th class="n">Value (AED)</th><th>Status</th></tr></thead><tbody>' +
+      pr.pos.map(x => '<tr><td class="num">' + x.no + '</td><td>' + x.item + '</td><td>' + x.vendor + '</td><td class="n">' + x.val + '</td><td><span class="chip ' + (x.st.includes("Delay") || x.st.includes("hold") ? "bad" : x.st.includes("production") || x.st.includes("manufacture") || x.st.includes("Budget") ? "warn" : "good") + ' nodot">' + x.st + '</span></td></tr>').join("") + '</tbody></table></div></div>' +
+      '<div class="card flush"><h3 style="padding:14px 16px 0">Invoices</h3><div class="tbl-wrap"><table><thead><tr><th>Invoice</th><th>Vendor</th><th class="n">Amount</th><th>Status</th></tr></thead><tbody>' +
+      pr.inv.map(x => '<tr><td class="num">' + x.no + '</td><td>' + x.vendor + '</td><td class="n">' + x.amt + '</td><td><span class="chip ' + (x.st === "Certified" || x.st === "Approved" ? "good" : "warn") + ' nodot">' + x.st + '</span></td></tr>').join("") + '</tbody></table></div></div></div>';
+    H += '<div class="card"><h3><span class="dot"></span>Procurement risks</h3>' + pr.risks.map(x => '<div class="fi"><div class="sev warn"></div><div class="body"><div class="d">' + esc(x) + '</div></div></div>').join("") + '</div>';
+
+    /* ---- 14 Quality ---- */
+    H += sec("quality", "Quality", "Inspections · cube tests · NCRs");
+    H += '<div class="grid g4" style="margin-bottom:12px">' +
+      kcard("Open NCRs", q.open, "of " + q.total + " raised") +
+      kcard("Inspections today", q.insp.length, "consultant + QA/QC") +
+      kcard("Cube strength", q.insp[2].res.split(" ")[0] + " MPa", "28-day, C40") +
+      kcard("Quality score", h.quality, chip(h.quality) === "good" ? "strong" : "watch") + '</div>';
+    H += '<div class="card flush"><div class="tbl-wrap"><table><thead><tr><th>Inspection</th><th>Location</th><th>Result</th><th>By</th></tr></thead><tbody>' +
+      q.insp.map(x => '<tr><td>' + x.t + '</td><td>' + x.loc + '</td><td><span class="chip ' + (/Approved|Passed|tolerance|Nil|MPa/.test(x.res) ? "good" : /Conditional|Deferred/.test(x.res) ? "warn" : "bad") + ' nodot">' + x.res + '</span></td><td>' + x.by + '</td></tr>').join("") + '</tbody></table></div></div>';
+    H += '<div class="grid g2"><div class="card"><h3><span class="dot"></span>NCRs & corrective actions</h3>' + (q.ncrs.length ? q.ncrs.map(x => '<div class="fi"><div class="sev ' + (x.st === "Open" ? "bad" : x.st === "Closed" ? "good" : "warn") + '"></div><div class="body"><div class="h">' + x.no + ' · <span class="chip ' + (x.st === "Open" ? "bad" : x.st === "Closed" ? "good" : "warn") + ' nodot">' + x.st + '</span></div><div class="d">' + esc(x.d) + ' — <i>' + esc(x.act) + '</i></div></div></div>').join("") : '<div style="font-size:12px;color:var(--ink-3)">No open NCRs today.</div>') + '</div>' +
+      '<div class="card"><h3><span class="dot"></span>Consultant remarks</h3>' + q.remarks.map(x => '<div style="font-size:12px;padding:6px 0;border-bottom:1px solid var(--line-2);color:var(--ink-2)">"' + esc(x) + '"</div>').join("") + '</div></div>';
+
+    /* ---- 15 Safety ---- */
+    H += sec("safety", "Safety", "Permits · toolbox talks · heat stress");
+    H += '<div class="grid g4" style="margin-bottom:12px">' +
+      kcard("Safety score", sf.score, chip(sf.score) === "good" ? "strong" : "attention") +
+      kcard("PPE violations", sf.ppeV, sf.ppeV > 3 ? "stand-down risk" : "corrected") +
+      kcard("Near misses", sf.nearMiss, "logged & reviewed") +
+      kcard("Recordables (LTD)", sf.incidents, "project to date") + '</div>';
+    H += '<div class="grid g2"><div class="card flush"><h3 style="padding:14px 16px 0">Permits to work</h3><div class="tbl-wrap"><table><thead><tr><th>Permit</th><th class="n">Count</th><th>Status</th></tr></thead><tbody>' +
+      sf.permits.map(x => '<tr><td>' + x.t + '</td><td class="n">' + x.n + '</td><td>' + x.st + '</td></tr>').join("") + '</tbody></table></div></div>' +
+      '<div class="card"><h3><span class="dot"></span>HSE summary</h3><div class="report"><div class="rh">Heat-stress monitoring</div><div style="font-size:12px;color:var(--ink-2)">' + esc(sf.heat) + '</div>' +
+      '<div class="rh">Toolbox talk</div><div style="font-size:12px;color:var(--ink-2)">' + esc(sf.tbt) + '</div>' +
+      '<div class="rh">Medical cases</div>' + (sf.med.length ? sf.med.map(m => '<div style="font-size:12px;color:var(--ink-2)">' + esc(m.t) + ' — ' + esc(m.st) + '</div>').join("") : '<div style="font-size:12px;color:var(--ink-3)">None today.</div>') + '</div></div></div>';
+
+    /* ---- 16 Commercial ---- */
+    H += sec("commercial", "Commercial", "Daily cost · budget · cash flow");
+    H += '<div class="grid g4" style="margin-bottom:12px">' +
+      kcard("Daily cost", "AED " + (c.daily / 1e6).toFixed(2) + "M", "labour+equip+material") +
+      kcard("Budget used", c.pctUsed.toFixed(1) + "%", "of AED 1.35 B") +
+      kcard("Forecast cost", "AED " + (c.forecast / 1e9).toFixed(3) + "B", c.overrun > 1.02 ? "+" + ((c.overrun - 1) * 100).toFixed(1) + "% vs budget" : "on budget") +
+      kcard("Cash flow", c.cash.split(" ")[0], c.cash) + '</div>';
+    H += '<div class="grid g2"><div class="card"><h3><span class="dot"></span>Daily cost breakdown</h3><div class="kv">' +
+      '<div class="k">Labour</div><div class="v">AED ' + (c.labour / 1e3).toFixed(0) + 'k</div>' +
+      '<div class="k">Equipment + fuel</div><div class="v">AED ' + (c.equipC / 1e3).toFixed(0) + 'k</div>' +
+      '<div class="k">Materials</div><div class="v">AED ' + (c.matC / 1e6).toFixed(2) + 'M</div>' +
+      '<div class="k" style="border-top:1px solid var(--line);padding-top:4px">Total</div><div class="v" style="border-top:1px solid var(--line);padding-top:4px;color:var(--accent)">AED ' + (c.daily / 1e6).toFixed(2) + 'M</div>' +
+      '<div class="k">Budget consumed to date</div><div class="v">AED ' + (c.budgetUsed / 1e9).toFixed(3) + 'B</div></div></div>' +
+      '<div class="card"><h3><span class="dot"></span>Variation orders</h3><div class="tbl-wrap"><table><thead><tr><th>VO</th><th>Description</th><th class="n">Value</th><th>Status</th></tr></thead><tbody>' +
+      c.vos.map(x => '<tr><td class="num">' + x.no + '</td><td>' + x.d + '</td><td class="n">' + x.val + '</td><td><span class="chip ' + (x.st === "Agreed" ? "good" : "warn") + ' nodot">' + x.st + '</span></td></tr>').join("") + '</tbody></table></div></div></div>';
+
+    /* ---- 17 Schedule ---- */
+    H += sec("schedule", "Schedule", "Critical path · milestones · SPI");
+    H += '<div class="grid g4" style="margin-bottom:12px">' +
+      kcard("Planned", sc.p.toFixed(1) + "%", "baseline") +
+      kcard("Actual", sc.a.toFixed(1) + "%", "earned") +
+      kcard("SPI", sc.spi.toFixed(2), chip(sc.spi >= 0.98 ? 95 : sc.spi >= 0.94 ? 80 : 60) === "good" ? "on track" : "behind") +
+      kcard("Delay", sc.dd + " wd", "forecast " + sc.forecastStr.split(" ").slice(1).join(" ")) + '</div>';
+    H += '<div class="grid g2"><div class="card"><h3><span class="dot"></span>Critical path & status</h3>' +
+      '<div class="kv" style="font-size:12.5px"><div class="k">Critical activity</div><div class="v">' + esc(sc.critical) + '</div>' +
+      '<div class="k">Forecast completion</div><div class="v">' + sc.forecastStr + '</div>' +
+      '<div class="k">Delay to baseline</div><div class="v">' + sc.dd + ' working days</div>' +
+      '<div class="k">SPI</div><div class="v">' + sc.spi.toFixed(2) + '</div></div>' +
+      '<div class="rh report" style="margin-top:10px">Delayed activities</div>' + sc.delayedAct.map(x => '<div class="fi"><div class="sev bad"></div><div class="body"><div class="d">' + esc(x) + '</div></div></div>').join("") +
+      (sc.recovered.length ? '<div class="rh report">Recovered / accelerated</div>' + sc.recovered.map(x => '<div class="fi"><div class="sev good"></div><div class="body"><div class="d">' + esc(x) + '</div></div></div>').join("") : "") + '</div>' +
+      '<div class="card"><h3><span class="dot"></span>Milestones</h3><div class="tbl-wrap"><table><thead><tr><th>Milestone</th><th>Baseline</th><th>Status</th></tr></thead><tbody>' +
+      sc.milestones.map(m => '<tr><td>' + m.m + '</td><td class="num">' + m.date + '</td><td><span class="chip ' + (m.done ? "good" : "mut") + ' nodot">' + (m.done ? "Achieved" : "Upcoming") + '</span></td></tr>').join("") + '</tbody></table></div></div></div>';
+
+    /* ---- 18 AI PM analysis ---- */
+    const pm = pmAnalysis(d);
+    H += sec("pm", "AI Project Manager Analysis", "Cross-source synthesis");
+    H += '<div class="card">' + pm.map(x => '<div class="insight"><div class="ico">' + x.i + '</div><div><div class="h">' + esc(x.h) + '</div>' + (x.d ? '<div class="d">' + esc(x.d) + '</div>' : '') + '</div></div>').join("") + '</div>';
+
+    /* ---- 19 Delay forecast ---- */
+    const fo = forecast(d);
+    H += sec("forecast", "Delay Forecasting", "Predictive · critical-path risk");
+    H += '<div class="banner ' + (fo.predicted > 10 ? "bad" : fo.predicted > 4 ? "" : "good") + '"><div class="bi">' + (fo.predicted > 10 ? "⛔" : fo.predicted > 4 ? "⚠️" : "✅") + '</div>' +
+      '<div class="bt"><b>Predicted delay: ' + fo.predicted + ' working days</b> · Confidence ' + fo.conf + '% · Forecast handover ' + fo.fc + '</div></div>';
+    H += '<div class="grid g3" style="margin-bottom:14px">' + fo.bands.map(b => '<div class="card"><div class="stat"><span class="lbl">' + b.t + '</span>' +
+      '<span class="chip ' + (b.risk === "High" ? "bad" : b.risk === "Medium" ? "warn" : "good") + '" style="align-self:flex-start;margin:4px 0">' + b.risk + ' risk</span>' +
+      '<span class="sub">' + esc(b.note) + '</span></div></div>').join("") + '</div>';
+    H += '<div class="grid g2"><div class="card"><h3><span class="dot"></span>Root causes & contributing factors</h3>' +
+      fo.reasons.map((r, i) => '<div class="fi"><div class="t num">' + (i + 1) + '</div><div class="body"><div class="d" style="font-size:12.5px;color:var(--ink)">' + esc(r) + '</div></div></div>').join("") + '</div>' +
+      '<div class="card"><h3><span class="dot"></span>Recommended recovery actions</h3>' +
+      fo.recovery.map(r => '<div class="fi"><div class="sev good"></div><div class="body"><div class="d" style="font-size:12.5px;color:var(--ink)">' + esc(r) + '</div></div></div>').join("") + '</div></div>';
+
+    /* ---- 20 Exec insights ---- */
+    const ei = execInsights(d);
+    H += sec("exec", "Executive Insights", "Five things the CEO needs in 60 seconds");
+    H += '<div class="card">' + ei.map(x => '<div class="insight"><div class="ico" style="font-family:var(--mono);font-weight:700;color:var(--accent)">' + x.i + '</div><div><div class="h">' + esc(x.h) + '</div>' + (x.d ? '<div class="d">' + esc(x.d) + '</div>' : '') + '</div></div>').join("") + '</div>';
+
+    /* ---- 21 Actions ---- */
+    const ra = recActions(d);
+    H += sec("actions", "Recommended Actions", "Prioritised · owner · deadline");
+    const plabel = { crit: "CRITICAL", high: "HIGH", med: "MEDIUM", low: "LOW" };
+    const pchip = { crit: "bad", high: "warn", med: "info", low: "mut" };
+    H += '<div>' + ra.map(x => '<div class="action ' + x.p + '"><div class="top"><span class="chip ' + pchip[x.p] + ' nodot">' + plabel[x.p] + '</span><h4>' + esc(x.t) + '</h4></div>' +
+      '<div class="why">' + esc(x.why) + '</div>' +
+      '<div class="meta"><span><b>Impact:</b> ' + esc(x.imp) + '</span><span><b>Benefit:</b> ' + esc(x.ben) + '</span><span><b>Owner:</b> ' + esc(x.who) + '</span><span><b>Deadline:</b> ' + esc(x.dl) + '</span></div></div>').join("") + '</div>';
+
+    /* ---- 22 Project state ---- */
+    H += sec("state", "Project State", "Carried forward as input to Day " + (d + 1));
+    H += '<div class="card flush" style="padding:0"><div style="display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line)">' +
+      '<h3 style="margin:0"><span class="dot"></span>PROJECT_STATE — Day ' + d + '</h3>' +
+      '<button class="btn" id="copyState">Copy JSON</button></div>' +
+      '<pre class="state" id="stateJson">' + stateJson(d) + '</pre></div>';
+
+    H += '<div class="foot">Marina One Business Towers · AED 1.35 B · Al Noor Construction LLC · AECOM PMC · Gensler · WSP · Jacobs<br>Deterministic construction digital twin — Day ' + d + ' of ' + TOTAL + ' · every day is computed from all preceding days.</div>';
+
+    document.getElementById("content").innerHTML = H;
+    document.getElementById("copyState").onclick = () => {
+      navigator.clipboard.writeText(document.getElementById("stateJson").textContent).then(() => {
+        const b = document.getElementById("copyState"); b.textContent = "Copied ✓"; setTimeout(() => b.textContent = "Copy JSON", 1400);
+      });
+    };
+    setActiveNav();
+  }
+  function nextFriday(d) { let i = d; while (i < TOTAL && WD[i - 1].getDay() !== 5) i++; return WD[Math.min(TOTAL, i) - 1] || WD[TOTAL - 1] }
+  function sec(id, title, tag) {
+    const idx = SECTIONS.findIndex(s => s[0] === id) + 1;
+    return '<section id="s-' + id + '"><div class="sec-head"><span class="n">' + String(idx).padStart(2, "0") + '</span><h2>' + title + '</h2><span class="tag">' + tag + '</span></div>';
+  }
+  function stat(lbl, big, sub, small) { return '<div class="stat"><span class="lbl">' + lbl + '</span><span class="big"' + (small ? ' style="font-size:15px;line-height:1.2"' : '') + '>' + big + '</span>' + (sub ? '<span class="sub">' + sub + '</span>' : '') + '</div>'; }
+  function kcard(lbl, big, sub) { return '<div class="card" style="margin:0"><div class="stat"><span class="lbl">' + lbl + '</span><span class="big">' + big + '</span>' + (sub ? '<span class="sub">' + sub + '</span>' : '') + '</div></div>'; }
+  function kcardClose() { return "</div>" }
+  function stateJson(d) {
+    const h = health(d), sc = schedule(d), f = foldTo(d), fo = forecast(d), mt = materials(d), eq = equipment(d), mp = manpower(d), c = commercial(d);
+    const o = {
+      day: d, date: WD[d - 1].toISOString().slice(0, 10), month: Math.ceil(d / 26),
+      completion: { actual: +actualPct(d).toFixed(2), planned: +plannedPct(d).toFixed(2), spi: +h.spi.toFixed(3) },
+      schedule: { delay_days: h.dd, critical_path: sc.critical, forecast_completion: sc.forecastStr, forecast_delay_wd: fo.predicted },
+      inventory: { rebar_t: f.inv.rebar, curtain_wall_units: f.inv.cwPanels, tiles_m2: f.inv.tiles },
+      open_risks: h.risk, open_rfis: f.rfiOpen, open_ncrs: f.ncrOpen, pending_approvals: f.apprPending,
+      delayed_activities: sc.delayedAct,
+      upcoming_milestones: sc.milestones.filter(m => !m.done).slice(0, 3).map(m => m.m + " (" + m.date + ")"),
+      outstanding_procurement: mt.delayed.length ? mt.delayed : ["none critical"],
+      equipment: { mobilised: eq.active, down: eq.down, fuel_L: eq.fuel },
+      manpower: { on_site: mp.presentTot, attendance_pct: mp.att, overtime: mp.ot },
+      commercial: { budget_used_pct: +c.pctUsed.toFixed(2), forecast_cost_AED_bn: +(c.forecast / 1e9).toFixed(3) },
+      safety: { score: h.safety, recordables_to_date: f.incidents },
+      active_events: eventsForDay(d).map(e => e.title),
+    };
+    let j = JSON.stringify(o, null, 2);
+    j = esc(j).replace(/"([a-z_]+)":/g, '<span class="jk">"$1"</span>:')
+      .replace(/: (\d+\.?\d*)/g, ': <span class="jn">$1</span>')
+      .replace(/: (".*?")/g, ': <span class="js">$1</span>');
+    return j;
+  }
+  function setActiveNav() {
+    const links = [...document.querySelectorAll("#nav a")];
+    const secs = SECTIONS.map(s => document.getElementById("s-" + s[0]));
+    const top = 180; let cur = secs[0].id;
+    for (const s of secs) { if (s.getBoundingClientRect().top <= top) cur = s.id; }
+    links.forEach(a => a.classList.toggle("on", "s-" + a.dataset.s === cur));
+  }
+
+  /* ---------- controls ---------- */
+  function todayIndex() {
+    const now = new Date(2026, 6, 14); let best = 1, bd = 1e15;
+    WD.forEach((dt, i) => { const diff = Math.abs(dt - now); if (diff < bd) { bd = diff; best = i + 1 } });
+    return best;
+  }
+  function setDay(d) { d = clamp(Math.round(d), 1, TOTAL); render(d) }
+  document.getElementById("prev").onclick = () => setDay(DAY - 1);
+  document.getElementById("next").onclick = () => setDay(DAY + 1);
+  document.getElementById("slider").oninput = e => setDay(+e.target.value);
+  document.getElementById("today").onclick = () => setDay(todayIndex());
+  let playing = null;
+  let playSpeed = 1;
+
+  function startPlay() {
+    const interval = Math.round(1100 / playSpeed);
+    playing = setInterval(() => {
+      if (DAY >= TOTAL) {
+        stopPlay();
+        return;
+      }
+      setDay(DAY + 1);
+    }, interval);
+    document.getElementById("play").textContent = "⏸ Pause";
+  }
+
+  function stopPlay() {
+    if (playing) {
+      clearInterval(playing);
+      playing = null;
+    }
+    document.getElementById("play").textContent = "▶ Play";
+  }
+
+  document.getElementById("play").onclick = () => {
+    if (playing) {
+      stopPlay();
+    } else {
+      startPlay();
+    }
+  };
+
+  document.querySelectorAll(".speed-btn").forEach(btn => {
+    btn.onclick = e => {
+      document.querySelectorAll(".speed-btn").forEach(b => b.classList.remove("on"));
+      e.target.classList.add("on");
+      playSpeed = parseFloat(e.target.dataset.speed) || 1;
+      if (playing) {
+        stopPlay();
+        startPlay();
+      }
+    };
+  });
+
+  document.addEventListener("keydown", e => { if (e.key === "ArrowLeft") setDay(DAY - 1); if (e.key === "ArrowRight") setDay(DAY + 1); });
+  const themeBtn = document.getElementById("theme");
+  themeBtn.onclick = () => {
+    const cur = document.documentElement.getAttribute("data-theme");
+    const isDark = cur ? cur === "dark" : matchMedia("(prefers-color-scheme:dark)").matches;
+    document.documentElement.setAttribute("data-theme", isDark ? "light" : "dark");
+  };
+  document.querySelector(".main").addEventListener("scroll", () => { }, true);
+  window.addEventListener("scroll", setActiveNav, true);
+
+  buildNav();
+  setDay(todayIndex());
+
+  /* ---------- password lock logic ---------- */
+  const passwordInput = document.getElementById("passwordInput");
+  const unlockBtn = document.getElementById("unlockBtn");
+  const lockError = document.getElementById("lockError");
+  const lockCard = document.getElementById("lockCard");
+  const lockScreen = document.getElementById("lockScreen");
+  const appWrapper = document.querySelector(".app");
+
+  function checkPassword() {
+    if (passwordInput.value === "marinaone") {
+      lockScreen.classList.add("unlocked");
+      appWrapper.classList.remove("hidden");
+      sessionStorage.setItem("demo_unlocked", "true");
+    } else {
+      lockError.classList.add("visible");
+      lockCard.classList.add("lock-shake");
+      passwordInput.value = "";
+      passwordInput.focus();
+      setTimeout(() => {
+        lockCard.classList.remove("lock-shake");
+      }, 400);
+    }
+  }
+
+  if (unlockBtn && passwordInput) {
+    unlockBtn.onclick = checkPassword;
+    passwordInput.onkeydown = (e) => {
+      if (e.key === "Enter") {
+        checkPassword();
+      }
+    };
+    passwordInput.oninput = () => {
+      lockError.classList.remove("visible");
+    };
+
+    if (sessionStorage.getItem("demo_unlocked") === "true") {
+      lockScreen.style.display = "none";
+      appWrapper.classList.remove("hidden");
+    } else {
+      setTimeout(() => {
+        passwordInput.focus();
+      }, 300);
+    }
+  }
+</script>
