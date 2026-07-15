@@ -183,3 +183,32 @@
   color: var(--text-secondary);
   text-align: center;
 }
+
+/* FAQ collapsible styles */
+.faqItem {
+  margin-bottom: 1rem;
+  border-radius: 6px;
+  padding: 0.5rem 0.5rem 0 0.5rem;
+}
+
+.faqItem summary {
+  cursor: pointer;
+  font-weight: 700;
+  font-family: var(--font-sans);
+  list-style: none;
+  outline: none;
+}
+
+.faqItem summary::-webkit-details-marker {
+  display: none;
+}
+
+.faqItem[open] summary {
+  color: var(--status-pulse);
+}
+
+.faqContent {
+  margin-top: 0.5rem;
+  color: var(--text-secondary);
+}
+

@@ -19,7 +19,7 @@ export default function SolidPassTerms() {
     <div className={styles.page}>
       <header className={styles.legalHeader}>
         <div className={styles.legalContainer}>
-          <Link href="/" className={styles.backLink}>
+          <Link href="/solidpass" className={styles.backLink}>
             <svg
               viewBox="0 0 24 24"
               width="16"
@@ -34,7 +34,7 @@ export default function SolidPassTerms() {
               <line x1="19" y1="12" x2="5" y2="12" />
               <polyline points="12 19 5 12 12 5" />
             </svg>
-            Back to Air Microservices
+            Back to SolidPass
           </Link>
           <span className={styles.appName}>SolidPass</span>
           <h1 className={styles.title}>Terms &amp; Conditions</h1>
