@@ -39,7 +39,7 @@ export default function SolidPassPrivacy() {
           <span className={styles.appName}>SolidPass</span>
           <h1 className={styles.title}>Privacy Policy</h1>
           <div className={styles.meta}>
-            <span>Effective Date: July 7, 2026</span>
+            <span>Effective Date: July 17, 2026</span>
           </div>
         </div>
       </header>
@@ -71,13 +71,16 @@ export default function SolidPassPrivacy() {
                 <span className={styles.listItemStrong}>Personal Data & Accounts:</span> SolidPass does not require or support user accounts, registration, email sign-ups, or profile creation.
               </li>
               <li className={styles.listItem}>
-                <span className={styles.listItemStrong}>Vault Contents:</span> Your passwords, credit cards, credentials, notes, and other sensitive information stay on your device. We have no technical access to this data, and it is never transmitted over the internet.
+                <span className={styles.listItemStrong}>Vault Contents:</span> Your passwords, credit cards, contacts, identity profiles, credentials, notes, scanned documents, file attachments, and other sensitive information stay on your device. We have no technical access to this data, and it is never transmitted over the internet.
               </li>
               <li className={styles.listItem}>
                 <span className={styles.listItemStrong}>Network Logs:</span> The App operates entirely without internet access permissions on your device. It cannot communicate with remote systems or external servers.
               </li>
               <li className={styles.listItem}>
                 <span className={styles.listItemStrong}>No Tracking or Analytics:</span> We do not integrate any third-party tracking, analytics SDKs (such as Google Analytics or Firebase), or advertisements. Your interaction with the App remains entirely private.
+              </li>
+              <li className={styles.listItem}>
+                <span className={styles.listItemStrong}>On-Device Scanning &amp; Camera Isolation:</span> When using "Scan &amp; Autofill" features (for scanning documents, payment cards, or identity documents like passports and driver's licenses), all image analysis, perspective correction, and text extraction (such as parsing credit card numbers or passport MRZ fields) are executed 100% locally and offline on your device using native APIs (like Apple VisionKit and Google ML Kit). Photos and scans captured during this flow reside solely within the App's secure sandbox cache, are never saved to your device's public photo gallery or camera roll (savesToPhotoLibrary: false), and are never sent to external servers. Extracted data is only pre-populated on your screen for review and is not saved to your vault until you explicitly tap Save.
               </li>
             </ul>
           </section>
@@ -89,13 +92,16 @@ export default function SolidPassPrivacy() {
             </p>
             <ul className={styles.list}>
               <li className={styles.listItem}>
-                <span className={styles.listItemStrong}>Master Password Security:</span> Your Master Password is never stored on disk. SolidPass derives a robust Key Encryption Key (KEK) using PBKDF2-HMAC-SHA256 with 10,000 iterations and a secure, cryptographically random salt.
+                <span className={styles.listItemStrong}>Master Password Security:</span> Your Master Password is never stored on disk. SolidPass derives a robust Key Encryption Key (KEK) using PBKDF2-HMAC-SHA256 with 310,000 iterations (conforming to modern NIST SP 800-63B standards) and a secure, cryptographically random salt.
               </li>
               <li className={styles.listItem}>
-                <span className={styles.listItemStrong}>Database Encryption:</span> A secure 256-bit Database Key (DK) is generated locally to encrypt your SQLite database. Individual sensitive items are further encrypted using AES-256-GCM with unique 12-byte initialization vectors (IVs) and authenticated tags.
+                <span className={styles.listItemStrong}>Database Encryption:</span> A secure 256-bit Database Key (DK) is generated locally to encrypt your SQLite database. Individual sensitive items and file attachments (stored in a normalized, dedicated table for optimal list performance) are further encrypted using AES-256-GCM with unique 12-byte initialization vectors (IVs) and authenticated tags.
               </li>
               <li className={styles.listItem}>
                 <span className={styles.listItemStrong}>Memory Security (Zeroization):</span> Sensitive buffers, passwords, and derived keys are explicitly wiped (zeroized) from your device&apos;s active memory immediately after use to prevent memory-snooping attacks.
+              </li>
+              <li className={styles.listItem}>
+                <span className={styles.listItemStrong}>Global Screen Capture Prevention:</span> SolidPass enforces native screen capture and screenshot blocking app-wide. Screenshots and video recordings are completely blacked out to prevent exposure of sensitive vault information.
               </li>
             </ul>
           </section>

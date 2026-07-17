@@ -39,7 +39,7 @@ export default function SolidPassTerms() {
           <span className={styles.appName}>SolidPass</span>
           <h1 className={styles.title}>Terms &amp; Conditions</h1>
           <div className={styles.meta}>
-            <span>Last Updated: July 7, 2026</span>
+            <span>Last Updated: July 17, 2026</span>
           </div>
         </div>
       </header>
@@ -88,10 +88,16 @@ export default function SolidPassTerms() {
                 <span className={styles.listItemStrong}>Master Password:</span> You are responsible for creating a sufficiently strong Master Password. Since your Master Password is never stored on disk or sent to a server, we cannot verify, reset, or recover it.
               </li>
               <li className={styles.listItem}>
-                <span className={styles.listItemStrong}>Device Security:</span> You must secure your physical device against unauthorized access. If your device is lost, stolen, compromised, rooted, or jailbroken, the cryptographic guarantees of the App could be bypassed or weakened.
+                <span className={styles.listItemStrong}>Device Security &amp; Screen Capture Prevention:</span> You must secure your physical device against unauthorized access. If your device is lost, stolen, compromised, rooted, or jailbroken, the cryptographic guarantees of the App could be bypassed or weakened. SolidPass integrates native screen capture and screenshot blocking to prevent background software or screen recordings from capturing vault data, but these features are auxiliary and do not substitute for robust device-level security.
               </li>
               <li className={styles.listItem}>
                 <span className={styles.listItemStrong}>Biometrics:</span> Biometric unlock features (Face ID, Fingerprint) rely on your device&apos;s hardware Secure Enclave. If you register multiple profiles or allow other individuals to register biometrics on your device, they may be able to access your SolidPass vault.
+              </li>
+              <li className={styles.listItem}>
+                <span className={styles.listItemStrong}>Data Entry Review &amp; Scan Accuracy:</span> When utilizing the "Scan &amp; Autofill" utility, SolidPass uses local, on-device OCR to read payment card details and parse identity documents (such as passports and driver's licenses). OCR results depend on camera quality and lighting conditions. You are solely responsible for checking, editing, and verifying the accuracy of all pre-populated values on the user interface before committing them to your database by tapping Save.
+              </li>
+              <li className={styles.listItem}>
+                <span className={styles.listItemStrong}>Hardware Compatibility &amp; Sandboxed Limitations:</span> Advanced scanning and OCR functions require a device with a working camera and run native system libraries. In compliance with our hybrid framework safety checks, these features are hidden or restricted in sandboxed or emulator environments (such as Expo Go or developer simulators) to prevent bridge crashes.
               </li>
             </ul>
           </section>
@@ -103,10 +109,10 @@ export default function SolidPassTerms() {
             </p>
             <ul className={styles.list}>
               <li className={styles.listItem}>
-                We do not maintain copies, logs, or history of your passwords or database. In the event of device failure, database corruption, accidental deletion, or factory reset, your data is unrecoverable unless you have a secure <code className="technical">.solidpass</code> backup.
+                We do not maintain copies, logs, or history of your passwords, items, database, or attachments (including document scans). In the event of device failure, database corruption, accidental deletion, or factory reset, your data is unrecoverable unless you have a secure <code className="technical">.solidpass</code> backup.
               </li>
               <li className={styles.listItem}>
-                If you choose to export your data into standard CSV files for import into other utilities, <strong>this data will be exported as unencrypted plain text.</strong> Anyone with access to this exported CSV file can read your credentials. You assume all liability and security risks for how you store, transmit, or delete unencrypted exported data.
+                If you choose to export your data into standard CSV files for import into other utilities, <strong>this data will be exported as unencrypted plain text.</strong> Anyone with access to this exported CSV file can read your credentials. Note that binary file attachments cannot be represented in a standard text CSV and will not be included in text-only exports. You assume all liability and security risks for how you store, transmit, or delete unencrypted exported data.
               </li>
             </ul>
           </section>
