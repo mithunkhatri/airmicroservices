@@ -92,10 +92,10 @@ export default function SolidPassPrivacy() {
             </p>
             <ul className={styles.list}>
               <li className={styles.listItem}>
-                <span className={styles.listItemStrong}>Master Password Security:</span> Your Master Password is never stored on disk. SolidPass derives a robust Key Encryption Key (KEK) using PBKDF2-HMAC-SHA256 with 310,000 iterations (conforming to modern NIST SP 800-63B standards) and a secure, cryptographically random salt.
+                <span className={styles.listItemStrong}>Master Password Security:</span> Your Master Password is never stored on disk. SolidPass derives a robust Key Encryption Key (KEK) using Argon2id (RFC 9106), a memory-hard key-derivation function designed to resist brute-force attacks from GPUs and specialized hardware, together with a secure, cryptographically random salt.
               </li>
               <li className={styles.listItem}>
-                <span className={styles.listItemStrong}>Database Encryption:</span> A secure 256-bit Database Key (DK) is generated locally to encrypt your SQLite database. Individual sensitive items and file attachments (stored in a normalized, dedicated table for optimal list performance) are further encrypted using AES-256-GCM with unique 12-byte initialization vectors (IVs) and authenticated tags.
+                <span className={styles.listItemStrong}>Database Encryption:</span> A secure 256-bit Database Key (DK) is generated locally to encrypt your SQLite database. Individual sensitive items and file attachments (stored in a normalized, dedicated table for optimal list performance) are further encrypted using AES-256-GCM with unique 12-byte initialization vectors (IVs) and authenticated tags. Item metadata — titles, types, tags, and attachment names — is encrypted as well, so a copied database or backup file reveals nothing about your entries.
               </li>
               <li className={styles.listItem}>
                 <span className={styles.listItemStrong}>Memory Security (Zeroization):</span> Sensitive buffers, passwords, and derived keys are explicitly wiped (zeroized) from your device&apos;s active memory immediately after use to prevent memory-snooping attacks.

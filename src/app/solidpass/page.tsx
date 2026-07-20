@@ -204,7 +204,7 @@ export default function SolidPassPage() {
               <p className={styles.featureDescription}>
                 AES-256-GCM encryption with unique initialization vectors for every item.
                 Master passwords are never stored—instead, they're converted into cryptographic
-                keys using PBKDF2-HMAC-SHA256 with 10,000 iterations.
+                keys using Argon2id, a memory-hard algorithm built to resist GPU and ASIC attacks.
               </p>
             </div>
 
@@ -228,8 +228,9 @@ export default function SolidPassPage() {
               <h4 className={styles.securityItemTitle}>Master Password Derivation</h4>
               <p className={styles.securityItemText}>
                 Your master password is never saved. Instead, we derive a Key Encryption Key (KEK)
-                using PBKDF2-HMAC-SHA256 with 10,000 iterations and a cryptographically random
-                32-byte salt.
+                using Argon2id (RFC 9106) — a memory-hard function that makes brute-forcing with
+                GPUs or specialized hardware prohibitively expensive — with a cryptographically
+                random 32-byte salt.
               </p>
             </div>
 
@@ -238,6 +239,8 @@ export default function SolidPassPage() {
               <p className={styles.securityItemText}>
                 Every password, credit card, account, key, and note is encrypted with AES-256-GCM,
                 using unique 12-byte initialization vectors (IVs) and authenticated tags for integrity.
+                Item metadata — titles, types, tags, and attachment names — is encrypted too, so even a
+                stolen database or backup reveals nothing about what you store.
               </p>
             </div>
 
@@ -268,7 +271,8 @@ export default function SolidPassPage() {
             <div className={styles.securityItem}>
               <h4 className={styles.securityItemTitle}>Encrypted Backups</h4>
               <p className={styles.securityItemText}>
-                Export fully encrypted vault backups (.solidpass files) signed with SHA-256 checksums.
+                Export fully encrypted vault backups (.solidpass files) — including your items, file
+                attachments, and scanned documents — signed with SHA-256 checksums for integrity.
                 Backups require your master password to restore.
               </p>
             </div>

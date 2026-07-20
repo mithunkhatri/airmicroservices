@@ -31,12 +31,12 @@ export default function SolidPassFAQ() {
       {
         "@type": "Question",
         "name": "How is my data protected?",
-        "acceptedAnswer": {"@type": "Answer", "text": "All sensitive data is encrypted locally using AES-256-GCM. A 256-bit Database Key (DK) encrypts the database, and each item uses unique initialization vectors for authenticated encryption."}
+        "acceptedAnswer": {"@type": "Answer", "text": "All sensitive data is encrypted locally using AES-256-GCM. A 256-bit Database Key (DK) encrypts the database, and each item uses unique initialization vectors for authenticated encryption. Item metadata such as titles, types, tags, and attachment names is encrypted too."}
       },
       {
         "@type": "Question",
         "name": "How is the master password handled?",
-        "acceptedAnswer": {"@type": "Answer", "text": "Your Master Password is never stored. SolidPass derives a Key Encryption Key (KEK) from the Master Password using PBKDF2-HMAC-SHA256 (10,000 iterations) with a random salt. The DK is encrypted with the KEK and stored locally; the Master Password is used only in memory and is zeroized after use."}
+        "acceptedAnswer": {"@type": "Answer", "text": "Your Master Password is never stored. SolidPass derives a Key Encryption Key (KEK) from the Master Password using Argon2id (RFC 9106), a memory-hard algorithm that resists GPU and ASIC brute-force attacks, with a cryptographically random salt. The DK is encrypted with the KEK and stored locally; the Master Password is used only in memory and is zeroized after use."}
       },
       {
         "@type": "Question",
@@ -133,7 +133,7 @@ export default function SolidPassFAQ() {
               <summary className={styles.faqSummary}>How is my data protected?</summary>
               <div className={styles.faqContent}>
                 <p className={styles.paragraph}>
-                  All sensitive data is encrypted locally using AES-256-GCM. A 256-bit Database Key (DK) encrypts the database, and each item uses unique initialization vectors for authenticated encryption.
+                  All sensitive data is encrypted locally using AES-256-GCM. A 256-bit Database Key (DK) encrypts the database, and each item uses unique initialization vectors for authenticated encryption. Item metadata — titles, types, tags, and attachment names — is encrypted as well, so a stolen database or backup file reveals nothing about what you store.
                 </p>
               </div>
             </details>
@@ -142,7 +142,7 @@ export default function SolidPassFAQ() {
               <summary className={styles.faqSummary}>How is the master password handled?</summary>
               <div className={styles.faqContent}>
                 <p className={styles.paragraph}>
-                  Your Master Password is never stored. SolidPass derives a Key Encryption Key (KEK) from the Master Password using PBKDF2-HMAC-SHA256 (10,000 iterations) together with a cryptographically-random salt. The DK is encrypted with the KEK and stored in local metadata. The Master Password itself is only used to derive keys in memory and is zeroized (overwritten) after use.
+                  Your Master Password is never stored. SolidPass derives a Key Encryption Key (KEK) from the Master Password using Argon2id (RFC 9106) — a memory-hard algorithm that makes brute-forcing with GPUs or specialized hardware prohibitively expensive — together with a cryptographically-random salt. The DK is encrypted with the KEK and stored in local metadata. The Master Password itself is only used to derive keys in memory and is zeroized (overwritten) after use.
                 </p>
               </div>
             </details>
