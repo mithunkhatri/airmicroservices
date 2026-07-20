@@ -88,8 +88,20 @@ export default function SolidPassPage() {
               <line x1="19" y1="12" x2="5" y2="12" />
               <polyline points="12 19 5 12 12 5" />
             </svg>
-            Air Microservices
+            <span className={styles.backLabel}>Air Microservices</span>
           </Link>
+
+          <div className={styles.docLinks}>
+            <a href="/solidpass/usage" className={styles.docLink}>
+              Quick Tour
+            </a>
+            <a href="/solidpass/guide" className={styles.docLink}>
+              User Guide
+            </a>
+            <a href="/solidpass/encryption-explained" className={styles.docLink}>
+              Encryption
+            </a>
+          </div>
         </nav>
       </header>
 
@@ -112,7 +124,7 @@ export default function SolidPassPage() {
                 Your Private, Encrypted, Offline Vault
               </p>
               <p className={styles.heroDescription}>
-                Military-grade password management that never leaves your device. 
+                Military-grade password management that never leaves your device.
                 Zero accounts, zero tracking, zero cloud. Just you and your secrets.
               </p>
 
@@ -162,10 +174,10 @@ export default function SolidPassPage() {
           <div className={styles.philosophyContent}>
             <h2 className={styles.sectionTitle}>Privacy by Design</h2>
             <p className={styles.philosophyText}>
-              SolidPass is built from the ground up with an unwavering commitment to your privacy. 
-              We operate on a <strong>zero-cloud, zero-trust architecture</strong>. We do not collect, 
-              store, or see your data. Because the application runs 100% offline, there are no remote 
-              servers, databases, analytics, or tracking SDKs. You are the sole custodian of your 
+              SolidPass is built from the ground up with an unwavering commitment to your privacy.
+              We operate on a <strong>zero-cloud, zero-trust architecture</strong>. We do not collect,
+              store, or see your data. Because the application runs 100% offline, there are no remote
+              servers, databases, analytics, or tracking SDKs. You are the sole custodian of your
               digital vault.
             </p>
           </div>
@@ -181,7 +193,7 @@ export default function SolidPassPage() {
               <div className={styles.featureIcon}>🔒</div>
               <h3 className={styles.featureTitle}>Zero-Cloud Architecture</h3>
               <p className={styles.featureDescription}>
-                No accounts. No servers. No internet required. Everything happens on your device, 
+                No accounts. No servers. No internet required. Everything happens on your device,
                 in your hands. Your data never leaves unless you choose to export it.
               </p>
             </div>
@@ -190,8 +202,8 @@ export default function SolidPassPage() {
               <div className={styles.featureIcon}>🔐</div>
               <h3 className={styles.featureTitle}>Military-Grade Encryption</h3>
               <p className={styles.featureDescription}>
-                AES-256-GCM encryption with unique initialization vectors for every item. 
-                Master passwords are never stored—instead, they're converted into cryptographic 
+                AES-256-GCM encryption with unique initialization vectors for every item.
+                Master passwords are never stored—instead, they're converted into cryptographic
                 keys using PBKDF2-HMAC-SHA256 with 10,000 iterations.
               </p>
             </div>
@@ -200,8 +212,7 @@ export default function SolidPassPage() {
               <div className={styles.featureIcon}>📱</div>
               <h3 className={styles.featureTitle}>Truly Multi-Platform</h3>
               <p className={styles.featureDescription}>
-                Native apps for iOS, Android, macOS, Windows, and Linux. Built with React Native 
-                and Expo. Single vault, synced locally across all your devices via encrypted backups.
+                Native apps for iOS and Android (macOS, Windows, and Linux will be rolled out soon). Synced locally across all your devices via encrypted backups.
               </p>
             </div>
           </div>
@@ -216,8 +227,8 @@ export default function SolidPassPage() {
             <div className={styles.securityItem}>
               <h4 className={styles.securityItemTitle}>Master Password Derivation</h4>
               <p className={styles.securityItemText}>
-                Your master password is never saved. Instead, we derive a Key Encryption Key (KEK) 
-                using PBKDF2-HMAC-SHA256 with 10,000 iterations and a cryptographically random 
+                Your master password is never saved. Instead, we derive a Key Encryption Key (KEK)
+                using PBKDF2-HMAC-SHA256 with 10,000 iterations and a cryptographically random
                 32-byte salt.
               </p>
             </div>
@@ -225,7 +236,7 @@ export default function SolidPassPage() {
             <div className={styles.securityItem}>
               <h4 className={styles.securityItemTitle}>Item-Level Encryption</h4>
               <p className={styles.securityItemText}>
-                Every password, credit card, account, key, and note is encrypted with AES-256-GCM, 
+                Every password, credit card, account, key, and note is encrypted with AES-256-GCM,
                 using unique 12-byte initialization vectors (IVs) and authenticated tags for integrity.
               </p>
             </div>
@@ -233,7 +244,7 @@ export default function SolidPassPage() {
             <div className={styles.securityItem}>
               <h4 className={styles.securityItemTitle}>Memory Security (Zeroization)</h4>
               <p className={styles.securityItemText}>
-                All sensitive buffers, password inputs, and derived keys are explicitly wiped from 
+                All sensitive buffers, password inputs, and derived keys are explicitly wiped from
                 memory immediately after use to prevent memory-scraping attacks.
               </p>
             </div>
@@ -241,7 +252,7 @@ export default function SolidPassPage() {
             <div className={styles.securityItem}>
               <h4 className={styles.securityItemTitle}>Biometric Security</h4>
               <p className={styles.securityItemText}>
-                Optional biometric unlock uses your device's native secure enclave (iOS Keychain or 
+                Optional biometric unlock uses your device's native secure enclave (iOS Keychain or
                 Android Keystore). Your fingerprint or face data never leaves your device.
               </p>
             </div>
@@ -249,7 +260,7 @@ export default function SolidPassPage() {
             <div className={styles.securityItem}>
               <h4 className={styles.securityItemTitle}>Auto-Lock & Session Management</h4>
               <p className={styles.securityItemText}>
-                Automatic session locks on app backgrounding. Customizable inactivity timeouts wipe 
+                Automatic session locks on app backgrounding. Customizable inactivity timeouts wipe
                 memory buffers and force re-authentication.
               </p>
             </div>
@@ -257,7 +268,7 @@ export default function SolidPassPage() {
             <div className={styles.securityItem}>
               <h4 className={styles.securityItemTitle}>Encrypted Backups</h4>
               <p className={styles.securityItemText}>
-                Export fully encrypted vault backups (.solidpass files) signed with SHA-256 checksums. 
+                Export fully encrypted vault backups (.solidpass files) signed with SHA-256 checksums.
                 Backups require your master password to restore.
               </p>
             </div>
@@ -331,7 +342,7 @@ export default function SolidPassPage() {
             <div className={styles.useCaseCard}>
               <h3>Privacy Advocates</h3>
               <p>
-                No cloud, no tracking, no data mining. Just pure, local encryption. 
+                No cloud, no tracking, no data mining. Just pure, local encryption.
                 Your digital autonomy restored.
               </p>
             </div>
@@ -339,7 +350,7 @@ export default function SolidPassPage() {
             <div className={styles.useCaseCard}>
               <h3>Security Professionals</h3>
               <p>
-                Military-grade cryptography, memory zeroization, and biometric 
+                Military-grade cryptography, memory zeroization, and biometric
                 authentication for the discerning security expert.
               </p>
             </div>
@@ -347,7 +358,7 @@ export default function SolidPassPage() {
             <div className={styles.useCaseCard}>
               <h3>Everyday Users</h3>
               <p>
-                Simple, intuitive interface that protects your digital life without 
+                Simple, intuitive interface that protects your digital life without
                 requiring you to understand the underlying cryptography.
               </p>
             </div>
