@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import styles from "./page.module.css";
 import type { Metadata } from "next";
+import DownloadDesktop from "./DownloadDesktop";
 
 export const metadata: Metadata = {
   title: "SolidPass — Offline Password Manager & Secure Vault",
@@ -58,7 +59,7 @@ export default function SolidPassPage() {
     description:
       "SolidPass is an ad-free, offline-first password manager. Stores encrypted data locally using AES-256-GCM. No tracking, no cloud.",
     applicationCategory: "SecurityApplication",
-    operatingSystem: "iOS, Android",
+    operatingSystem: "iOS, Android, macOS, Windows, Linux",
     offers: {
       "@type": "Offer",
       priceSpecification: {
@@ -128,27 +129,8 @@ export default function SolidPassPage() {
                 Zero accounts, zero tracking, zero cloud. Just you and your secrets.
               </p>
 
-              <div className={styles.ctaButtons}>
-                <a
-                  href="https://play.google.com/store/apps/details?id=com.airmicroservices.solidpass"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.ctaPrimary}
-                >
-                  Get on Google Play
-                </a>
-                <a
-                  href="https://apps.apple.com/us/app/solidpass-offline-vault/id6789066185"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={styles.ctaSecondary}
-                >
-                  Get on App Store
-                </a>
-              </div>
-
               <div className={styles.heroMeta}>
-                <span className={styles.metaBadge}>✓ Available on iOS, Android (Other platforms coming soon)</span>
+                <span className={styles.metaBadge}>✓ iOS · Android · macOS · Windows · Linux</span>
               </div>
             </div>
 
@@ -165,6 +147,52 @@ export default function SolidPassPage() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Download Badges */}
+      <section className={styles.downloads}>
+        <div className={styles.container}>
+          <h2 className={styles.sectionTitle}>Download Now</h2>
+
+          <h3 className={styles.downloadSubtitle}>Mobile</h3>
+          <div className={styles.badgesContainer}>
+            <div className={styles.badgeWrapper}>
+              <a
+                href="https://play.google.com/store/apps/details?id=com.airmicroservices.solidpass"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.badgeLink}
+              >
+                <Image
+                  src="/solidpass/badges/google-play-badge.png"
+                  alt="Google Play Store"
+                  width={220}
+                  height={65}
+                />
+              </a>
+            </div>
+
+            <div className={styles.badgeWrapper}>
+              <a
+                href="https://apps.apple.com/us/app/solidpass-offline-vault/id6789066185"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.badgeLink}
+              >
+                <Image
+                  src="/solidpass/badges/download_on_appstore_badge.svg"
+                  alt="Apple App Store"
+                  width={220}
+                  height={65}
+                />
+              </a>
+            </div>
+
+          </div>
+
+          <h3 className={styles.downloadSubtitle}>Desktop</h3>
+          <DownloadDesktop />
         </div>
       </section>
 
@@ -212,7 +240,7 @@ export default function SolidPassPage() {
               <div className={styles.featureIcon}>📱</div>
               <h3 className={styles.featureTitle}>Truly Multi-Platform</h3>
               <p className={styles.featureDescription}>
-                Native apps for iOS and Android (macOS, Windows, and Linux will be rolled out soon). Synced locally across all your devices via encrypted backups.
+                Native apps for iOS, Android, macOS, Windows, and Linux. Synced locally across all your devices via encrypted backups.
               </p>
             </div>
           </div>
@@ -282,62 +310,6 @@ export default function SolidPassPage() {
 
       {/* Screenshots removed to keep the page minimal and focused */}
 
-      {/* Download Badges */}
-      <section className={styles.downloads}>
-        <div className={styles.container}>
-          <h2 className={styles.sectionTitle}>Download Now</h2>
-
-          <div className={styles.badgesContainer}>
-            <div className={styles.badgeWrapper}>
-              <a
-                href="https://play.google.com/store/apps/details?id=com.airmicroservices.solidpass"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.badgeLink}
-              >
-                <Image
-                  src="/solidpass/badges/google-play-badge.png"
-                  alt="Google Play Store"
-                  width={220}
-                  height={65}
-                />
-              </a>
-            </div>
-
-            <div className={styles.badgeWrapper}>
-              <a
-                href="https://apps.apple.com/us/app/solidpass-offline-vault/id6789066185"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.badgeLink}
-              >
-                <Image
-                  src="/solidpass/badges/download_on_appstore_badge.svg"
-                  alt="Apple App Store"
-                  width={220}
-                  height={65}
-                />
-              </a>
-            </div>
-
-            <div className={styles.badgeWrapper}>
-              <a
-                href="https://www.producthunt.com/products/solidpass-offline-vault?utm_source=badge-follow&utm_medium=badge&utm_source=badge-solidpass&#0045;offline&#0045;vault"
-                target="_blank"
-                rel="noopener noreferrer"
-                className={styles.badgeLink}
-              >
-                <img
-                  src="https://api.producthunt.com/widgets/embed-image/v1/follow.svg?product_id=1270528&theme=light"
-                  alt="SolidPass - Commercial-grade offline password manager & secure vault | Product Hunt"
-                  style={{ width: "220px", height: "65px" }}
-                />
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Use Cases */}
       <section className={styles.useCases}>
         <div className={styles.container}>
@@ -379,6 +351,18 @@ export default function SolidPassPage() {
               <p className={styles.footerText}>
                 Commercial-grade offline vault & password manager from Air Microservices LLC.
               </p>
+              <a
+                href="https://www.producthunt.com/products/solidpass-offline-vault?utm_source=badge-follow&utm_medium=badge&utm_source=badge-solidpass&#0045;offline&#0045;vault"
+                target="_blank"
+                rel="noopener noreferrer"
+                className={styles.footerPhBadge}
+              >
+                <img
+                  src="https://api.producthunt.com/widgets/embed-image/v1/follow.svg?product_id=1270528&theme=light"
+                  alt="Follow SolidPass on Product Hunt"
+                  style={{ width: "220px", height: "65px" }}
+                />
+              </a>
             </div>
 
             <div className={styles.footerSection}>

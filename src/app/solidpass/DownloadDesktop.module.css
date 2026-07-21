@@ -1,0 +1,149 @@
+.wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+  width: 100%;
+}
+
+/* Platform availability badges */
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+}
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-primary);
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+}
+.badge svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* Recommended (auto-detected) primary download */
+.primaryRow {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  min-height: 3.5rem;
+  justify-content: center;
+}
+.primaryBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.9rem 2.2rem;
+  border-radius: 0.5rem;
+  background-color: var(--status-pulse);
+  color: #ffffff;
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: 1.05rem;
+  text-decoration: none;
+  border: 1px solid transparent;
+  transition: all var(--transition-fast);
+}
+.primaryBtn svg {
+  width: 20px;
+  height: 20px;
+}
+.primaryBtn:hover {
+  background-color: #d24a0f;
+  transform: translateY(-2px);
+}
+.altLink {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-family: var(--font-mono);
+}
+.altLink:hover {
+  color: var(--text-primary);
+  text-decoration: underline;
+}
+
+/* Per-platform grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(180px, 1fr));
+  gap: 1rem;
+  width: 100%;
+  max-width: 780px;
+}
+@media (max-width: 700px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}
+.card {
+  border: 1px solid var(--border-color);
+  border-radius: 0.75rem;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  background: var(--bg-primary);
+  transition: border-color var(--transition-fast);
+}
+.cardActive {
+  border-color: var(--status-pulse);
+  box-shadow: 0 0 0 1px var(--status-pulse);
+}
+.cardHead {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.cardIcon {
+  width: 22px;
+  height: 22px;
+  color: var(--text-primary);
+  flex-shrink: 0;
+}
+.cardName {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.recommended {
+  margin-left: auto;
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--status-pulse);
+  font-family: var(--font-mono);
+}
+.cardLinks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+.dlLink {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-family: var(--font-mono);
+  transition: color var(--transition-fast);
+}
+.dlLink:hover {
+  color: var(--status-pulse);
+}
+
+.note {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  text-align: center;
+  max-width: 520px;
+}

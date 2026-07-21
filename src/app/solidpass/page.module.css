@@ -473,6 +473,18 @@
   background-color: var(--bg-secondary);
 }
 
+.downloadSubtitle {
+  font-family: var(--font-sans);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  text-align: center;
+  margin: 3rem 0 1.5rem;
+}
+.downloadSubtitle:first-of-type {
+  margin-top: 0;
+}
+
 .badgesContainer {
   display: flex;
   flex-wrap: wrap;
@@ -596,6 +608,14 @@
   line-height: 1.5;
   color: var(--text-secondary);
   margin: 0;
+}
+.footerPhBadge {
+  display: inline-block;
+  margin-top: 1.25rem;
+  transition: opacity var(--transition-fast);
+}
+.footerPhBadge:hover {
+  opacity: 0.85;
 }
 
 .footerLinks {
