@@ -154,7 +154,7 @@ export default function TheOutdoorClubPrivacy() {
                 Reports you file about a post or comment, and the outcome an administrator recorded.
               </li>
               <li className={styles.listItem}>
-                Club material: the club&apos;s name, crest, colours, base location, founding year, contact email, documents, artwork and rules.
+                Club material: the club&apos;s name, crest, colours, base location, founding year, contact email, currency, documents, artwork and rules.
               </li>
             </ul>
 

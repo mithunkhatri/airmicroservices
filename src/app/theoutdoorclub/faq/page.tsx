@@ -101,6 +101,14 @@ export default function TheOutdoorClubFAQ() {
       },
       {
         "@type": "Question",
+        name: "What currency does the club use?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Whichever one it picks. A club chooses its currency when it is set up, and an administrator can change it later from the club screen; every circulating world currency is offered. It is a label only - the app applies no exchange rate and converts nothing, so changing it relabels the existing figures and leaves the numbers exactly as they were.",
+        },
+      },
+      {
+        "@type": "Question",
         name: "How do I leave a club without deleting my account?",
         acceptedAnswer: {
           "@type": "Answer",
@@ -428,6 +436,23 @@ export default function TheOutdoorClubFAQ() {
               <div className={styles.faqContent}>
                 <p className={styles.paragraph}>
                   No. The ledger and the shared-expense split are record-keeping tools. No money moves through the app — it does not process payments, hold funds, or settle up between members. Every figure was typed in by somebody, and how the club actually settles is up to the club.
+                </p>
+              </div>
+            </details>
+
+            <details className={styles.faqItem}>
+              <summary className={styles.faqSummary}>What currency does the club use?</summary>
+              <div className={styles.faqContent}>
+                <p className={styles.paragraph}>
+                  Whichever one it picks. The currency is chosen when the club is set up, and an
+                  administrator can change it afterwards from the club screen. Every circulating
+                  world currency is offered.
+                </p>
+                <p className={styles.paragraph}>
+                  It is <strong>a label only</strong>. The app applies no exchange rate and converts
+                  nothing, so changing the currency puts a different symbol in front of the existing
+                  figures and leaves the numbers exactly as they were. A club keeps one set of books
+                  in one currency.
                 </p>
               </div>
             </details>

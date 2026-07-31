@@ -203,6 +203,9 @@ export default function TheOutdoorClubTerms() {
               The ledger and the shared-expense features are <strong>record-keeping tools only</strong>. The App does not process payments, hold funds, transfer money, settle debts between members, or act as a payment service, money transmitter or escrow of any kind. No money moves through it. Every figure in it was typed in by a member.
             </p>
             <p className={styles.paragraph}>
+              A club chooses the currency its books are kept in, and that choice is <strong>a label and nothing more</strong>. The App applies no exchange rate and performs no conversion: the symbol shown against an amount is the one the club selected, and changing it relabels every existing figure without altering, converting or recalculating any of them. A club that changes its currency is responsible for whatever its own records then mean.
+            </p>
+            <p className={styles.paragraph}>
               Whether a club&apos;s books are accurate, complete, or adequate for tax, audit or legal purposes is a matter for the club and its treasurer. We give no accounting, tax or legal advice and accept no responsibility for a club&apos;s accounts, for a dispute between members about money, or for any sum a member believes they are owed.
             </p>
           </section>
