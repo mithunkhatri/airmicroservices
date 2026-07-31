@@ -75,7 +75,7 @@ export default function TheOutdoorClubTerms() {
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>2. Eligibility</h2>
             <p className={styles.paragraph}>
-              You must be at least 18 years old to hold an account. The App is built for adult members of riding and outdoor clubs and asks for a driving licence; it is not intended for children and must not be used by them. By creating an account you confirm that you are 18 or older and that the details you provide are true.
+              You must be at least 18 years old to hold an account. The App is built for adult members of riding and outdoor clubs and asks for a government identity document; it is not intended for children and must not be used by them. By creating an account you confirm that you are 18 or older and that the details you provide are true.
             </p>
           </section>
 
@@ -180,7 +180,7 @@ export default function TheOutdoorClubTerms() {
                 <span className={styles.listItemStrong}>We are not an organiser.</span> Outings are planned, led and run by clubs and their members. We do not create them, approve them, vet routes, check anybody&apos;s licence, insurance or equipment, or supervise anything that happens.
               </li>
               <li className={styles.listItem}>
-                <span className={styles.listItemStrong}>We do not verify members or documents.</span> A licence uploaded to a profile has not been checked by us. Its presence proves nothing about its authenticity or validity, and no club should treat it as verification.
+                <span className={styles.listItemStrong}>We do not verify members or documents.</span> An identity document uploaded to a profile has not been checked by us — there is no automated reading of it and no verification service involved. Its presence proves nothing about its authenticity or validity, and no club should treat it as verification.
               </li>
               <li className={styles.listItem}>
                 <span className={styles.listItemStrong}>You accept the risk.</span> Riding and outdoor activity can cause serious injury and death. By using the App to enrol on or run an outing you acknowledge those risks and accept them for yourself.

@@ -48,7 +48,7 @@ export default function TheOutdoorClubFAQ() {
         name: "Who can see my profile, blood group and emergency contact?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "The members of the clubs you belong to, for your profile, blood group, emergency contact and garage. Your driving licence and identity documents are narrower: only you and your club's administrators can open those. Nothing in the app is public, and a club you do not belong to sees nothing about you at all. A driving licence is required to complete a membership; blood group, an emergency contact, a profile photo, birthday and your garage are optional.",
+          text: "The members of the clubs you belong to, for your profile, blood group, emergency contact and garage. Your identity documents are narrower: only you and your club's administrators can open those. Nothing in the app is public, and a club you do not belong to sees nothing about you at all. One identity document is required to complete a membership; blood group, an emergency contact, a profile photo, birthday and your garage are optional.",
         },
       },
       {
@@ -125,10 +125,10 @@ export default function TheOutdoorClubFAQ() {
       },
       {
         "@type": "Question",
-        name: "Why does the club want my driving licence?",
+        name: "Why does the club want an identity document?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "So the club can satisfy itself that somebody riding with it is licensed to do so. Uploading one is required to complete a membership. It is stored privately and retrieved only through short-lived signed links, and only you and your club's administrators can open it - not ordinary members and not the treasurer. We do not check or verify it, and no club should treat its presence as verification.",
+          text: "Club members meet in person, travel together to remote places and share their live position during an outing, so the club's administrators need to satisfy themselves that whoever turns up is the person they invited. Any government document is accepted - a passport, a national ID or a driving licence - and uploading one is required to complete a membership. It is stored privately and retrieved only through short-lived signed links, and only you and your club's administrators can open it - not ordinary members and not the treasurer. We do not check or verify it, and no club should treat its presence as verification.",
         },
       },
     ],
@@ -204,7 +204,7 @@ export default function TheOutdoorClubFAQ() {
               <summary className={styles.faqSummary}>What do I have to provide, and what is optional?</summary>
               <div className={styles.faqContent}>
                 <p className={styles.paragraph}>
-                  <strong>Required to finish joining:</strong> your name, phone number, city, gender, t-shirt size, and a photograph of your driving licence. The app will not let you complete setup without them, and your name and phone number cannot be cleared afterwards.
+                  <strong>Required to finish joining:</strong> your name, phone number, city, gender, t-shirt size, and a photograph of one identity document — a passport, a national ID or a driving licence, whichever you have. The app will not let you complete setup without them, and your name and phone number cannot be cleared afterwards.
                 </p>
                 <p className={styles.paragraph}>
                   <strong>Optional:</strong> your blood group, an emergency contact, a profile photo, your profession, your birthday (day and month only), the year you started going on outings, the year you joined, a federation membership number, a second identity document, any other papers, and your garage — which may stay empty.
@@ -219,7 +219,7 @@ export default function TheOutdoorClubFAQ() {
               <summary className={styles.faqSummary}>Is there a minimum age?</summary>
               <div className={styles.faqContent}>
                 <p className={styles.paragraph}>
-                  You must be 18 or older. The app is built for adult club members and asks for a driving licence. It never asks for your age or date of birth — the birthday field stores a day and month only, so the app cannot work out how old you are.
+                  You must be 18 or older. The app is built for adult club members and asks for a government identity document. It never asks for your age or date of birth — the birthday field stores a day and month only, so the app cannot work out how old you are.
                 </p>
               </div>
             </details>
@@ -271,7 +271,7 @@ export default function TheOutdoorClubFAQ() {
                   The members of the clubs you belong to. That includes your blood group, emergency contact and garage — a club that cannot see who is riding with it cannot look after them.
                 </p>
                 <p className={styles.paragraph}>
-                  Your <strong>driving licence and identity documents are narrower</strong>: only you and your club&apos;s administrators can open those. Ordinary members cannot, and neither can the treasurer.
+                  Your <strong>identity documents are narrower</strong>: only you and your club&apos;s administrators can open those. Ordinary members cannot, and neither can the treasurer.
                 </p>
                 <p className={styles.paragraph}>
                   A club you do not belong to sees nothing about you. This is enforced in the database rather than only in the app, so it holds even against a modified client.
@@ -397,13 +397,16 @@ export default function TheOutdoorClubFAQ() {
             <h2 className={styles.sectionTitle}>Documents &amp; Money</h2>
 
             <details className={styles.faqItem}>
-              <summary className={styles.faqSummary}>Why does my club want my driving licence?</summary>
+              <summary className={styles.faqSummary}>Why does my club want an identity document?</summary>
               <div className={styles.faqContent}>
                 <p className={styles.paragraph}>
-                  So it can satisfy itself that somebody riding with it is licensed to do so. Uploading one is <strong>required</strong> to finish joining — the app will not let you past that step without it. The second identity document beside it is optional.
+                  Club members meet in person, travel together to remote places and share their live position during an outing, so a club&apos;s administrators need to satisfy themselves that whoever turns up is the person they invited. Uploading one document is <strong>required</strong> to finish joining — the app will not let you past that step without it. The second one beside it is optional.
                 </p>
                 <p className={styles.paragraph}>
-                  We do not check or verify what you upload. No club should treat the presence of a licence in the app as verification of it.
+                  <strong>Any government document is accepted</strong> — a passport, a national identity card, or a driving licence. The app does not ask for one in particular: clubs differ, and a walking club has no reason to want a licence.
+                </p>
+                <p className={styles.paragraph}>
+                  We do not check or verify what you upload. No club should treat the presence of a document in the app as verification of it.
                 </p>
               </div>
             </details>
@@ -412,7 +415,7 @@ export default function TheOutdoorClubFAQ() {
               <summary className={styles.faqSummary}>How are my documents stored?</summary>
               <div className={styles.faqContent}>
                 <p className={styles.paragraph}>
-                  Identity documents, licences, vehicle papers and receipts are held in private storage and cannot be fetched with a plain link — opening one issues a short-lived signed link for that single file, and only to somebody entitled to it. For a licence or an identity document that means you and your club&apos;s administrators only. Profile photos, post photos and club artwork are stored without individual access control, because they exist to be shown to your club.
+                  Identity documents, vehicle papers and receipts are held in private storage and cannot be fetched with a plain link — opening one issues a short-lived signed link for that single file, and only to somebody entitled to it. For an identity document that means you and your club&apos;s administrators only. Profile photos, post photos and club artwork are stored without individual access control, because they exist to be shown to your club.
                 </p>
                 <p className={styles.paragraph}>
                   One thing worth knowing: on Android a PDF cannot be drawn inside an app by the operating system, so a PDF you open is rendered through Google&apos;s document viewer, which means Google receives that file. Upload an image instead of a PDF if you would rather it did not.

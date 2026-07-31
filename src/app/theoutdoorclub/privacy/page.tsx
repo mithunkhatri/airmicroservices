@@ -106,7 +106,7 @@ export default function TheOutdoorClubPrivacy() {
             <h3 className={styles.sectionTitle} style={{ fontSize: "1.05rem" }}>Documents</h3>
             <ul className={styles.list}>
               <li className={styles.listItem}>
-                <span className={styles.listItemStrong}>Driving licence: required.</span> Uploading one is a condition of completing your membership — the App says so plainly at that step and will not let you past it. Clubs ask for it so they can satisfy themselves that somebody riding with them is licensed to do so.
+                <span className={styles.listItemStrong}>One identity document: required.</span> Uploading one is a condition of completing your membership — the App says so plainly at that step and will not let you past it. <strong>Any government-issued document is accepted</strong>: a passport, a national identity card, or a driving licence. The App does not ask for one in particular, because clubs differ and a walking club has no reason to want a licence. Members of a club meet in person, travel together to remote places, and share their live position with one another for the length of an outing; one document on file is what lets a club&apos;s administrators satisfy themselves that the person arriving is the person they invited.
               </li>
               <li className={styles.listItem}>
                 <span className={styles.listItemStrong}>A second identity document:</span> optional.
@@ -116,7 +116,10 @@ export default function TheOutdoorClubPrivacy() {
               </li>
             </ul>
             <p className={styles.paragraph}>
-              Identity documents are a special category of personal data in some jurisdictions. How they are stored, and who can retrieve them, is set out in <strong>section 7</strong>.
+              <strong>Nothing you upload is checked or verified.</strong> The App stores the file and shows it to the people listed in section 6. There is no automated reading of the document, no identity-verification service, and no third party is sent it. We say &quot;on file&quot;, never &quot;verified&quot;, and you should not treat another member&apos;s document as having been confirmed by us.
+            </p>
+            <p className={styles.paragraph}>
+              Identity documents are a special category of personal data in some jurisdictions. How they are stored, and who can retrieve them, is set out in <strong>section 7</strong>. How long they are kept is set out in <strong>section 12</strong>.
             </p>
 
             <h3 className={styles.sectionTitle} style={{ fontSize: "1.05rem" }}>Vehicles</h3>
@@ -200,7 +203,7 @@ export default function TheOutdoorClubPrivacy() {
                 <span className={styles.listItemStrong}>Members of your club</span> can see your profile — including your blood group, emergency contact and garage if you filled them in, and your vehicles&apos; papers — along with your posts, your outing enrolments and your position on the map while you are sharing it. This is the point of the app: a club that cannot see who is riding with it cannot look after them.
               </li>
               <li className={styles.listItem}>
-                <span className={styles.listItemStrong}>Your identity documents are narrower.</span> Your driving licence, your identity document and any other papers you attach to your profile are visible only to <strong>you and your club&apos;s administrators</strong> — not to ordinary members, and not to the treasurer. They are collected so that whoever runs the club can satisfy themselves that a member is licensed to ride, and that is the only reason anybody else sees them. An administrator keeps that access if they suspend a member, since a suspension does not undo the check the club admitted them on.
+                <span className={styles.listItemStrong}>Your identity documents are narrower.</span> Your identity document and any other papers you attach to your profile are visible only to <strong>you and your club&apos;s administrators</strong> — not to ordinary members, and not to the treasurer. They are collected so that whoever runs the club can satisfy themselves that the person turning up to an outing is the person they invited, and that is the only reason anybody else sees them. An administrator keeps that access if they suspend a member, since a suspension does not undo the check the club admitted them on.
               </li>
               <li className={styles.listItem}>
                 <span className={styles.listItemStrong}>Club administrators</span> can additionally invite and remove members, change what a member may do, pin or remove posts and comments, act on reports, and close the club. An administrator can see the profile of a member they have suspended.
@@ -256,16 +259,16 @@ export default function TheOutdoorClubPrivacy() {
               Profile photos, post photos and club artwork are stored so that they can be displayed to your club without a delay, and the links to them are not individually access-controlled.
             </p>
             <p className={styles.paragraph}>
-              <strong>Identity documents, driving licences, vehicle papers and expense receipts are stored differently.</strong> They are held in private storage and cannot be fetched with a plain link. When somebody entitled to view one opens it, the service issues a short-lived signed link for that single file, which expires shortly afterwards. Who is entitled differs by kind: identity documents are yours and your administrators&apos;, vehicle papers are visible to your club, a receipt is visible to the club whose ledger it belongs to, and a club&apos;s own documents to that club&apos;s members.
+              <strong>Identity documents, vehicle papers and expense receipts are stored differently.</strong> They are held in private storage and cannot be fetched with a plain link. When somebody entitled to view one opens it, the service issues a short-lived signed link for that single file, which expires shortly afterwards. Who is entitled differs by kind: identity documents are yours and your administrators&apos;, vehicle papers are visible to your club, a receipt is visible to the club whose ledger it belongs to, and a club&apos;s own documents to that club&apos;s members.
             </p>
             <p className={styles.paragraph}>
-              One limitation is worth stating rather than glossing over. Other members of your club can see <em>that</em> you have supplied a licence or an identity document — the app records a reference to the file against your profile, and that reference is visible to the club. What they cannot do is open it: retrieving the file needs a signed link, and the service issues one only to you and to your club&apos;s administrators. So the existence of a document is club-visible; its contents are not.
+              One limitation is worth stating rather than glossing over. Other members of your club can see <em>that</em> you have supplied an identity document — the app records a reference to the file against your profile, and that reference is visible to the club. What they cannot do is open it: retrieving the file needs a signed link, and the service issues one only to you and to your club&apos;s administrators. So the existence of a document is club-visible; its contents are not.
             </p>
             <p className={styles.paragraph}>
               One consequence is worth stating plainly: on Android, a PDF cannot be displayed by the operating system inside an app, so a PDF you open in the App is rendered through Google&apos;s document viewer, which means Google receives that file in order to draw it. Images and PDFs on iOS are rendered on your device and are not sent to anybody. If you would rather Google never received a document, upload it as an image rather than a PDF, or view it on iOS.
             </p>
             <p className={styles.paragraph}>
-              You can delete any document you uploaded, from your profile or your garage, at any time.
+              You can delete any document you uploaded, from your profile or your garage, at any time — with one exception. The single identity document required for membership can be replaced but not removed while your account is open, because supplying one is a condition of belonging to a club; it is deleted when you close your account. See <strong>section 12</strong>.
             </p>
           </section>
 
@@ -347,7 +350,7 @@ export default function TheOutdoorClubPrivacy() {
                 <span className={styles.listItemStrong}>Explicit consent, for special category data</span> — your blood group, and any medical document you choose to upload. Both are optional in the full sense: you can complete a membership without either, nothing else in the App behaves differently if you decline, and clearing or deleting one withdraws that consent immediately, with no effect on anything done beforehand. That is deliberate, because consent that is a condition of being allowed in is not consent at all.
               </li>
               <li className={styles.listItem}>
-                <span className={styles.listItemStrong}>Your driving licence is the exception</span>, and it is worth being plain about it: uploading one is required to complete a membership, so it is not offered on the basis of consent. We process it as necessary for the membership itself — a club that lets people ride with it has a real interest in establishing that they are licensed to. It is ordinary personal data rather than a special category, and the club&apos;s administrators are the only people who can open it. If you would rather your club did not hold one, speak to its administrators before joining.
+                <span className={styles.listItemStrong}>Your identity document is the exception</span>, and it is worth being plain about it: uploading one is required to complete a membership, so it is not offered on the basis of consent. We process it as necessary for the membership itself — a club whose members meet in person, travel together and share their live position has a real interest in establishing who they are admitting. It is ordinary personal data rather than a special category, and the club&apos;s administrators are the only people who can open it. If you would rather no club held one, do not complete a membership; if you have joined and changed your mind, closing your account deletes it.
               </li>
               <li className={styles.listItem}>
                 <span className={styles.listItemStrong}>Legitimate interests</span> — keeping the service secure and available, preventing abuse, and handling reports about content.
@@ -364,6 +367,9 @@ export default function TheOutdoorClubPrivacy() {
               We keep your data while your account exists. Beyond that:
             </p>
             <ul className={styles.list}>
+              <li className={styles.listItem}>
+                <span className={styles.listItemStrong}>Your identity documents</span> — for as long as your account exists, and deleted with it. We keep no copy afterwards and we do not archive them. Leaving a club does not delete them, because they are yours rather than that club&apos;s and your other clubs still rely on them — but that club stops being able to see them the moment you leave. The required document can be <em>replaced</em> at any time and cannot be removed outright while the account is open, since supplying one is a condition of membership; closing your account is what deletes it. Every other document — a second ID, vehicle papers, anything else you attached — can be deleted whenever you like.
+              </li>
               <li className={styles.listItem}>
                 <span className={styles.listItemStrong}>Your latest position</span> — until you turn sharing off, or leave the club, or close your account, whichever comes first.
               </li>
@@ -444,7 +450,7 @@ export default function TheOutdoorClubPrivacy() {
           <section className={styles.section}>
             <h2 className={styles.sectionTitle}>16. Children</h2>
             <p className={styles.paragraph}>
-              The Outdoor Club is not intended for children. It is built for adult members of riding and outdoor clubs, and it asks for a driving licence. You must be at least 18 to hold an account. We do not knowingly collect data from children, and the App never asks for an age or a date of birth. If you believe a child holds an account, tell us and we will delete it.
+              The Outdoor Club is not intended for children. It is built for adult members of riding and outdoor clubs, and it asks for a government identity document. You must be at least 18 to hold an account. We do not knowingly collect data from children, and the App never asks for an age or a date of birth. If you believe a child holds an account, tell us and we will delete it.
             </p>
           </section>
 
