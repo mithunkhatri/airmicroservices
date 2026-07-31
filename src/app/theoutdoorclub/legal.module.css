@@ -1,0 +1,214 @@
+.page {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  display: flex;
+  flex-direction: column;
+}
+
+.legalHeader {
+  border-bottom: 1px solid var(--border-color);
+  background-color: var(--bg-primary);
+  position: relative;
+  overflow: hidden;
+  padding: 6rem 0 3rem 0;
+}
+
+.legalContainer {
+  width: 100%;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+@media (max-width: 768px) {
+  .legalContainer {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  .legalHeader {
+    padding: 4rem 0 2rem 0;
+  }
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 2rem;
+  transition: color var(--transition-fast), transform var(--transition-fast);
+}
+
+.backLink:hover {
+  color: var(--text-primary);
+  transform: translateX(-4px);
+}
+
+.appName {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--status-pulse);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  display: block;
+}
+
+.title {
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 500;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.meta {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+}
+
+.bodyContent {
+  padding: 4rem 0 6rem 0;
+  background-color: var(--bg-primary);
+}
+
+.section {
+  margin-bottom: 3rem;
+}
+
+.sectionTitle {
+  font-size: 1.5rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+  margin-bottom: 1.25rem;
+  border-bottom: 1px solid var(--border-color);
+  padding-bottom: 0.5rem;
+}
+
+.paragraph {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin-bottom: 1.25rem;
+}
+
+.strongText {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.list {
+  margin-bottom: 1.5rem;
+  padding-left: 1.5rem;
+}
+
+.listItem {
+  font-size: 1rem;
+  line-height: 1.7;
+  color: var(--text-secondary);
+  margin-bottom: 0.75rem;
+}
+
+.listItemStrong {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* Callout Styles for Critical Notices (Master Password, No Refunds) */
+.callout {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  border-left: 4px solid var(--text-primary);
+  padding: 1.5rem;
+  margin: 2rem 0;
+  position: relative;
+}
+
+.calloutWarning {
+  border-left-color: var(--status-pulse);
+}
+
+.calloutWarningTitle {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--status-pulse);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.calloutTitle {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.calloutText {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: var(--text-secondary);
+}
+
+.calloutText strong {
+  color: var(--text-primary);
+}
+
+/* Footer Section specific for Legal pages to maintain layout */
+.legalFooter {
+  border-top: 1px solid var(--border-color);
+  background-color: var(--bg-secondary);
+  padding: 3rem 0;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+/* FAQ collapsible styles */
+.faqItem {
+  margin-bottom: 1rem;
+  border-radius: 6px;
+  padding: 0.5rem 0.5rem 0 0.5rem;
+}
+
+.faqItem summary {
+  cursor: pointer;
+  font-weight: 700;
+  font-family: var(--font-sans);
+  list-style: none;
+  outline: none;
+}
+
+.faqItem summary::-webkit-details-marker {
+  display: none;
+}
+
+.faqItem[open] summary {
+  color: var(--status-pulse);
+}
+
+.faqContent {
+  margin-top: 0.5rem;
+  color: var(--text-secondary);
+}
+
