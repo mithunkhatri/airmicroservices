@@ -3,6 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import styles from "./page.module.css";
 import type { Metadata } from "next";
+import StoryReel from "./StoryReel";
 
 const APP_STORE_URL = "https://apps.apple.com/app/id6796916366";
 const PLAY_STORE_URL =
@@ -194,7 +195,7 @@ export default function TheOutdoorClubPage() {
                 <a href="#get" className={styles.ctaPrimary}>
                   Get the app
                 </a>
-                <a href="#story" className={styles.ctaSecondary}>
+                <a href="#storyline" className={styles.ctaSecondary}>
                   See how it works
                 </a>
               </div>
@@ -218,6 +219,19 @@ export default function TheOutdoorClubPage() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* The storyline, as a looping CSS reel — see StoryReel.module.css */}
+      <section id="storyline" className={styles.storyline}>
+        <div className={styles.container}>
+          <span className={styles.eyebrow}>The storyline</span>
+          <h2 className={styles.sectionTitle}>One weekend, start to finish</h2>
+          <p className={styles.sectionLead}>
+            Six beats, on a loop: how an outing goes from a group chat nobody can
+            read to a certificate somebody can hand in.
+          </p>
+          <StoryReel />
         </div>
       </section>
 

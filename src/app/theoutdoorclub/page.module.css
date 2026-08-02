@@ -366,6 +366,17 @@
   display: block;
 }
 
+/* Storyline — the CSS reel */
+.storyline {
+  padding: 5rem 0 5.5rem;
+}
+
+@media (max-width: 768px) {
+  .storyline {
+    padding: 3.5rem 0 4rem;
+  }
+}
+
 /* Story — the problem the app is answering */
 .story {
   padding: 5rem 0;

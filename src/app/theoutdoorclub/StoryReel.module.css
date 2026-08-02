@@ -1,0 +1,992 @@
+/* ---------------------------------------------------------------------------
+   The Outdoor Club — story reel.
+
+   One 24-second loop, six 4-second scenes, no JavaScript. Every animated
+   element shares the 24s duration and is delayed by `--i * 4s + --d`, so its
+   keyframes only ever describe what happens inside the first sixth (0%–16.667%)
+   and then hold. 1 second = 4.1667%.
+
+   Only opacity and transform are animated — the one exception is the route's
+   stroke-dashoffset — which is what makes the reduced-motion branch at the
+   bottom a single reset rather than a second stylesheet.
+
+   Anything carrying a *static* transform (a rotated bubble, a centred pin) is a
+   wrapper around the animated element, never the animated element itself.
+   --------------------------------------------------------------------------- */
+
+.reel {
+  --reel-ink: var(--text-primary);
+  --reel-dim: var(--text-secondary);
+  --reel-line: var(--border-color);
+  --reel-panel: var(--bg-primary);
+  --reel-stage: var(--bg-secondary);
+  --reel-accent: var(--toc-accent, #17795c);
+  --reel-accent-soft: var(--toc-accent-soft, rgba(23, 121, 92, 0.08));
+  --reel-amber: var(--toc-amber, #f2a93b);
+
+  width: 100%;
+}
+
+.stage {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  aspect-ratio: 16 / 10;
+  border: 1px solid var(--reel-line);
+  border-radius: 1rem;
+  overflow: hidden;
+  background:
+    radial-gradient(120% 90% at 50% 0%, var(--reel-accent-soft), transparent 70%),
+    var(--reel-stage);
+}
+
+/* Persistent stage furniture --------------------------------------------- */
+
+.chrome {
+  position: absolute;
+  left: 1.25rem;
+  top: 1.15rem;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.chromeMark {
+  position: relative;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 2px solid var(--reel-accent);
+}
+
+.chromeMark::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 1px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--reel-amber);
+}
+
+.chromeName {
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--reel-dim);
+}
+
+.track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0 1.5rem 1.05rem;
+}
+
+.dots {
+  display: flex;
+  gap: 0.4rem;
+}
+
+.dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--reel-accent);
+  opacity: 0.22;
+  animation: dotOn 24s linear infinite both;
+  animation-delay: calc(var(--i, 0) * 4s);
+}
+
+.progress {
+  width: 100%;
+  max-width: 240px;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--reel-line);
+  overflow: hidden;
+}
+
+.progressBar {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: var(--reel-accent);
+  transform: scaleX(0);
+  transform-origin: left center;
+  animation: reelProgress 24s linear infinite;
+}
+
+/* Scenes ------------------------------------------------------------------ */
+
+.scene {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 3.5rem 1.75rem 4rem;
+  pointer-events: none;
+  opacity: 0;
+  animation: sceneShow 24s linear infinite both;
+  animation-delay: calc(var(--i, 0) * 4s);
+}
+
+.art {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+}
+
+.caption {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  text-align: center;
+  margin: 0;
+  opacity: 0;
+  animation: fadeUp 24s ease-out infinite both;
+  animation-delay: calc(var(--i, 0) * 4s + var(--d, 0s));
+}
+
+.captionStep {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--reel-accent);
+}
+
+.captionLine {
+  font-family: var(--font-sans);
+  font-size: 1.15rem;
+  font-weight: 600;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: var(--reel-ink);
+  max-width: 36ch;
+  margin: 0 auto;
+}
+
+/* 01 — the group chat ---------------------------------------------------- */
+
+.bubbleField {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  aspect-ratio: 460 / 230;
+  max-height: 100%;
+}
+
+.bubble {
+  position: absolute;
+}
+
+.bubbleBody {
+  display: inline-block;
+  padding: 0.4rem 0.7rem;
+  border: 1px solid var(--reel-line);
+  border-radius: 0.85rem 0.85rem 0.85rem 0.2rem;
+  background: var(--reel-panel);
+  font-size: 0.72rem;
+  line-height: 1;
+  color: var(--reel-dim);
+  white-space: nowrap;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.07);
+  opacity: 0;
+  animation: pop 24s cubic-bezier(0.2, 1.3, 0.4, 1) infinite both;
+  animation-delay: calc(var(--i, 0) * 4s + var(--d, 0s));
+}
+
+.bubbleCount {
+  position: absolute;
+  right: 0;
+  bottom: 2%;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--reel-amber);
+  opacity: 0;
+  animation: fadeUp 24s ease-out infinite both;
+  animation-delay: calc(var(--i, 0) * 4s + var(--d, 0s));
+}
+
+/* 02 — the plan ---------------------------------------------------------- */
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  width: 100%;
+  max-width: 330px;
+  padding: 1.1rem 1.15rem;
+  border: 1px solid var(--reel-line);
+  border-radius: 0.75rem;
+  background: var(--reel-panel);
+  box-shadow: 0 16px 38px rgba(0, 0, 0, 0.1);
+}
+
+.cardTitle,
+.cardRow,
+.cardCaptains,
+.cardWindow {
+  opacity: 0;
+  animation: slideIn 24s ease-out infinite both;
+  animation-delay: calc(var(--i, 0) * 4s + var(--d, 0s));
+}
+
+.cardTitle {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--reel-ink);
+}
+
+.cardRow {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 0.78rem;
+  color: var(--reel-dim);
+}
+
+.cardDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--reel-accent);
+  flex: 0 0 auto;
+}
+
+.cardCaptains {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.72rem;
+  color: var(--reel-dim);
+}
+
+.cardCaptains em {
+  font-style: normal;
+  margin-left: 0.3rem;
+}
+
+.cardAvatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 21px;
+  height: 21px;
+  border-radius: 50%;
+  background: var(--reel-accent-soft);
+  color: var(--reel-accent);
+  font-size: 0.54rem;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.cardWindow {
+  align-self: flex-start;
+  margin-top: 0.2rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--reel-accent);
+  background: var(--reel-accent-soft);
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  letter-spacing: 0.04em;
+  color: var(--reel-accent);
+}
+
+/* 03 — the people -------------------------------------------------------- */
+
+.roster {
+  display: grid;
+  grid-template-columns: repeat(4, 46px);
+  gap: 0.75rem;
+  justify-content: center;
+}
+
+.rosterAvatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  border: 1px solid var(--reel-line);
+  background: var(--reel-panel);
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--reel-accent);
+  opacity: 0;
+  animation: pop 24s cubic-bezier(0.2, 1.3, 0.4, 1) infinite both;
+  animation-delay: calc(var(--i, 0) * 4s + var(--d, 0s));
+}
+
+.goingChip {
+  margin-top: 1.25rem;
+  padding: 0.4rem 0.85rem;
+  border-radius: 999px;
+  border: 1px solid var(--reel-accent);
+  background: var(--reel-accent-soft);
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.04em;
+  color: var(--reel-accent);
+  opacity: 0;
+  animation: pop 24s cubic-bezier(0.2, 1.3, 0.4, 1) infinite both;
+  animation-delay: calc(var(--i, 0) * 4s + var(--d, 0s));
+}
+
+/* 04 — the day itself ---------------------------------------------------- */
+
+.map {
+  position: relative;
+  width: 100%;
+  max-width: 460px;
+  aspect-ratio: 460 / 240;
+  max-height: 100%;
+}
+
+.mapSvg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.terrain {
+  fill: var(--reel-accent);
+  opacity: 0.08;
+}
+
+/* The continuous road under the travelling dashes — without it the route reads
+   as a dotted line rather than as movement along a fixed one. */
+.routeBed {
+  fill: none;
+  stroke: var(--reel-accent);
+  stroke-width: 3;
+  stroke-linecap: round;
+  opacity: 0.2;
+}
+
+.route {
+  fill: none;
+  stroke: var(--reel-accent);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 9 13;
+  animation: dashRun 1.8s linear infinite;
+}
+
+/* .pin carries the static centring transform so .pinPop is free to animate. */
+.pin {
+  position: absolute;
+  transform: translate(-50%, -100%);
+}
+
+.pinPop {
+  display: block;
+  opacity: 0;
+  animation: pop 24s cubic-bezier(0.2, 1.3, 0.4, 1) infinite both;
+  animation-delay: calc(var(--i, 0) * 4s + var(--d, 0s));
+}
+
+.pinBob {
+  display: block;
+  animation: bob 3.4s ease-in-out infinite alternate;
+}
+
+.pinDisc {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid var(--reel-panel);
+  background: var(--reel-accent);
+  color: #ffffff;
+  font-size: 0.58rem;
+  font-weight: 700;
+  box-shadow: 0 5px 14px rgba(0, 0, 0, 0.2);
+}
+
+.pinRole {
+  display: block;
+  margin-top: 0.2rem;
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 0.5rem;
+  font-style: normal;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--reel-dim);
+  white-space: nowrap;
+}
+
+.livePill {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.3rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--reel-line);
+  background: var(--reel-panel);
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--reel-dim);
+  opacity: 0;
+  animation: fadeUp 24s ease-out infinite both;
+  animation-delay: calc(var(--i, 0) * 4s + var(--d, 0s));
+}
+
+.liveDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--reel-accent);
+  animation: pulse 1.7s ease-in-out infinite;
+}
+
+/* 05 — the money --------------------------------------------------------- */
+
+.ledger {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 320px;
+  gap: 0.5rem;
+}
+
+.spendRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: var(--reel-dim);
+  opacity: 0;
+  animation: slideIn 24s ease-out infinite both;
+  animation-delay: calc(var(--i, 0) * 4s + var(--d, 0s));
+}
+
+.spendRow em {
+  font-style: normal;
+}
+
+.spendRow b {
+  font-weight: 600;
+  color: var(--reel-ink);
+}
+
+.spendRule {
+  height: 1px;
+  margin: 0.3rem 0 0.5rem;
+  background: var(--reel-line);
+  transform: scaleX(0);
+  transform-origin: left center;
+  opacity: 0;
+  animation: growX 24s ease-out infinite both;
+  animation-delay: calc(var(--i, 0) * 4s + var(--d, 0s));
+}
+
+.shares {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+  justify-content: center;
+}
+
+.shareChip {
+  padding: 0.32rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--reel-line);
+  background: var(--reel-panel);
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--reel-dim);
+  white-space: nowrap;
+  opacity: 0;
+  animation: pop 24s cubic-bezier(0.2, 1.3, 0.4, 1) infinite both;
+  animation-delay: calc(var(--i, 0) * 4s + var(--d, 0s));
+}
+
+.shareChip b {
+  color: var(--reel-ink);
+  font-weight: 700;
+}
+
+.settled {
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.7rem;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--reel-accent);
+  opacity: 0;
+  animation: pop 24s cubic-bezier(0.2, 1.3, 0.4, 1) infinite both;
+  animation-delay: calc(var(--i, 0) * 4s + var(--d, 0s));
+}
+
+.tick {
+  position: relative;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  border: 1.5px solid var(--reel-accent);
+  flex: 0 0 auto;
+}
+
+.tick::after {
+  content: "";
+  position: absolute;
+  left: 3.5px;
+  top: 3px;
+  width: 6px;
+  height: 3px;
+  border-left: 1.5px solid var(--reel-accent);
+  border-bottom: 1.5px solid var(--reel-accent);
+  transform: rotate(-45deg);
+}
+
+/* 06 — what it adds up to ------------------------------------------------ */
+
+.cert {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  width: 100%;
+  max-width: 300px;
+  padding: 1.4rem 1.25rem 1.2rem;
+  border: 1px solid var(--reel-line);
+  border-radius: 0.5rem;
+  background: var(--reel-panel);
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.12);
+  opacity: 0;
+  animation: pop 24s cubic-bezier(0.2, 1.3, 0.4, 1) infinite both;
+  animation-delay: calc(var(--i, 0) * 4s + var(--d, 0s));
+}
+
+.cert::before {
+  content: "";
+  position: absolute;
+  inset: 6px;
+  border: 1px solid var(--reel-accent);
+  border-radius: 0.3rem;
+  opacity: 0.3;
+  pointer-events: none;
+}
+
+.certKicker {
+  font-family: var(--font-mono);
+  font-size: 0.54rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--reel-dim);
+}
+
+.certTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-align: center;
+  color: var(--reel-accent);
+}
+
+.certName {
+  margin-top: 0.5rem;
+  padding: 0 0.6rem 0.25rem;
+  border-bottom: 1px solid var(--reel-line);
+  font-size: 1.02rem;
+  font-style: italic;
+  color: var(--reel-ink);
+  opacity: 0;
+  animation: fadeUp 24s ease-out infinite both;
+  animation-delay: calc(var(--i, 0) * 4s + var(--d, 0s));
+}
+
+.certLine,
+.certLineShort {
+  height: 4px;
+  margin-top: 0.4rem;
+  border-radius: 2px;
+  background: var(--reel-line);
+  transform: scaleX(0);
+  opacity: 0;
+  animation: growX 24s ease-out infinite both;
+  animation-delay: calc(var(--i, 0) * 4s + var(--d, 0s));
+}
+
+.certLine {
+  width: 74%;
+}
+
+.certLineShort {
+  width: 48%;
+}
+
+.certCode {
+  margin-top: 0.7rem;
+  font-family: var(--font-mono);
+  font-size: 0.5rem;
+  letter-spacing: 0.1em;
+  color: var(--reel-dim);
+  opacity: 0;
+  animation: fadeUp 24s ease-out infinite both;
+  animation-delay: calc(var(--i, 0) * 4s + var(--d, 0s));
+}
+
+.seal {
+  position: absolute;
+  right: 0.65rem;
+  bottom: 0.65rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  border: 1.5px solid var(--reel-accent);
+  background: var(--reel-accent-soft);
+  opacity: 0;
+  animation: sealIn 24s cubic-bezier(0.2, 1.2, 0.4, 1) infinite both;
+  animation-delay: calc(var(--i, 0) * 4s + var(--d, 0s));
+}
+
+.sealTick {
+  width: 13px;
+  height: 7px;
+  border-left: 2px solid var(--reel-accent);
+  border-bottom: 2px solid var(--reel-accent);
+  transform: rotate(-45deg) translate(1px, -1px);
+}
+
+/* Keyframes — percentages of the shared 24s loop; 1s = 4.1667% ----------- */
+
+/* Fades out past its own 16.667% slot so the outgoing scene and the incoming
+   one overlap for ~0.3s — a crossfade rather than a blank frame between cuts. */
+@keyframes sceneShow {
+  0% {
+    opacity: 0;
+  }
+  1.7%,
+  15.4% {
+    opacity: 1;
+  }
+  18%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeUp {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  2.1%,
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes slideIn {
+  0% {
+    opacity: 0;
+    transform: translateX(-12px);
+  }
+  2.1%,
+  100% {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.55);
+  }
+  1.4% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+  2.2%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes growX {
+  0% {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  2.1%,
+  100% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes sealIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.4) rotate(-28deg);
+  }
+  1.7% {
+    opacity: 1;
+    transform: scale(1.14) rotate(5deg);
+  }
+  2.7%,
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes dotOn {
+  0%,
+  100% {
+    opacity: 0.22;
+    transform: scale(1);
+  }
+  1%,
+  15.6% {
+    opacity: 1;
+    transform: scale(1.35);
+  }
+  16.667% {
+    opacity: 0.22;
+    transform: scale(1);
+  }
+}
+
+@keyframes reelProgress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Loops of their own, independent of the scene timeline. */
+
+@keyframes bob {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes dashRun {
+  from {
+    stroke-dashoffset: 0;
+  }
+  to {
+    stroke-dashoffset: -44;
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.35;
+    transform: scale(0.7);
+  }
+}
+
+/* Narrow ----------------------------------------------------------------- */
+
+@media (max-width: 760px) {
+  /* Taller than 16/10 so the art still has room once the captions wrap to three
+     lines, but not 3/4 — the art blocks keep their own aspect ratio and shrink
+     with the width, so a portrait stage just adds dead space above and below. */
+  .stage {
+    aspect-ratio: 5 / 6;
+  }
+  .scene {
+    gap: 1.25rem;
+    padding: 3.25rem 1.25rem 3.75rem;
+  }
+  .captionLine {
+    font-size: 1rem;
+  }
+  .bubbleBody {
+    font-size: 0.66rem;
+    padding: 0.35rem 0.6rem;
+  }
+  .roster {
+    grid-template-columns: repeat(4, 40px);
+    gap: 0.6rem;
+  }
+  .rosterAvatar {
+    width: 40px;
+    height: 40px;
+    font-size: 0.66rem;
+  }
+}
+
+@media (max-width: 460px) {
+  .stage {
+    aspect-ratio: 4 / 5;
+  }
+  .bubbleBody {
+    font-size: 0.58rem;
+  }
+  .roster {
+    grid-template-columns: repeat(4, 34px);
+  }
+  .rosterAvatar {
+    width: 34px;
+    height: 34px;
+    font-size: 0.58rem;
+  }
+  .pinDisc {
+    width: 25px;
+    height: 25px;
+    font-size: 0.5rem;
+  }
+}
+
+/* Reduced motion: no reel, a storyboard. Because everything above animates
+   only opacity/transform, one reset lands each scene on its finished frame;
+   the stage then lays them out as static panels instead of stacking them. */
+
+@media (prefers-reduced-motion: reduce) {
+  .stage {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.5rem;
+    aspect-ratio: auto;
+    padding: 1.75rem;
+    background: var(--reel-stage);
+  }
+
+  .chrome,
+  .track {
+    display: none;
+  }
+
+  .scene {
+    position: static;
+    inset: auto;
+    opacity: 1;
+    gap: 1rem;
+    padding: 1.25rem;
+    border: 1px solid var(--reel-line);
+    border-radius: 0.75rem;
+    background: var(--reel-panel);
+    overflow: hidden;
+    animation: none;
+  }
+
+  .scene .art {
+    flex: 0 0 auto;
+  }
+
+  /* Absolutely-placed chatter has no room to spread in a panel this size. */
+  .bubbleBody {
+    white-space: normal;
+    font-size: 0.6rem;
+  }
+
+  /* Pins sit at 6.5% and 93.5% of the route, so the map needs room either side
+     or their discs and role labels clip against the panel edge. */
+  .map {
+    width: calc(100% - 2.5rem);
+  }
+
+  .caption,
+  .bubbleBody,
+  .bubbleCount,
+  .cardTitle,
+  .cardRow,
+  .cardCaptains,
+  .cardWindow,
+  .rosterAvatar,
+  .goingChip,
+  .pinPop,
+  .pinBob,
+  .livePill,
+  .liveDot,
+  .spendRow,
+  .spendRule,
+  .shareChip,
+  .settled,
+  .cert,
+  .certName,
+  .certLine,
+  .certLineShort,
+  .certCode,
+  .seal,
+  .route,
+  .progressBar,
+  .dot {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
+  /* Both live on a wrapper whose static transform must survive the reset. */
+  .pin {
+    transform: translate(-50%, -100%);
+  }
+
+  .sealTick {
+    transform: rotate(-45deg) translate(1px, -1px);
+  }
+
+  .cert {
+    box-shadow: none;
+  }
+
+  .card {
+    box-shadow: none;
+  }
+}
+
+/* Storyboard panels stack rather than pair up. */
+@media (max-width: 700px) and (prefers-reduced-motion: reduce) {
+  .stage {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
