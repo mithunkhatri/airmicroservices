@@ -20,7 +20,7 @@ export default function TheOutdoorClubTerms() {
     <div className={styles.page}>
       <header className={styles.legalHeader}>
         <div className={styles.legalContainer}>
-          <Link href="/" className={styles.backLink}>
+          <Link href="/theoutdoorclub" className={styles.backLink}>
             <svg
               viewBox="0 0 24 24"
               width="16"
@@ -35,9 +35,8 @@ export default function TheOutdoorClubTerms() {
               <line x1="19" y1="12" x2="5" y2="12" />
               <polyline points="12 19 5 12 12 5" />
             </svg>
-            Back to Air Microservices
+            Back to The Outdoor Club
           </Link>
-          <span className={styles.appName}>The Outdoor Club</span>
           <h1 className={styles.title}>Terms &amp; Conditions</h1>
           <div className={styles.meta}>
             <span>Last Updated: July 31, 2026</span>

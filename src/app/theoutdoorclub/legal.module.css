@@ -53,16 +53,8 @@
   transform: translateX(-4px);
 }
 
-.appName {
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  color: var(--status-pulse);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  font-weight: 700;
-  margin-bottom: 0.5rem;
-  display: block;
-}
+/* No .appName eyebrow here: the back link above the title now names the product,
+   so a second label under it read as a stutter. */
 
 .title {
   font-size: clamp(2rem, 5vw, 3rem);
