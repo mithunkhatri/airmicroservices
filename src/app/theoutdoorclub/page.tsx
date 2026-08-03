@@ -188,7 +188,7 @@ export default function TheOutdoorClubPage() {
                 Plan the trip and open enrolment. Split the fuel. Watch the whole
                 group move on one map while it is happening. Keep the books, the
                 roster and the rules in the place everybody already looks — and
-                hand every volunteer a certificate when the clean-up is done.
+                hand every volunteer a certificate when the community work is done.
               </p>
 
               <div className={styles.ctaButtons}>
